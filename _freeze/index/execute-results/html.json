@@ -1,8 +1,8 @@
 {
-  "hash": "3187ee58b45d101f8977d5b4c0833e24",
+  "hash": "14e2e10e0ee0f598ea046cba3a6ea165",
   "result": {
     "engine": "knitr",
-    "markdown": "# 前言 {.unnumbered}\n\n欢迎来到《R语言入门：医学生实用指南》。本书旨在帮助医学生掌握R语言的基础知识，并将其应用于医学研究和数据分析中。\n\n## 本书特点\n\n- 针对医学生的特定需\n- 实用的医学数据分析案例\n- 循序渐进的学习路径\n- 丰富的实践练习\n\n## 如何使用本书\n\n本书分为三个主要部分：\n1. 基础知识\n2. 数据处理\n3. 医学统计\n\n建议初学者按照章节顺序学习，每章都包含理论讲解和实践练习。 \n\n\n\n\n\n::: {.cell layout-align=\"center\"}\n\n```{.r .cell-code}\nplot(1:10)\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){fig-align='center' width=80%}\n:::\n:::\n\n\n\n\n\n.libPaths()\n",
+    "markdown": "# 前言 {.unnumbered}\n\n欢迎来到《医学生R语言入门指南》。本书旨在帮助医学生掌握R语言的基础知识，并将其应用于医学研究和数据分析中。\n\n::: {.callout-note appearance=\"simple\"}\n## 获取更多资源\n欢迎关注微信公众号【R语言与可视化】，获取更多R语言学习资源和医学统计分析案例。\n:::\n\n## 本书特点\n\n- 针对医学生的特定需\n- 实用的医学数据分析案例\n- 循序渐进的学习路径\n- 丰富的实践练习\n\n## 如何使用本书\n\n本书分为三个主要部分：\n1. 基础知识\n2. 数据处理\n3. 医学统计\n\n建议初学者按照章节顺序学习，每章都包含理论讲解和实践练习。 \n\n\n\n\n\n::: {.cell layout-align=\"center\"}\n\n```{.r .cell-code}\nplot(1:10)\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-1-1.png){fig-align='center' width=80%}\n:::\n:::\n",
     "supporting": [],
     "filters": [
       "rmarkdown/pagebreak.lua"

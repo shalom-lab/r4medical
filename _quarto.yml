@@ -12,7 +12,6 @@ book:
   language: zh                      # 语言：中文
   page-navigation: true
   reader-mode: true
-  site-url: https://your-site.com
   repo-url: https://github.com/shalom-lab/r4medical
   repo-actions: [edit, issue]
   chapters:
@@ -61,7 +60,10 @@ book:
 format:
   # HTML输出设置
   html:
-    theme: cosmo
+    theme:
+      light: [cosmo, custom.scss]
+    css: styles.css
+    toc-title: 目录
     code-fold: show        # 默认展开但保留折叠功能
     code-tools: true       # 显示代码工具栏
     code-copy: true        # 显示复制按钮
@@ -71,6 +73,7 @@ format:
     fig-height: 6
     fig-dpi: 300
     df-print: paged
+    highlight-style: github
 
 # 代码执行设置
 execute:
@@ -83,28 +86,4 @@ execute:
 
 # 编辑器设置
 # editor: visual                   # 使用可视化编辑器
-
-# knitr设置
-knitr:
-  opts_chunk:                    # 代码块选项
-    collapse: true              # 合并输出
-    comment: "#>"               # 输出注释符
-    fig.align: "center"         # 图形居中
-    out.width: "80%"            # 输出宽度
-    dev: "ragg_png"             # 图形设备
-
-# 资源文件
-resources:                       # 项目资源
-  - images/                     # 图片目录
-  - data/                       # 数据目录
-  - templates/                  # 模板目录
-  - styles/                     # 样式目录
-
-# 目录结构
-directory-structure:             # 项目目录结构
-  data: data                    # 数据目录
-  scripts: R                    # R脚本目录
-  output: output                # 输出目录
-  figures: figures              # 图形目录
-  tables: tables                # 表格目录
-  reports: reports              # 报告目录 
+lang: zh
