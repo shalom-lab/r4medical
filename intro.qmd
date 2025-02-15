@@ -1,0 +1,149 @@
+# 导论 {#sec-introduction}
+
+## 为什么医学生需要学习R语言？
+
+在现代医学研究中，数据分析能力已经成为一项不可或缺的技能。R语言作为一个强大的统计分析工具，具有以下优势：
+
+- 开源免费，无需支付许可费用
+- 丰富的统计分析和可视化功能
+- 活跃的医学研究社区
+- 强大的可重复性研究支持
+- 大量专业的医学统计包
+
+## 本书使用的R包
+
+本书使用了多个专业的R包来支持医学数据分析。以下是主要R包及其用途：
+
+### 核心包
+```{r}
+#| label: check-packages
+#| message: false
+
+# 核心数据处理和可视化包
+core_packages <- c(
+  "tidyverse",     # 数据处理和可视化核心包集
+  "rmarkdown",     # 报告生成
+  "knitr",         # 文档编织
+  "ggplot2",       # 数据可视化
+  "dplyr",         # 数据处理
+  "tidyr"          # 数据整理
+)
+```
+
+### 医学统计包
+```{r}
+#| eval: false
+
+# 医学统计分析包
+medical_stats_packages <- c(
+  "survival",      # 生存分析
+  "survminer",     # 生存曲线可视化
+  "gtsummary",     # 医学统计表格
+  "medicaldata",   # 医学数据集
+  "pROC",          # ROC曲线分析
+  "car",           # 回归诊断
+  "rms",           # 回归建模
+  "MatchIt",       # 倾向评分匹配
+  "lme4",          # 混合效应模型
+  "vcd"            # 分类数据可视化
+)
+```
+
+### 生物信息学包
+```{r}
+#| eval: false
+
+# 生物信息学分析包
+bioinformatics_packages <- c(
+  "GEOquery",            # GEO数据获取
+  "limma",               # 差异表达分析
+  "clusterProfiler",     # 通路富集分析
+  "org.Hs.eg.db",        # 人类基因注释
+  "enrichplot",          # 富集分析可视化
+  "pheatmap"             # 热图绘制
+)
+```
+
+### 可视化增强包
+```{r}
+#| eval: false
+
+# 可视化增强包
+viz_packages <- c(
+  "ggthemes",      # ggplot2主题
+  "plotly",        # 交互式图形
+  "DT",            # 交互式表格
+  "gt",            # 静态表格
+  "flextable",     # Word表格
+  "corrplot",      # 相关矩阵可视化
+  "tmap"           # 专题地图
+)
+```
+
+## 包的安装
+
+以下代码可以帮助您安装所有必需的包：
+
+```{r}
+#| eval: false
+
+# 安装CRAN包
+install.packages(c(
+  "tidyverse", "rmarkdown", "knitr", "survival", "survminer",
+  "gtsummary", "medicaldata", "pROC", "car", "rms", "MatchIt",
+  "lme4", "vcd", "ggthemes", "plotly", "DT", "gt", "flextable",
+  "corrplot", "tmap"
+))
+
+# 安装Bioconductor包
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install(c(
+  "GEOquery", "limma", "clusterProfiler", 
+  "org.Hs.eg.db", "enrichplot"
+))
+```
+
+## 学习路径建议
+
+本书的内容安排遵循循序渐进的原则：
+
+1. **基础知识** (第1-2章)
+   - R语言基础
+   - 数据结构和操作
+
+2. **数据处理与可视化** (第3-5章)
+   - 数据可视化
+   - 数据清洗和转换
+   - 临床数据处理
+
+3. **统计分析** (第6-7章)
+   - 基础统计方法
+   - 高级统计分析
+
+4. **专业应用** (第8-10章)
+   - 研究报告生成
+   - 生物信息学分析
+   - 综合项目实践
+
+建议读者：
+
+1. 按章节顺序学习
+2. 完成每章的练习
+3. 尝试用自己的数据实践
+4. 参考扩展阅读深入学习
+
+## 运行环境要求
+
+- R版本 >= 4.1.0
+- RStudio >= 2022.02
+- 足够的系统内存（建议8GB以上）
+- 稳定的网络连接（用于包的安装）
+
+```{r}
+#| echo: false
+sessionInfo()
+```
+
+下一章，我们将开始学习R语言与医学研究的基础知识。 

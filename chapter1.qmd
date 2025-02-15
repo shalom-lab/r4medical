@@ -1,0 +1,146 @@
+# R语言与医学研究基础 {#sec-basics}
+
+::: {.callout-tip}
+## 扩展阅读
+本章内容的扩展阅读和相关代码可在微信公众号【R语言与可视化】获取。
+:::
+
+## 为什么医学生需要学习R语言 {#sec-why-r}
+
+### 医学研究中的数据分析需求 {#sec-data-analysis-needs}
+
+在现代医学研究中，数据分析已经成为一项不可或缺的技能。无论是临床试验、流行病学研究，还是基础医学实验，都需要处理和分析大量的数据。以下几个方面特别重要：
+
+-   临床研究数据的统计分析
+-   医学图像处理
+-   基因组学数据分析
+-   医学文献的元分析
+-   临床预测模型的构建
+
+### 与其他统计软件对比 {#sec-software-comparison}
+
+```{r}
+#| echo: false
+#| tbl-cap: "常用统计软件比较"
+
+comparison_data <- data.frame(
+  软件 = c("R", "SPSS", "GraphPad"),
+  价格 = c("免费", "昂贵", "适中"),
+  学习曲线 = c("较陡", "平缓", "平缓"),
+  灵活性 = c("极高", "中等", "较低"),
+  可重复性 = c("很好", "一般", "一般")
+)
+
+knitr::kable(comparison_data)
+```
+
+## R与RStudio环境搭建 {#sec-environment}
+
+### 软件安装与配置 {#sec-installation}
+
+1.  **安装R**
+    -   访问 [CRAN](https://cran.r-project.org/)
+    -   选择对应操作系统的版本
+    -   下载并安装
+2.  **安装RStudio**
+    -   访问 [Posit](https://posit.co/download/rstudio-desktop/)
+    -   下载免费版本
+    -   安装RStudio
+
+```{r}
+#| echo: true
+#| code-fold: false
+
+# 检查R版本
+R.version.string
+
+# 检查已安装的包
+installed.packages()[1:5, c("Package", "Version")]
+```
+
+### RStudio界面详解 {#sec-rstudio-interface}
+
+RStudio的界面分为四个主要区域：
+
+1.  **源代码编辑器**（左上）
+    -   编写R代码
+    -   创建R Markdown文档
+2.  **控制台**（左下）
+    -   直接执行R命令
+    -   查看输出结果
+3.  **环境/历史记录**（右上）
+    -   查看当前变量
+    -   浏览命令历史
+4.  **文件/图形/包/帮助**（右下）
+    -   管理文件
+    -   查看图形输出
+    -   安装和加载包
+    -   访问帮助文档
+
+## 第一个医学分析案例 {#sec-first-analysis}
+
+### 血压数据分析脚本编写 {#sec-bp-analysis}
+
+让我们通过一个简单的血压数据分析来开始我们的R语言学习之旅：
+
+```{r}
+#| label: bp-analysis
+#| warning: false
+#| message: false
+
+# 载入需要的包
+library(tidyverse)
+
+# 创建示例数据
+set.seed(123)
+bp_data <- data.frame(
+  患者ID = 1:30,
+  收缩压 = rnorm(30, mean = 120, sd = 10),
+  舒张压 = rnorm(30, mean = 80, sd = 8),
+  年龄 = sample(30:70, 30, replace = TRUE),
+  性别 = factor(sample(c("男", "女"), 30, replace = TRUE))
+)
+
+# 基本统计描述
+summary(bp_data[, c("收缩压", "舒张压")])
+```
+
+### 结果解读与可视化 {#sec-visualization}
+
+让我们创建一个简单的血压数据可视化：
+
+```{r}
+#| label: bp-visualization
+#| fig-cap: "收缩压和舒张压的箱线图"
+#| warning: false
+
+ggplot(bp_data, aes(x = 性别)) +
+  geom_boxplot(aes(y = 收缩压, fill = "收缩压")) +
+  geom_boxplot(aes(y = 舒张压, fill = "舒张压")) +
+  labs(
+    title = "不同性别的血压分布",
+    y = "血压 (mmHg)",
+    fill = "血压类型"
+  ) +
+  theme_minimal() +
+  theme(text = element_text(family = "STKaiti"))
+```
+
+::: callout-tip
+## 练习
+
+1.  尝试修改上述代码，添加年龄组的分析
+2.  计算收缩压和舒张压的相关系数
+3.  创建一个散点图来展示年龄与血压的关系
+:::
+
+## 本章小结
+
+在本章中，我们：
+
+1.  了解了为什么要学习R语言
+2.  完成了R和RStudio的安装配置
+3.  熟悉了RStudio的基本界面
+4.  完成了第一个医学数据分析案例
+
+下一章，我们将深入学习R语言的基础数据类型和数据结构。

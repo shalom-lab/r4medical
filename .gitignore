@@ -1,0 +1,41 @@
+# Quarto and R specific
+.quarto/
+/_site/
+/_book/
+/.quarto/
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*_cache/
+*_files/
+/docs
+
+# 编译输出目录
+/docs/
+/output/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE 配置文件
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# R 项目文件
+*.Rproj
+
+# 临时文件
+*.log
+*.tmp
+*~
+
+# 依赖管理
+renv/
+.Rprofile
+
+# 缓存文件
+.cache/ 

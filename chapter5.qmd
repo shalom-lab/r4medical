@@ -1,0 +1,257 @@
+# 临床研究数据处理 {#sec-clinical-data}
+
+```{r}
+#| label: check-packages
+#| message: false
+
+# 检查并安装所需的R包
+required_packages <- c(
+  "tidyverse",     # 数据处理
+  "survival",      # 生存数据处理
+  "medicaldata",   # 医学数据集
+  "lubridate",     # 时间数据处理
+  "tidyr"          # 数据重塑
+)
+
+# 检查并安装缺失的包
+new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages)
+
+# 加载所有包
+invisible(lapply(required_packages, library, character.only = TRUE))
+```
+
+## dplyr数据操作 {#sec-dplyr}
+
+### 患者数据筛选(filter) {#sec-filter}
+
+我们将使用`survival`包中的`lung`数据集（肺癌患者数据）进行演示：
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(survival)
+library(medicaldata)
+
+# 加载肺癌数据集
+data(lung)
+glimpse(lung)
+
+# 基本筛选操作
+advanced_cases <- lung %>%
+  filter(status == 2) %>%  # 筛选死亡病例
+  filter(age > 60) %>%     # 筛选老年患者
+  arrange(desc(time))      # 按生存时间降序排列
+
+# 多条件筛选
+high_risk_patients <- lung %>%
+  filter(sex == 1,         # 男性
+         ph.ecog >= 2,     # ECOG体能状态较差
+         wt.loss > 10)     # 体重下降显著
+
+# 展示筛选结果
+print("高危患者特征：")
+summary(high_risk_patients)
+```
+
+### 实验室指标计算(mutate) {#sec-mutate}
+
+```{r}
+#| label: lab-calculations
+
+# 创建示例临床数据
+set.seed(123)
+clinical_data <- data.frame(
+  patient_id = 1:200,
+  age = rnorm(200, mean = 45, sd = 15),
+  temp = rnorm(200, mean = 37, sd = 0.5),
+  gender = factor(sample(c("男", "女"), 200, replace = TRUE)),
+  wbc = rnorm(200, mean = 6.5, sd = 2),
+  crp = rlnorm(200, log(10), 0.8)
+)
+
+# 添加新的计算指标
+clinical_analysis <- clinical_data %>%
+  mutate(
+    # 体温分类
+    temp_category = case_when(
+      temp < 37.3 ~ "正常",
+      temp < 38.0 ~ "低热",
+      temp < 39.0 ~ "中度发热",
+      TRUE ~ "高热"
+    ),
+    # 年龄分组
+    age_group = case_when(
+      age < 18 ~ "未成年",
+      age < 65 ~ "成年",
+      TRUE ~ "老年"
+    ),
+    # 是否老年
+    is_elderly = age >= 65,
+    # 炎症风险评分
+    risk_score = (temp - 37) * 10 + (crp/10) + (wbc - 7)^2
+  ) %>%
+  select(patient_id, age, age_group, temp, temp_category, 
+         is_elderly, risk_score, everything())
+
+# 查看新变量的分布
+summary(clinical_analysis$risk_score)
+table(clinical_analysis$temp_category)
+
+# 可视化风险评分分布
+ggplot(clinical_analysis, aes(x = risk_score)) +
+  geom_histogram(fill = "steelblue", bins = 30) +
+  labs(title = "患者风险评分分布",
+       x = "风险评分",
+       y = "频数") +
+  theme_minimal()
+```
+
+## 时间数据处理 {#sec-time-data}
+
+### 入院时间序列分析 {#sec-admission-time}
+
+使用`medicaldata`包中的`smartpill`数据：
+
+```{r}
+#| label: time-series
+library(lubridate)
+
+# 创建示例入院数据
+set.seed(123)
+admission_data <- data.frame(
+  patient_id = 1:100,
+  admission_date = as.Date("2023-01-01") + sample(0:90, 100, replace = TRUE),
+  los = sample(1:30, 100, replace = TRUE)  # 住院天数
+) %>%
+  mutate(
+    discharge_date = admission_date + los,
+    admission_month = month(admission_date, label = TRUE),
+    weekday = wday(admission_date, label = TRUE)
+  )
+
+# 分析入院时间模式
+ggplot(admission_data, aes(x = admission_month)) +
+  geom_bar(fill = "steelblue") +
+  labs(title = "每月入院人数分布",
+       x = "月份",
+       y = "入院人数") +
+  theme_minimal()
+```
+
+### 随访间隔计算 {#sec-follow-up}
+
+```{r}
+#| label: follow-up-intervals
+
+# 创建随访数据
+follow_up_data <- lung %>%
+  mutate(
+    start_date = as.Date("2020-01-01") + time,
+    last_contact = start_date + time,
+    follow_up_duration = interval(start_date, last_contact) / months(1),
+    follow_up_status = if_else(status == 2, "死亡", "存活")
+  )
+
+# 分析随访时间分布
+ggplot(follow_up_data, aes(x = follow_up_duration, fill = follow_up_status)) +
+  geom_histogram(position = "dodge", bins = 30) +
+  labs(title = "随访时间分布",
+       x = "随访月数",
+       y = "患者数") +
+  theme_minimal()
+```
+
+## 数据重塑技巧 {#sec-reshape}
+
+### 宽格式/长格式转换 {#sec-wide-long}
+
+使用`medicaldata`包中的`cytomegalovirus`数据：
+
+```{r}
+#| label: data-reshape
+library(tidyr)
+
+# 创建示例实验室检查数据
+lab_data <- data.frame(
+  patient_id = 1:5,
+  wbc_1 = rnorm(5, 6.5, 1),
+  wbc_2 = rnorm(5, 6.8, 1),
+  wbc_3 = rnorm(5, 7.0, 1),
+  hb_1 = rnorm(5, 130, 10),
+  hb_2 = rnorm(5, 128, 10),
+  hb_3 = rnorm(5, 125, 10)
+)
+
+# 转换为长格式
+lab_long <- lab_data %>%
+  pivot_longer(
+    cols = -patient_id,
+    names_to = c("test", "visit"),
+    names_pattern = "(.+)_(.+)",
+    values_to = "value"
+  )
+
+# 可视化检验结果趋势
+ggplot(lab_long, aes(x = visit, y = value, group = patient_id, color = factor(patient_id))) +
+  geom_line() +
+  facet_wrap(~test, scales = "free_y") +
+  labs(title = "实验室检查结果追踪",
+       x = "访视次数",
+       y = "检查值") +
+  theme_minimal()
+```
+
+### 合并多中心研究数据 {#sec-merge-data}
+
+```{r}
+#| label: merge-data
+
+# 模拟多中心数据
+center_1 <- data.frame(
+  patient_id = paste0("A", 1:50),
+  age = rnorm(50, 65, 10),
+  center = "中心1"
+)
+
+center_2 <- data.frame(
+  patient_id = paste0("B", 1:30),
+  age = rnorm(30, 62, 8),
+  center = "中心2"
+)
+
+# 合并数据集
+combined_data <- bind_rows(center_1, center_2) %>%
+  mutate(age_group = cut(age, 
+                        breaks = c(0, 50, 65, 100),
+                        labels = c("青年", "中年", "老年")))
+
+# 分析各中心年龄分布
+ggplot(combined_data, aes(x = center, y = age, fill = center)) +
+  geom_boxplot() +
+  labs(title = "各中心患者年龄分布",
+       x = "研究中心",
+       y = "年龄") +
+  theme_minimal()
+```
+
+::: {.callout-tip}
+## 练习
+
+1. 使用自己的数据集进行数据清洗和转换
+2. 计算新的临床指标
+3. 处理和分析时间序列数据
+4. 合并来自不同来源的数据集
+:::
+
+## 本章小结
+
+在本章中，我们学习了：
+
+1. 使用dplyr进行数据筛选和计算
+2. 处理临床研究中的时间数据
+3. 数据格式的转换技巧
+4. 多中心数据的合并方法
+
+下一章，我们将学习统计建模的基础知识。 

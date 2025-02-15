@@ -1,0 +1,230 @@
+# 高级医学统计分析 {#sec-advanced-stats}
+
+```{r}
+#| label: check-packages
+#| message: false
+
+# 设置CRAN镜像为中国合肥镜像
+options(repos = c(CRAN = "https://mirrors.ustc.edu.cn/CRAN/"))
+
+# 检查并安装所需的R包
+required_packages <- c(
+  "survival",      # 生存分析
+  "survminer",     # 生存曲线可视化
+  "tidyverse",     # 数据处理和可视化
+  "MASS",          # 统计方法
+  "pROC",          # ROC曲线分析
+  "lme4",          # 混合效应模型
+  "nlme",          # 非线性混合效应模型
+  "medicaldata"    # 医学数据集
+)
+
+# 检查并安装缺失的包
+new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages, dependencies = TRUE)
+
+# 加载所有包
+invisible(lapply(required_packages, library, character.only = TRUE))
+
+# 加载数据集
+data("framingham", package = "medicaldata")
+```
+
+## 生存分析 {#sec-survival-analysis}
+
+### Kaplan-Meier曲线绘制 {#sec-km-curves}
+
+```{r}
+#| label: setup
+#| message: false
+library(survival)
+library(survminer)
+library(tidyverse)
+library(MASS)
+
+# 使用肺癌数据集
+data(cancer, package = "survival")
+lung$sex <- factor(lung$sex, labels = c("男", "女"))
+
+# 创建生存对象
+surv_obj <- Surv(lung$time, lung$status)
+
+# 按性别分组的KM曲线
+fit <- survfit(surv_obj ~ sex, data = lung)
+
+# 绘制生存曲线
+ggsurvplot(fit,
+           data = lung,
+           pval = TRUE,           # 显示log-rank检验p值
+           conf.int = TRUE,       # 显示置信区间
+           risk.table = TRUE,     # 添加风险表
+           risk.table.height = 0.25,
+           xlab = "时间(天)",
+           ylab = "生存概率",
+           title = "不同性别肺癌患者生存曲线",
+           legend.labs = c("男", "女"),
+           ggtheme = theme_minimal())
+```
+
+### Cox比例风险模型 {#sec-cox-model}
+
+```{r}
+#| label: cox-model
+
+# 构建Cox模型
+cox_model <- coxph(Surv(time, status) ~ sex + age + ph.ecog, data = lung)
+
+# 模型摘要
+summary(cox_model)
+
+# 森林图展示风险比
+ggforest(cox_model, 
+         data = lung,
+         main = "肺癌预后因素分析")
+
+# 检验比例风险假定
+test.ph <- cox.zph(cox_model)
+ggcoxzph(test.ph)
+```
+
+## 诊断试验分析 {#sec-diagnostic-tests}
+
+### ROC曲线分析 {#sec-roc-analysis}
+
+```{r}
+#| label: roc-analysis
+#| message: false
+
+# 创建模拟数据
+set.seed(123)
+n <- 1000
+sim_data <- data.frame(
+  age = rnorm(n, mean = 50, sd = 10),
+  bmi = rnorm(n, mean = 25, sd = 4),
+  heartrate = rnorm(n, mean = 75, sd = 12),
+  glucose = rnorm(n, mean = 100, sd = 20),
+  sbp = rnorm(n, mean = 130, sd = 20)
+)
+
+# 创建高血压变量
+sim_data$hypertension <- ifelse(sim_data$sbp >= 140, 1, 0)
+
+# 构建预测模型
+pred_model <- glm(hypertension ~ age + bmi + heartrate + glucose,
+                 family = binomial,
+                 data = sim_data)
+
+# 计算ROC曲线
+pred_prob <- predict(pred_model, type = "response")
+roc_curve <- roc(sim_data$hypertension, pred_prob)
+
+# 绘制ROC曲线
+plot(roc_curve, 
+     main = "高血压预测模型ROC曲线",
+     xlab = "1-特异度",
+     ylab = "敏感度")
+text(0.6, 0.2, paste("AUC =", round(auc(roc_curve), 3)))
+```
+
+### 灵敏度/特异度计算 {#sec-sensitivity-specificity}
+
+```{r}
+#| label: diagnostic-metrics
+
+# 计算最佳截断值
+optimal_cutoff <- coords(roc_curve, "best")
+
+# 创建混淆矩阵
+predicted_class <- ifelse(pred_prob > optimal_cutoff$threshold, 1, 0)
+conf_matrix <- table(Actual = sim_data$hypertension, 
+                    Predicted = predicted_class)
+
+# 计算诊断指标
+sensitivity <- conf_matrix[2,2] / sum(conf_matrix[2,])
+specificity <- conf_matrix[1,1] / sum(conf_matrix[1,])
+ppv <- conf_matrix[2,2] / sum(conf_matrix[,2])
+npv <- conf_matrix[1,1] / sum(conf_matrix[,1])
+
+# 创建诊断指标表格
+metrics <- data.frame(
+  指标 = c("敏感度", "特异度", "阳性预测值", "阴性预测值"),
+  值 = round(c(sensitivity, specificity, ppv, npv), 3)
+)
+
+knitr::kable(metrics, caption = "诊断性能指标")
+```
+
+## 重复测量分析 {#sec-repeated-measures}
+
+### 混合效应模型 {#sec-mixed-effects}
+
+```{r}
+#| label: mixed-model
+library(lme4)
+library(nlme)
+
+# 创建示例纵向数据
+set.seed(123)
+n_subjects <- 50
+n_timepoints <- 4
+
+longitudinal_data <- data.frame(
+  subject = rep(1:n_subjects, each = n_timepoints),
+  time = rep(0:3, times = n_subjects),
+  treatment = rep(rep(c("A", "B"), each = n_subjects/2), each = n_timepoints)
+)
+
+# 添加结局变量
+longitudinal_data$outcome <- with(longitudinal_data, {
+  baseline <- rnorm(n_subjects, mean = 100, sd = 10)[subject]
+  time_effect <- 5 * time
+  treatment_effect <- ifelse(treatment == "A", 2, -2) * time
+  random_effect <- rnorm(n_subjects, mean = 0, sd = 5)[subject]
+  error <- rnorm(n_subjects * n_timepoints, mean = 0, sd = 3)
+  baseline + time_effect + treatment_effect + random_effect + error
+})
+
+# 拟合混合效应模型
+mixed_model <- lmer(outcome ~ time * treatment + (1|subject), 
+                   data = longitudinal_data)
+
+# 模型摘要
+summary(mixed_model)
+```
+
+### 用药效果纵向分析 {#sec-longitudinal-analysis}
+
+```{r}
+#| label: longitudinal-plot
+
+# 可视化纵向数据
+ggplot(longitudinal_data, aes(x = time, y = outcome, color = treatment)) +
+  stat_summary(aes(group = treatment),
+              fun = mean, geom = "line") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.2) +
+  labs(title = "不同治疗方案的纵向效果比较",
+       x = "随访时间点",
+       y = "结局指标",
+       color = "治疗组别") +
+  theme_minimal()
+```
+
+::: callout-tip
+## 练习
+
+1.  使用自己的数据进行生存分析
+2.  评估诊断试验的性能
+3.  分析纵向研究数据
+4.  解释混合效应模型结果
+:::
+
+## 本章小结
+
+在本章中，我们学习了：
+
+1.  生存分析的实施和解释
+2.  诊断试验性能的评估方法
+3.  重复测量数据的处理技巧
+4.  混合效应模型的应用
+
+下一章，我们将学习如何使用R Markdown生成医学研究报告。
