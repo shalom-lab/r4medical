@@ -15,6 +15,27 @@ book:
   site-url: https://your-site.com
   repo-url: https://github.com/shalom-lab/r4medical
   repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - part: "基础知识"
+      chapters:
+        - chapter1.qmd
+        - chapter2.qmd
+    - part: "数据处理与可视化"
+      chapters:
+        - chapter3.qmd
+        - chapter4.qmd
+        - chapter5.qmd
+    - part: "统计分析"
+      chapters:
+        - chapter6.qmd
+        - chapter7.qmd
+    - part: "专业应用"
+      chapters:
+        - chapter8.qmd
+        - chapter9.qmd
+        - chapter10.qmd
   sidebar:
     style: docked
     background: light
@@ -22,27 +43,15 @@ book:
     tools:
       - icon: github
         href: https://github.com/your-username/your-repo
-  chapters:                         # 章节结构
-    - index.qmd                     # 首页
-    - intro.qmd                     # 导论
-    - part: "基础知识"              # 第一部分
-      chapters:
-        - chapter1.qmd
-        - chapter2.qmd
-    - part: "数据处理与可视化"      # 第二部分
-      chapters:
-        - chapter3.qmd
-        - chapter4.qmd
-        - chapter5.qmd
-    - part: "统计分析"             # 第三部分
-      chapters:
-        - chapter6.qmd
-        - chapter7.qmd
-    - part: "专业应用"             # 第四部分
-      chapters:
-        - chapter8.qmd
-        - chapter9.qmd
-        - chapter10.qmd
+    contents:
+      - section: ""  # 空标题的section用于公众号
+        contents:
+          - text: "👉 关注公众号【R语言与可视化】"
+            style: "text-align: center; color: #1E88E5; padding: 10px 0;"
+          - text: |
+              ![R语言与可视化公众号](images/gzh-light.png){width=150px style="display: block; margin: 0 auto;"}
+          - text: "扫码获取更多R语言资源"
+            style: "text-align: center; font-size: 0.9em; color: #666; padding: 5px 0 15px 0;"
 
 # 参考文献设置
 # bibliography: references.bib        # 参考文献文件
