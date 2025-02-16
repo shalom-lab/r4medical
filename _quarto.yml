@@ -10,7 +10,7 @@ book:
   date: last-modified               # 最后修改日期
   language: zh                      # 语言：中文
   page-navigation: true
-  reader-mode: true
+  #reader-mode: true
   repo-url: https://github.com/shalom-lab/r4medical
   repo-actions: [edit, issue]
   chapters:
@@ -38,18 +38,6 @@ book:
     style: docked
     background: light
     search: true
-    tools:
-      - icon: github
-        href: https://github.com/your-username/your-repo
-    contents:
-      - section: ""  # 空标题的section用于公众号
-        contents:
-          - text: "👉 关注公众号【R语言与可视化】"
-            style: "text-align: center; color: #1E88E5; padding: 10px 0;"
-          - text: |
-              ![R语言与可视化公众号](images/gzh-light.png){width=150px style="display: block; margin: 0 auto;"}
-          - text: "扫码获取更多R语言资源"
-            style: "text-align: center; font-size: 0.9em; color: #666; padding: 5px 0 15px 0;"
 
 # 参考文献设置
 # bibliography: references.bib        # 参考文献文件
