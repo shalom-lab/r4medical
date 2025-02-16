@@ -1,6 +1,6 @@
 # Quarto and R specific
 .quarto/
-#/_site/
+#/docs/
 /_book/
 /_freeze/
 /.quarto/

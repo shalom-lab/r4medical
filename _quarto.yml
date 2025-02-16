@@ -1,7 +1,7 @@
 # 项目基本配置
 project:
   type: book            # 项目类型：书籍
-  output-dir: _site      # 输出目录
+  output-dir: docs      # 输出目录
 
 # 书籍结构和元数据
 book:
