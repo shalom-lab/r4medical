@@ -37,6 +37,7 @@ book:
   sidebar:
     style: docked
     background: light
+    collapse-level: 0
     search: true
 
 # 参考文献设置
@@ -67,8 +68,8 @@ execute:
   echo: true                     # 显示代码
   warning: false                 # 不显示警告
   message: false                 # 不显示消息
-  cache: true                    # 启用缓存
-  freeze: true                   # 冻结计算
+  cache: false                    # 启用缓存
+  freeze: false                   # 冻结计算
   error: false                   # 出错时停止
 
 # 编辑器设置
