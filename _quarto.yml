@@ -5,7 +5,7 @@ project:
 
 # 书籍结构和元数据
 book:
-  title: "医学生R语言入门指南"  # 书名
+  title: "医学生R语言入门指南"  
   author: "shalom with AI"                    # 作者
   date: last-modified               # 最后修改日期
   language: zh                      # 语言：中文
