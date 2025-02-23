@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; 医学研究报告生成 – 医学生R语言入门指南</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./chapter9.html" rel="next">
+<link href="./chapter7.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-4754b50e864bd2666bbec1320fedbde7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-628051d73c0744df3114666dafdd51b3.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+<link href="site_libs/dt-plugin-searchhighlight-1.13.6/source.css" rel="stylesheet">
+
+<script src="site_libs/dt-plugin-searchhighlight-1.13.6/jquery.highlight.js"></script>
+
+<script src="site_libs/dt-plugin-searchhighlight-1.13.6/source.min.js"></script>
+
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter8.html">专业应用</a></li><li class="breadcrumb-item"><a href="./chapter8.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">医学研究报告生成</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">医学生R语言入门指南</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/shalom-lab/r4medical" title="源代码" class="quarto-navigation-tool px-1" aria-label="源代码"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="搜索"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">前言</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">导论</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">基础知识</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="展开或折叠此栏">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R语言与医学研究基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">医学数据基础操作</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">数据处理与可视化</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="展开或折叠此栏">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">医学数据可视化</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">基础统计分析</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">临床研究数据处理</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">统计分析</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="展开或折叠此栏">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">统计建模基础</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">高级医学统计分析</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">专业应用</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="展开或折叠此栏">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">医学研究报告生成</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">生物信息学入门</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">综合医学分析项目</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目录</h2>
+   
+  <ul>
+  <li><a href="#sec-auto-update" id="toc-sec-auto-update" class="nav-link active" data-scroll-target="#sec-auto-update"><span class="header-section-number">9.0.1</span> 结果自动更新机制</a></li>
+  <li><a href="#sec-quarto-advanced" id="toc-sec-quarto-advanced" class="nav-link" data-scroll-target="#sec-quarto-advanced"><span class="header-section-number">9.1</span> Quarto高级功能</a>
+  <ul class="collapse">
+  <li><a href="#sec-interactive-viz" id="toc-sec-interactive-viz" class="nav-link" data-scroll-target="#sec-interactive-viz"><span class="header-section-number">9.1.1</span> 交互式可视化报告</a></li>
+  <li><a href="#sec-multiple-formats" id="toc-sec-multiple-formats" class="nav-link" data-scroll-target="#sec-multiple-formats"><span class="header-section-number">9.1.2</span> 多格式输出（Word/PDF/HTML）</a></li>
+  </ul></li>
+  <li><a href="#sec-reproducibility" id="toc-sec-reproducibility" class="nav-link" data-scroll-target="#sec-reproducibility"><span class="header-section-number">9.2</span> 论文可重复性实践</a>
+  <ul class="collapse">
+  <li><a href="#sec-version-control" id="toc-sec-version-control" class="nav-link" data-scroll-target="#sec-version-control"><span class="header-section-number">9.2.1</span> 代码版本控制</a></li>
+  <li><a href="#sec-data-anonymization" id="toc-sec-data-anonymization" class="nav-link" data-scroll-target="#sec-data-anonymization"><span class="header-section-number">9.2.2</span> 数据脱敏处理</a></li>
+  </ul></li>
+  <li><a href="#本章小结" id="toc-本章小结" class="nav-link" data-scroll-target="#本章小结"><span class="header-section-number">9.3</span> 本章小结</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/shalom-lab/r4medical/edit/main/chapter8.qmd" class="toc-action"><i class="bi bi-github"></i>编辑该页面</a></li><li><a href="https://github.com/shalom-lab/r4medical/issues/new" class="toc-action"><i class="bi empty"></i>反馈问题</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter8.html">专业应用</a></li><li class="breadcrumb-item"><a href="./chapter8.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">医学研究报告生成</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span id="sec-research-reports" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">医学研究报告生成</span></span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> 代码</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">显示所有代码</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">隐藏所有代码</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">查看源代码</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置CRAN镜像为中国合肥镜像</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">c</span>(<span class="at">CRAN =</span> <span class="st">"https://mirrors.ustc.edu.cn/CRAN/"</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查并安装所需的R包</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>required_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tidyverse"</span>,     <span class="co"># 数据处理和可视化</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rmarkdown"</span>,     <span class="co"># 报告生成</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"knitr"</span>,         <span class="co"># 文档编织</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gt"</span>,            <span class="co"># 表格生成</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gtsummary"</span>,     <span class="co"># 统计表格</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">"medicaldata"</span>,   <span class="co"># 医学数据集</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">"flextable"</span>,     <span class="co"># 表格格式化</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">"plotly"</span>,        <span class="co"># 交互式图形</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"DT"</span>             <span class="co"># 交互式表格</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查并安装缺失的包</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(pkg <span class="cf">in</span> required_packages) {</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkg)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">library</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="sec-auto-update" class="level3" data-number="9.0.1">
+<h3 data-number="9.0.1" class="anchored" data-anchor-id="sec-auto-update"><span class="header-section-number">9.0.1</span> 结果自动更新机制</h3>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建模拟患者数据</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>patient_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">45</span>, <span class="at">sd =</span> <span class="dv">15</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">gender =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"男"</span>, <span class="st">"女"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">37</span>, <span class="at">sd =</span> <span class="fl">0.5</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"阳性"</span>, <span class="st">"阴性"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>)))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建基线特征表</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>baseline_table <span class="ot">&lt;-</span> patient_data <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, gender, temp, group) <span class="sc">%&gt;%</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>(</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> group,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing =</span> <span class="st">"no"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">list</span>(</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>      age <span class="sc">~</span> <span class="st">"年龄(岁)"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      gender <span class="sc">~</span> <span class="st">"性别"</span>,</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      temp <span class="sc">~</span> <span class="st">"体温(℃)"</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">"{mean} ({sd})"</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">all_categorical</span>() <span class="sc">~</span> <span class="st">"{n} ({p}%)"</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_header</span>(<span class="at">label =</span> <span class="st">"**特征**"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_spanning_header</span>(<span class="fu">c</span>(<span class="st">"stat_1"</span>, <span class="st">"stat_2"</span>) <span class="sc">~</span> <span class="st">"新冠检测结果"</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 展示表格</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>baseline_table</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="mlvuytmmcw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mlvuytmmcw table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mlvuytmmcw thead, #mlvuytmmcw tbody, #mlvuytmmcw tfoot, #mlvuytmmcw tr, #mlvuytmmcw td, #mlvuytmmcw th {
+  border-style: none;
+}
+
+#mlvuytmmcw p {
+  margin: 0;
+  padding: 0;
+}
+
+#mlvuytmmcw .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mlvuytmmcw .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mlvuytmmcw .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mlvuytmmcw .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mlvuytmmcw .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mlvuytmmcw .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mlvuytmmcw .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mlvuytmmcw .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mlvuytmmcw .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mlvuytmmcw .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mlvuytmmcw .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mlvuytmmcw .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mlvuytmmcw .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mlvuytmmcw .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mlvuytmmcw .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlvuytmmcw .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mlvuytmmcw .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mlvuytmmcw .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mlvuytmmcw .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlvuytmmcw .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mlvuytmmcw .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlvuytmmcw .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mlvuytmmcw .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlvuytmmcw .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mlvuytmmcw .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mlvuytmmcw .gt_left {
+  text-align: left;
+}
+
+#mlvuytmmcw .gt_center {
+  text-align: center;
+}
+
+#mlvuytmmcw .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mlvuytmmcw .gt_font_normal {
+  font-weight: normal;
+}
+
+#mlvuytmmcw .gt_font_bold {
+  font-weight: bold;
+}
+
+#mlvuytmmcw .gt_font_italic {
+  font-style: italic;
+}
+
+#mlvuytmmcw .gt_super {
+  font-size: 65%;
+}
+
+#mlvuytmmcw .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mlvuytmmcw .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mlvuytmmcw .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mlvuytmmcw .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mlvuytmmcw .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mlvuytmmcw .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mlvuytmmcw .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#mlvuytmmcw .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#mlvuytmmcw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="gt_col_headings gt_spanner_row header">
+<th rowspan="2" id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>特征</strong></th>
+<th rowspan="2" id="n" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N</strong></th>
+<th colspan="2" id="新冠检测结果" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+新冠检测结果
+</div></th>
+<th rowspan="2" id="p.value" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>p-value</strong></th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="stat_1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>阳性</strong><br> N = 56<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+<th id="stat_2" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>阴性</strong><br> N = 144<span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">年龄(岁)</td>
+<td class="gt_row gt_center" headers="n">200</td>
+<td class="gt_row gt_center" headers="stat_1">45 (13)</td>
+<td class="gt_row gt_center" headers="stat_2">45 (14)</td>
+<td class="gt_row gt_center" headers="p.value"><br>
+</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">性别</td>
+<td class="gt_row gt_center" headers="n">200</td>
+<td class="gt_row gt_center" headers="stat_1"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_2"><br>
+</td>
+<td class="gt_row gt_center" headers="p.value"><br>
+</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;男</td>
+<td class="gt_row gt_center" headers="n"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_1">25 (45%)</td>
+<td class="gt_row gt_center" headers="stat_2">68 (47%)</td>
+<td class="gt_row gt_center" headers="p.value"><br>
+</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;女</td>
+<td class="gt_row gt_center" headers="n"><br>
+</td>
+<td class="gt_row gt_center" headers="stat_1">31 (55%)</td>
+<td class="gt_row gt_center" headers="stat_2">76 (53%)</td>
+<td class="gt_row gt_center" headers="p.value"><br>
+</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="label">体温(℃)</td>
+<td class="gt_row gt_center" headers="n">200</td>
+<td class="gt_row gt_center" headers="stat_1">37.05 (0.51)</td>
+<td class="gt_row gt_center" headers="stat_2">37.00 (0.51)</td>
+<td class="gt_row gt_center" headers="p.value"><br>
+</td>
+</tr>
+</tbody><tfoot class="gt_footnotes">
+<tr class="odd">
+<td colspan="5" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Mean (SD); n (%)</td>
+</tr>
+</tfoot>
+
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="sec-quarto-advanced" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="sec-quarto-advanced"><span class="header-section-number">9.1</span> Quarto高级功能</h2>
+<section id="sec-interactive-viz" class="level3" data-number="9.1.1">
+<h3 data-number="9.1.1" class="anchored" data-anchor-id="sec-interactive-viz"><span class="header-section-number">9.1.1</span> 交互式可视化报告</h3>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建交互式散点图</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(patient_data, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> temp, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"年龄与体温的关系"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"年龄 (岁)"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"体温 (°C)"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>interactive_plot <span class="ot">&lt;-</span> <span class="fu">ggplotly</span>(p)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建交互式表格</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">datatable</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  patient_data <span class="sc">%&gt;%</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(age, gender, temp, group),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">pageLength =</span> <span class="dv">10</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">searchHighlight =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"患者详细数据"</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 展示交互式内容</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>interactive_plot</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-7cfcc82ef48009a8a826" style="width:100%;height:487px;"></div>
+<script type="application/json" data-for="htmlwidget-7cfcc82ef48009a8a826">{"x":{"data":[{"x":[46.057625871368643,46.939316027414193,51.913743089838036,71.803697052046175,41.730376280125576,35.624410982261153,34.579395316192311,41.881240829706016,56.699476775044772,43.749464002922558,48.799777709921322,44.571798669769457,44.356943140630257,48.239123531159592,50.694592241398233,49.552929621063868,58.834012018196063,37.634532509151967,10.362466865387816,60.086077866933849,34.361988561264113,41.69270157271874,40.111026217031601,59.902557839431793,65.40978672795012,35.996106192793093,77.80999489524865,34.343901544510487,48.853255637347942,39.786861009033998,30.725721491024764,19.980870951177948,39.296602195683562,54.119464833375503,35.389409875419354,37.641638344489976,48.530798584272851,51.772560796188216,45.618493829894099,14.201291676892268,61.97005820121263,55.526765030620666,22.279985193273728,56.816082712127667,49.983038684251767,29.874350875844883,39.413418658442566,50.534467910776293,76.926778485242721,45.566825987566183,32.017307060199386,41.455806465883555,46.271059382957944,31.569549630336876,54.010632355086265,35.832511249793683],"y":[36.47374336033063,36.781420233409797,35.992894751039643,37.35176195137845,37.609054305162907,36.738543811843286,37.312093736010326,37.479502688893916,36.512995208597957,36.91004688447623,37.507471586371828,36.003625755655712,36.786360356397289,38.285729072933322,36.897350371265901,36.895103414385744,37.428461505449661,38.208386676894108,36.174475552155904,36.768006378516993,37.412689931379624,37.238066639151313,36.782177265154047,36.676477184340868,36.713219864615859,37.751950304502266,36.612927535197301,36.963221990431762,36.415674287787823,36.985579223535844,37.335347984366962,37.378203219272741,36.730595420011205,37.133917507665842,37.215142348179995,37.06315792922944,38.198726240024882,37.189211951818415,37.150019272602897,37.009629637312685,36.461289673444007,36.379477751595758,36.900055085949283,37.715201170594092,37.217644474453841,37.357589203555527,36.75750620171884,37.562501372914085,36.880324216430942,37.856152488659639,37.06065918874539,37.356421160015557,36.712802723907807,36.455004063794384,37.090923596309914,37.182057343677535],"text":["age: 46.05763<br />temp: 36.47374","age: 46.93932<br />temp: 36.78142","age: 51.91374<br />temp: 35.99289","age: 71.80370<br />temp: 37.35176","age: 41.73038<br />temp: 37.60905","age: 35.62441<br />temp: 36.73854","age: 34.57940<br />temp: 37.31209","age: 41.88124<br />temp: 37.47950","age: 56.69948<br />temp: 36.51300","age: 43.74946<br />temp: 36.91005","age: 48.79978<br />temp: 37.50747","age: 44.57180<br />temp: 36.00363","age: 44.35694<br />temp: 36.78636","age: 48.23912<br />temp: 38.28573","age: 50.69459<br />temp: 36.89735","age: 49.55293<br />temp: 36.89510","age: 58.83401<br />temp: 37.42846","age: 37.63453<br />temp: 38.20839","age: 10.36247<br />temp: 36.17448","age: 60.08608<br />temp: 36.76801","age: 34.36199<br />temp: 37.41269","age: 41.69270<br />temp: 37.23807","age: 40.11103<br />temp: 36.78218","age: 59.90256<br />temp: 36.67648","age: 65.40979<br />temp: 36.71322","age: 35.99611<br />temp: 37.75195","age: 77.80999<br />temp: 36.61293","age: 34.34390<br />temp: 36.96322","age: 48.85326<br />temp: 36.41567","age: 39.78686<br />temp: 36.98558","age: 30.72572<br />temp: 37.33535","age: 19.98087<br />temp: 37.37820","age: 39.29660<br />temp: 36.73060","age: 54.11946<br />temp: 37.13392","age: 35.38941<br />temp: 37.21514","age: 37.64164<br />temp: 37.06316","age: 48.53080<br />temp: 38.19873","age: 51.77256<br />temp: 37.18921","age: 45.61849<br />temp: 37.15002","age: 14.20129<br />temp: 37.00963","age: 61.97006<br />temp: 36.46129","age: 55.52677<br />temp: 36.37948","age: 22.27999<br />temp: 36.90006","age: 56.81608<br />temp: 37.71520","age: 49.98304<br />temp: 37.21764","age: 29.87435<br />temp: 37.35759","age: 39.41342<br />temp: 36.75751","age: 50.53447<br />temp: 37.56250","age: 76.92678<br />temp: 36.88032","age: 45.56683<br />temp: 37.85615","age: 32.01731<br />temp: 37.06066","age: 41.45581<br />temp: 37.35642","age: 46.27106<br />temp: 36.71280","age: 31.56955<br />temp: 36.45500","age: 54.01063<br />temp: 37.09092","age: 35.83251<br />temp: 37.18206"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":0.59999999999999998,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"阳性","legendgroup":"阳性","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[36.592865301716813,41.547337657750802,68.380624712236852,70.725974803249215,26.024081480901991,34.697207221597111,38.315070448500627,63.361226961591925,50.397207405860456,51.011571758910783,46.660240739176793,36.662382978688875,52.467757173438592,15.500742650555427,55.52033852345528,37.908128884080988,28.982644410197324,29.609933275391406,34.066631560632899,19.699600338863799,57.566805667417867,47.300596767547731,27.927945944820785,63.807223816048904,51.396963322152203,40.573927755115932,58.42688491567533,58.17200231299563,57.323716224562304,55.329603811501364,53.308764803063831,44.071324341349175,40.410560043901249,39.292934984814259,26.019054726476032,77.534339480077691,63.119429974574857,28.153371251949764,38.956727470513862,38.000169695651721,65.529034260216861,41.613435215110982,67.7470590664431,21.768707936546683,53.769206244541039,46.857813657669205,37.465148203360464,40.001889244958697,29.721369253393668,28.923131602866334,51.723146679441392,45.795063400957559,75.75127028440717,34.679870752989629,60.383570545450482,40.72840489423487,26.689234316181967,47.719552196237252,42.916629563414332,45.086462788498302,50.77920601689496,39.440099523113858,54.665648227782498,49.976729458735456,61.452585197240211,51.527722362507042,62.23211427676641,53.225954392621048,48.580976026671621,35.581408859409429,67.989159392777836,41.464494613492846,29.603686495398286,41.299621823064399,44.324584127866196,33.22643295814386,58.784949135911489,36.369795560874124,20.731759375662541,44.166570517131909,52.791108059151938,49.517300432500718,46.585142912234147,32.254434809496267,29.6380681409263,46.764698956501888,30.787880787227969,41.158617117026289,72.657930078483105,35.220751474568118,46.169412743455659,30.572150488048074,43.930378708146023,66.668262876350241,38.662547514905626,23.09039893612767,56.099212663160017,73.636553538262248,23.341602585423011,41.067037658962981,21.417837612817685,20.976957396381099,37.036402167445459,23.073666225061501,55.318751594637412,76.501634107885081,25.694542859472314,56.535633615013651,43.208210900540116,40.794069972446302,53.444842998307195,59.654600800284314,39.381287133494794,60.790671983689975,29.262344900009012,26.097671328628316,93.61559902413606,38.747136177593525,49.473413873110729,54.548545110507732,37.743290614368846,52.752930664704138,41.769292385374598,45.979395502879726,44.488991193923042,33.879958555907578,28.560055993880042,49.657211241647055,51.547852183652743,38.124520009333416,29.050107990432135,63.947777641342356,39.755244180696678,42.042361584771719,61.648804345704605,56.310806777767823,37.51061974241609,48.216679643724021,40.12971132763748,46.418752922603574,25.337977000080421,74.958200771219495,26.23092957562584,27.217798731040343],"y":[36.642378906388601,36.62365551589113,36.530730648196553,37.165589586479491,37.105990216686145,37.618337523208282,38.018787009120217,37.650587996100292,37.37838738189798,36.136634800442835,36.69924664599661,36.823976771708693,36.947164332998113,36.370675685969914,37.842217854047057,37.455695645897983,37.118715136245513,36.330612856382515,37.330410148894899,37.341872760925355,36.969589022669965,37.316480356515726,37.667758807529694,37.00364504515845,37.508779318476044,36.405782982426011,36.639197779781995,37.75960885569409,37.188693986511964,35.973888589783137,36.317981273958814,36.899609492205443,37.432889702167245,36.949058372142389,37.835527414431468,37.028008366637479,36.974009046909551,36.123381320428862,37.049663797043912,36.71407497105222,37.058318641791352,36.553396214972523,37.166951471249611,37.205714960307866,36.983481920362003,35.767050903119987,37.325596640793833,37.136883245518277,37.512336617409176,37.408829723187047,37.189083886104257,36.52729558443805,36.769480830557825,37.255066273439333,36.705259480742498,36.50160962889624,37.07223785235535,36.992846293416541,36.104859381367973,37.017275533566924,37.09511515784623,37.08736319849092,36.472491478698657,37.68928506847962,37.228118201589908,36.432205764812828,37.173051809776801,35.921176832492364,37.442125410014107,36.585261194187744,37.422865770094646,36.369658560590615,36.822728798463011,36.682625867545546,36.174726728287446,36.825122880394368,37.113645960836472,37.246114285032213,37.32662883973569,36.93864566951131,36.793161743203939,35.67842552398551,36.953529490760261,37.267699420434077,36.722360824343376,37.889751454887573,37.143212209814415,37.636133389734262,36.64076688934037,36.774830688037646,37.005564593610444,37.816784210704157,36.280746677542737,36.904741598978546,36.497181870244582,37.356351662622139,37.542387544930321,35.887506151756291,37.617846731150074,37.227384634491315,37.329951319071306,36.677443021570106,37.082660510621025,37.219409350357225,37.441651409974355,35.973831508049024,36.181810365970485,37.523314423555775,37.458587458820503,35.669538600767162,37.555138548319412,37.115308415315603,36.852421099558214,37.435982477039374,36.825763775522198,37.25925188294412,36.804657510680514,36.453606395449249,37.605005255220135,37.370450005637139,37.86213111957823,37.032576966289653,37.987709527009542,36.859258942480515,36.33852444362239,36.892979380007311,37.075840252254658,36.836928053747329,37.18650232790246,36.886157967552236,37.010225354262516,37.157028831753131,37.66410734801849,37.389430014891765,37.457386635427817,37.813440607097341,36.809521630352997,36.947107916175121,37.702025133857084,37.647041953072787,36.563464499791266,36.320960470314695,37.082420433959236,37.276078857109276],"text":["age: 36.59287<br />temp: 36.64238","age: 41.54734<br />temp: 36.62366","age: 68.38062<br />temp: 36.53073","age: 70.72597<br />temp: 37.16559","age: 26.02408<br />temp: 37.10599","age: 34.69721<br />temp: 37.61834","age: 38.31507<br />temp: 38.01879","age: 63.36123<br />temp: 37.65059","age: 50.39721<br />temp: 37.37839","age: 51.01157<br />temp: 36.13663","age: 46.66024<br />temp: 36.69925","age: 36.66238<br />temp: 36.82398","age: 52.46776<br />temp: 36.94716","age: 15.50074<br />temp: 36.37068","age: 55.52034<br />temp: 37.84222","age: 37.90813<br />temp: 37.45570","age: 28.98264<br />temp: 37.11872","age: 29.60993<br />temp: 36.33061","age: 34.06663<br />temp: 37.33041","age: 19.69960<br />temp: 37.34187","age: 57.56681<br />temp: 36.96959","age: 47.30060<br />temp: 37.31648","age: 27.92795<br />temp: 37.66776","age: 63.80722<br />temp: 37.00365","age: 51.39696<br />temp: 37.50878","age: 40.57393<br />temp: 36.40578","age: 58.42688<br />temp: 36.63920","age: 58.17200<br />temp: 37.75961","age: 57.32372<br />temp: 37.18869","age: 55.32960<br />temp: 35.97389","age: 53.30876<br />temp: 36.31798","age: 44.07132<br />temp: 36.89961","age: 40.41056<br />temp: 37.43289","age: 39.29293<br />temp: 36.94906","age: 26.01905<br />temp: 37.83553","age: 77.53434<br />temp: 37.02801","age: 63.11943<br />temp: 36.97401","age: 28.15337<br />temp: 36.12338","age: 38.95673<br />temp: 37.04966","age: 38.00017<br />temp: 36.71407","age: 65.52903<br />temp: 37.05832","age: 41.61344<br />temp: 36.55340","age: 67.74706<br />temp: 37.16695","age: 21.76871<br />temp: 37.20571","age: 53.76921<br />temp: 36.98348","age: 46.85781<br />temp: 35.76705","age: 37.46515<br />temp: 37.32560","age: 40.00189<br />temp: 37.13688","age: 29.72137<br />temp: 37.51234","age: 28.92313<br />temp: 37.40883","age: 51.72315<br />temp: 37.18908","age: 45.79506<br />temp: 36.52730","age: 75.75127<br />temp: 36.76948","age: 34.67987<br />temp: 37.25507","age: 60.38357<br />temp: 36.70526","age: 40.72840<br />temp: 36.50161","age: 26.68923<br />temp: 37.07224","age: 47.71955<br />temp: 36.99285","age: 42.91663<br />temp: 36.10486","age: 45.08646<br />temp: 37.01728","age: 50.77921<br />temp: 37.09512","age: 39.44010<br />temp: 37.08736","age: 54.66565<br />temp: 36.47249","age: 49.97673<br />temp: 37.68929","age: 61.45259<br />temp: 37.22812","age: 51.52772<br />temp: 36.43221","age: 62.23211<br />temp: 37.17305","age: 53.22595<br />temp: 35.92118","age: 48.58098<br />temp: 37.44213","age: 35.58141<br />temp: 36.58526","age: 67.98916<br />temp: 37.42287","age: 41.46449<br />temp: 36.36966","age: 29.60369<br />temp: 36.82273","age: 41.29962<br />temp: 36.68263","age: 44.32458<br />temp: 36.17473","age: 33.22643<br />temp: 36.82512","age: 58.78495<br />temp: 37.11365","age: 36.36980<br />temp: 37.24611","age: 20.73176<br />temp: 37.32663","age: 44.16657<br />temp: 36.93865","age: 52.79111<br />temp: 36.79316","age: 49.51730<br />temp: 35.67843","age: 46.58514<br />temp: 36.95353","age: 32.25443<br />temp: 37.26770","age: 29.63807<br />temp: 36.72236","age: 46.76470<br />temp: 37.88975","age: 30.78788<br />temp: 37.14321","age: 41.15862<br />temp: 37.63613","age: 72.65793<br />temp: 36.64077","age: 35.22075<br />temp: 36.77483","age: 46.16941<br />temp: 37.00556","age: 30.57215<br />temp: 37.81678","age: 43.93038<br />temp: 36.28075","age: 66.66826<br />temp: 36.90474","age: 38.66255<br />temp: 36.49718","age: 23.09040<br />temp: 37.35635","age: 56.09921<br />temp: 37.54239","age: 73.63655<br />temp: 35.88751","age: 23.34160<br />temp: 37.61785","age: 41.06704<br />temp: 37.22738","age: 21.41784<br />temp: 37.32995","age: 20.97696<br />temp: 36.67744","age: 37.03640<br />temp: 37.08266","age: 23.07367<br />temp: 37.21941","age: 55.31875<br />temp: 37.44165","age: 76.50163<br />temp: 35.97383","age: 25.69454<br />temp: 36.18181","age: 56.53563<br />temp: 37.52331","age: 43.20821<br />temp: 37.45859","age: 40.79407<br />temp: 35.66954","age: 53.44484<br />temp: 37.55514","age: 59.65460<br />temp: 37.11531","age: 39.38129<br />temp: 36.85242","age: 60.79067<br />temp: 37.43598","age: 29.26234<br />temp: 36.82576","age: 26.09767<br />temp: 37.25925","age: 93.61560<br />temp: 36.80466","age: 38.74714<br />temp: 36.45361","age: 49.47341<br />temp: 37.60501","age: 54.54855<br />temp: 37.37045","age: 37.74329<br />temp: 37.86213","age: 52.75293<br />temp: 37.03258","age: 41.76929<br />temp: 37.98771","age: 45.97940<br />temp: 36.85926","age: 44.48899<br />temp: 36.33852","age: 33.87996<br />temp: 36.89298","age: 28.56006<br />temp: 37.07584","age: 49.65721<br />temp: 36.83693","age: 51.54785<br />temp: 37.18650","age: 38.12452<br />temp: 36.88616","age: 29.05011<br />temp: 37.01023","age: 63.94778<br />temp: 37.15703","age: 39.75524<br />temp: 37.66411","age: 42.04236<br />temp: 37.38943","age: 61.64880<br />temp: 37.45739","age: 56.31081<br />temp: 37.81344","age: 37.51062<br />temp: 36.80952","age: 48.21668<br />temp: 36.94711","age: 40.12971<br />temp: 37.70203","age: 46.41875<br />temp: 37.64704","age: 25.33798<br />temp: 36.56346","age: 74.95820<br />temp: 36.32096","age: 26.23093<br />temp: 37.08242","age: 27.21780<br />temp: 37.27608"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","opacity":0.59999999999999998,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,191,196,1)"}},"hoveron":"points","name":"阴性","legendgroup":"阴性","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[10.362466865387816,11.216233042980992,12.069999220574166,12.92376539816734,13.777531575760516,14.631297753353692,15.485063930946867,16.338830108540041,17.192596286133217,18.046362463726393,18.900128641319569,19.753894818912741,20.607660996505917,21.461427174099093,22.315193351692265,23.168959529285441,24.022725706878617,24.876491884471793,25.730258062064969,26.584024239658142,27.437790417251318,28.291556594844494,29.145322772437666,29.999088950030842,30.852855127624018,31.706621305217194,32.56038748281037,33.414153660403542,34.267919837996715,35.121686015589894,35.975452193183067,36.829218370776246,37.682984548369419,38.536750725962591,39.390516903555771,40.244283081148943,41.098049258742122,41.951815436335295,42.805581613928467,43.659347791521647,44.513113969114819,45.366880146707992,46.220646324301171,47.074412501894344,47.928178679487516,48.781944857080695,49.635711034673868,50.489477212267047,51.34324338986022,52.197009567453392,53.050775745046572,53.904541922639744,54.758308100232924,55.612074277826096,56.465840455419269,57.319606633012448,58.17337281060562,59.027138988198793,59.880905165791972,60.734671343385145,61.588437520978317,62.442203698571497,63.295969876164669,64.149736053757849,65.003502231351021,65.857268408944194,66.71103458653738,67.564800764130553,68.418566941723725,69.272333119316897,70.12609929691007,70.979865474503242,71.833631652096415,72.687397829689587,73.541164007282774,74.394930184875946,75.248696362469119,76.102462540062291,76.956228717655478,77.80999489524865],"y":[37.153757096274774,37.151282703022289,37.148808309769805,37.146333916517321,37.143859523264837,37.141385130012353,37.138910736759868,37.136436343507384,37.133961950254893,37.131487557002409,37.129013163749924,37.12653877049744,37.124064377244956,37.121589983992472,37.119115590739987,37.116641197487503,37.114166804235012,37.111692410982528,37.109218017730043,37.106743624477559,37.104269231225075,37.101794837972591,37.099320444720107,37.096846051467622,37.094371658215131,37.091897264962647,37.089422871710163,37.086948478457678,37.084474085205194,37.08199969195271,37.079525298700226,37.077050905447742,37.07457651219525,37.072102118942766,37.069627725690282,37.067153332437798,37.064678939185313,37.062204545932829,37.059730152680345,37.057255759427861,37.054781366175369,37.052306972922885,37.049832579670401,37.047358186417917,37.044883793165432,37.042409399912948,37.039935006660464,37.03746061340798,37.034986220155488,37.032511826903004,37.03003743365052,37.027563040398036,37.025088647145552,37.022614253893067,37.020139860640583,37.017665467388099,37.015191074135615,37.012716680883123,37.010242287630639,37.007767894378155,37.005293501125671,37.002819107873187,37.000344714620702,36.997870321368218,36.995395928115734,36.992921534863243,36.990447141610758,36.987972748358274,36.98549835510579,36.983023961853306,36.980549568600821,36.978075175348337,36.975600782095853,36.973126388843362,36.970651995590877,36.968177602338393,36.965703209085909,36.963228815833425,36.960754422580941,36.958280029328456],"text":["age: 10.36247<br />temp: 37.15376","age: 11.21623<br />temp: 37.15128","age: 12.07000<br />temp: 37.14881","age: 12.92377<br />temp: 37.14633","age: 13.77753<br />temp: 37.14386","age: 14.63130<br />temp: 37.14139","age: 15.48506<br />temp: 37.13891","age: 16.33883<br />temp: 37.13644","age: 17.19260<br />temp: 37.13396","age: 18.04636<br />temp: 37.13149","age: 18.90013<br />temp: 37.12901","age: 19.75389<br />temp: 37.12654","age: 20.60766<br />temp: 37.12406","age: 21.46143<br />temp: 37.12159","age: 22.31519<br />temp: 37.11912","age: 23.16896<br />temp: 37.11664","age: 24.02273<br />temp: 37.11417","age: 24.87649<br />temp: 37.11169","age: 25.73026<br />temp: 37.10922","age: 26.58402<br />temp: 37.10674","age: 27.43779<br />temp: 37.10427","age: 28.29156<br />temp: 37.10179","age: 29.14532<br />temp: 37.09932","age: 29.99909<br />temp: 37.09685","age: 30.85286<br />temp: 37.09437","age: 31.70662<br />temp: 37.09190","age: 32.56039<br />temp: 37.08942","age: 33.41415<br />temp: 37.08695","age: 34.26792<br />temp: 37.08447","age: 35.12169<br />temp: 37.08200","age: 35.97545<br />temp: 37.07953","age: 36.82922<br />temp: 37.07705","age: 37.68298<br />temp: 37.07458","age: 38.53675<br />temp: 37.07210","age: 39.39052<br />temp: 37.06963","age: 40.24428<br />temp: 37.06715","age: 41.09805<br />temp: 37.06468","age: 41.95182<br />temp: 37.06220","age: 42.80558<br />temp: 37.05973","age: 43.65935<br />temp: 37.05726","age: 44.51311<br />temp: 37.05478","age: 45.36688<br />temp: 37.05231","age: 46.22065<br />temp: 37.04983","age: 47.07441<br />temp: 37.04736","age: 47.92818<br />temp: 37.04488","age: 48.78194<br />temp: 37.04241","age: 49.63571<br />temp: 37.03994","age: 50.48948<br />temp: 37.03746","age: 51.34324<br />temp: 37.03499","age: 52.19701<br />temp: 37.03251","age: 53.05078<br />temp: 37.03004","age: 53.90454<br />temp: 37.02756","age: 54.75831<br />temp: 37.02509","age: 55.61207<br />temp: 37.02261","age: 56.46584<br />temp: 37.02014","age: 57.31961<br />temp: 37.01767","age: 58.17337<br />temp: 37.01519","age: 59.02714<br />temp: 37.01272","age: 59.88091<br />temp: 37.01024","age: 60.73467<br />temp: 37.00777","age: 61.58844<br />temp: 37.00529","age: 62.44220<br />temp: 37.00282","age: 63.29597<br />temp: 37.00034","age: 64.14974<br />temp: 36.99787","age: 65.00350<br />temp: 36.99540","age: 65.85727<br />temp: 36.99292","age: 66.71103<br />temp: 36.99045","age: 67.56480<br />temp: 36.98797","age: 68.41857<br />temp: 36.98550","age: 69.27233<br />temp: 36.98302","age: 70.12610<br />temp: 36.98055","age: 70.97987<br />temp: 36.97808","age: 71.83363<br />temp: 36.97560","age: 72.68740<br />temp: 36.97313","age: 73.54116<br />temp: 36.97065","age: 74.39493<br />temp: 36.96818","age: 75.24870<br />temp: 36.96570","age: 76.10246<br />temp: 36.96323","age: 76.95623<br />temp: 36.96075","age: 77.80999<br />temp: 36.95828"],"type":"scatter","mode":"lines","name":"阳性","line":{"width":3.7795275590551185,"color":"rgba(248,118,109,1)","dash":"solid"},"hoveron":"points","legendgroup":"阳性","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[15.500742650555427,16.489538300853916,17.478333951152404,18.467129601450893,19.455925251749385,20.444720902047873,21.433516552346362,22.42231220264485,23.411107852943339,24.399903503241831,25.388699153540315,26.377494803838808,27.366290454137296,28.355086104435784,29.343881754734273,30.332677405032761,31.321473055331253,32.310268705629738,33.29906435592823,34.287860006226722,35.276655656525207,36.265451306823692,37.254246957122184,38.243042607420676,39.231838257719161,40.220633908017653,41.209429558316145,42.19822520861463,43.187020858913115,44.175816509211614,45.164612159510099,46.153407809808584,47.142203460107076,48.130999110405568,49.119794760704053,50.108590411002538,51.097386061301037,52.086181711599522,53.074977361898007,54.063773012196506,55.052568662494991,56.041364312793476,57.030159963091961,58.01895561339046,59.007751263688945,59.99654691398743,60.985342564285929,61.974138214584414,62.962933864882899,63.951729515181384,64.940525165479883,65.929320815778368,66.918116466076853,67.906912116375352,68.895707766673837,69.884503416972322,70.873299067270807,71.862094717569306,72.850890367867791,73.839686018166276,74.828481668464775,75.81727731876326,76.806072969061745,77.79486861936023,78.783664269658729,79.772459919957214,80.761255570255699,81.750051220554184,82.738846870852683,83.727642521151168,84.716438171449653,85.705233821748152,86.694029472046637,87.682825122345122,88.671620772643607,89.660416422942106,90.649212073240591,91.638007723539076,92.626803373837575,93.61559902413606],"y":[37.106894839186509,37.103406870416983,37.099918901647449,37.096430932877915,37.092942964108389,37.089454995338855,37.085967026569321,37.082479057799787,37.078991089030261,37.075503120260727,37.072015151491193,37.068527182721667,37.065039213952133,37.061551245182599,37.058063276413066,37.054575307643539,37.051087338874005,37.047599370104471,37.044111401334945,37.040623432565411,37.037135463795877,37.033647495026351,37.030159526256817,37.026671557487283,37.02318358871775,37.019695619948223,37.016207651178689,37.012719682409156,37.009231713639629,37.005743744870095,37.002255776100561,36.998767807331028,36.995279838561501,36.991791869791967,36.988303901022434,36.984815932252907,36.981327963483373,36.97783999471384,36.974352025944306,36.970864057174779,36.967376088405246,36.963888119635712,36.960400150866185,36.956912182096652,36.953424213327118,36.949936244557591,36.946448275788057,36.942960307018524,36.93947233824899,36.935984369479463,36.93249640070993,36.929008431940396,36.925520463170869,36.922032494401336,36.918544525631802,36.915056556862268,36.911568588092742,36.908080619323208,36.904592650553674,36.901104681784147,36.897616713014614,36.89412874424508,36.890640775475553,36.88715280670602,36.883664837936486,36.880176869166952,36.876688900397426,36.873200931627892,36.869712962858358,36.866224994088832,36.862737025319298,36.859249056549764,36.85576108778023,36.852273119010704,36.84878515024117,36.845297181471636,36.84180921270211,36.838321243932576,36.834833275163042,36.831345306393516],"text":["age: 15.50074<br />temp: 37.10689","age: 16.48954<br />temp: 37.10341","age: 17.47833<br />temp: 37.09992","age: 18.46713<br />temp: 37.09643","age: 19.45593<br />temp: 37.09294","age: 20.44472<br />temp: 37.08945","age: 21.43352<br />temp: 37.08597","age: 22.42231<br />temp: 37.08248","age: 23.41111<br />temp: 37.07899","age: 24.39990<br />temp: 37.07550","age: 25.38870<br />temp: 37.07202","age: 26.37749<br />temp: 37.06853","age: 27.36629<br />temp: 37.06504","age: 28.35509<br />temp: 37.06155","age: 29.34388<br />temp: 37.05806","age: 30.33268<br />temp: 37.05458","age: 31.32147<br />temp: 37.05109","age: 32.31027<br />temp: 37.04760","age: 33.29906<br />temp: 37.04411","age: 34.28786<br />temp: 37.04062","age: 35.27666<br />temp: 37.03714","age: 36.26545<br />temp: 37.03365","age: 37.25425<br />temp: 37.03016","age: 38.24304<br />temp: 37.02667","age: 39.23184<br />temp: 37.02318","age: 40.22063<br />temp: 37.01970","age: 41.20943<br />temp: 37.01621","age: 42.19823<br />temp: 37.01272","age: 43.18702<br />temp: 37.00923","age: 44.17582<br />temp: 37.00574","age: 45.16461<br />temp: 37.00226","age: 46.15341<br />temp: 36.99877","age: 47.14220<br />temp: 36.99528","age: 48.13100<br />temp: 36.99179","age: 49.11979<br />temp: 36.98830","age: 50.10859<br />temp: 36.98482","age: 51.09739<br />temp: 36.98133","age: 52.08618<br />temp: 36.97784","age: 53.07498<br />temp: 36.97435","age: 54.06377<br />temp: 36.97086","age: 55.05257<br />temp: 36.96738","age: 56.04136<br />temp: 36.96389","age: 57.03016<br />temp: 36.96040","age: 58.01896<br />temp: 36.95691","age: 59.00775<br />temp: 36.95342","age: 59.99655<br />temp: 36.94994","age: 60.98534<br />temp: 36.94645","age: 61.97414<br />temp: 36.94296","age: 62.96293<br />temp: 36.93947","age: 63.95173<br />temp: 36.93598","age: 64.94053<br />temp: 36.93250","age: 65.92932<br />temp: 36.92901","age: 66.91812<br />temp: 36.92552","age: 67.90691<br />temp: 36.92203","age: 68.89571<br />temp: 36.91854","age: 69.88450<br />temp: 36.91506","age: 70.87330<br />temp: 36.91157","age: 71.86209<br />temp: 36.90808","age: 72.85089<br />temp: 36.90459","age: 73.83969<br />temp: 36.90110","age: 74.82848<br />temp: 36.89762","age: 75.81728<br />temp: 36.89413","age: 76.80607<br />temp: 36.89064","age: 77.79487<br />temp: 36.88715","age: 78.78366<br />temp: 36.88366","age: 79.77246<br />temp: 36.88018","age: 80.76126<br />temp: 36.87669","age: 81.75005<br />temp: 36.87320","age: 82.73885<br />temp: 36.86971","age: 83.72764<br />temp: 36.86622","age: 84.71644<br />temp: 36.86274","age: 85.70523<br />temp: 36.85925","age: 86.69403<br />temp: 36.85576","age: 87.68283<br />temp: 36.85227","age: 88.67162<br />temp: 36.84879","age: 89.66042<br />temp: 36.84530","age: 90.64921<br />temp: 36.84181","age: 91.63801<br />temp: 36.83832","age: 92.62680<br />temp: 36.83483","age: 93.61560<br />temp: 36.83135"],"type":"scatter","mode":"lines","name":"阴性","line":{"width":3.7795275590551185,"color":"rgba(0,191,196,1)","dash":"solid"},"hoveron":"points","legendgroup":"阴性","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[10.362466865387816,11.216233042980992,12.069999220574166,12.92376539816734,13.777531575760516,14.631297753353692,15.485063930946867,16.338830108540041,17.192596286133217,18.046362463726393,18.900128641319569,19.753894818912741,20.607660996505917,21.461427174099093,22.315193351692265,23.168959529285441,24.022725706878617,24.876491884471793,25.730258062064969,26.584024239658142,27.437790417251318,28.291556594844494,29.145322772437666,29.999088950030842,30.852855127624018,31.706621305217194,32.56038748281037,33.414153660403542,34.267919837996715,35.121686015589894,35.975452193183067,36.829218370776246,37.682984548369419,38.536750725962591,39.390516903555771,40.244283081148943,41.098049258742122,41.951815436335295,42.805581613928467,43.659347791521647,44.513113969114819,45.366880146707992,46.220646324301171,47.074412501894344,47.928178679487516,48.781944857080695,49.635711034673868,50.489477212267047,51.34324338986022,52.197009567453392,53.050775745046572,53.904541922639744,54.758308100232924,55.612074277826096,56.465840455419269,57.319606633012448,58.17337281060562,59.027138988198793,59.880905165791972,60.734671343385145,61.588437520978317,62.442203698571497,63.295969876164669,64.149736053757849,65.003502231351021,65.857268408944194,66.71103458653738,67.564800764130553,68.418566941723725,69.272333119316897,70.12609929691007,70.979865474503242,71.833631652096415,72.687397829689587,73.541164007282774,74.394930184875946,75.248696362469119,76.102462540062291,76.956228717655478,77.80999489524865,77.80999489524865,76.956228717655478,76.102462540062291,75.248696362469119,74.394930184875946,73.541164007282774,72.687397829689587,71.833631652096415,70.979865474503242,70.12609929691007,69.272333119316897,68.418566941723725,67.564800764130553,66.71103458653738,65.857268408944194,65.003502231351021,64.149736053757849,63.295969876164669,62.442203698571497,61.588437520978317,60.734671343385145,59.880905165791972,59.027138988198793,58.17337281060562,57.319606633012448,56.465840455419269,55.612074277826096,54.758308100232924,53.904541922639744,53.050775745046572,52.197009567453392,51.34324338986022,50.489477212267047,49.635711034673868,48.781944857080695,47.928178679487516,47.074412501894344,46.220646324301171,45.366880146707992,44.513113969114819,43.659347791521647,42.805581613928467,41.951815436335295,41.098049258742122,40.244283081148943,39.390516903555771,38.536750725962591,37.682984548369419,36.829218370776246,35.975452193183067,35.121686015589894,34.267919837996715,33.414153660403542,32.56038748281037,31.706621305217194,30.852855127624018,29.999088950030842,29.145322772437666,28.291556594844494,27.437790417251318,26.584024239658142,25.730258062064969,24.876491884471793,24.022725706878617,23.168959529285441,22.315193351692265,21.461427174099093,20.607660996505917,19.753894818912741,18.900128641319569,18.046362463726393,17.192596286133217,16.338830108540041,15.485063930946867,14.631297753353692,13.777531575760516,12.92376539816734,12.069999220574166,11.216233042980992,10.362466865387816,10.362466865387816],"y":[36.775931884778018,36.78158302897139,36.78720602652259,36.79279894340808,36.798359672499906,36.803885914826118,36.809375158514449,36.814824655110868,36.820231392925102,36.825592067010888,36.830903045341749,36.836160330693431,36.841359517693206,36.846495744447488,36.85156363811587,36.856557253768152,36.861470005850585,36.866294591610888,36.871022905906855,36.875645946977201,36.880153713018174,36.884535089832895,36.888777730460518,36.892867928622664,36.896790489131632,36.900528600184572,36.904063714809368,36.9073754516956,36.910441529229296,36.913237750615195,36.915738062158432,36.917914710415062,36.919738525930725,36.921179360165581,36.922206696156266,36.92279044078515,36.922901886284471,36.922514801578878,36.921606583614135,36.920159371105655,36.918161006214312,36.915605731062122,36.91249452958175,36.908835068551191,36.904641245875474,36.899932406462341,36.894732324314155,36.889068066546983,36.882968850514018,36.876464984297904,36.869586951548342,36.862364671664835,36.854826941049048,36.847001043116762,36.838912504149008,36.830584967634174,36.822040159716551,36.813297920985384,36.804376283727919,36.795291577975384,36.786058553622325,36.776690509312573,36.767199421567909,36.757596069805864,36.747890154525471,36.738090407128283,36.728204690679725,36.718240091485853,36.708203001733104,36.698099193666685,36.687933885911377,36.67771180259642,36.667437225958054,36.657114043075708,36.6467457873621,36.636335675381893,36.625886639524104,36.615401357002476,36.604882275609128,36.59433163660038,37.322228422056533,37.316626569552753,37.311056274664374,37.305519778647714,37.300019529294893,37.294558203819655,37.289138734611015,37.283764338233652,37.278438548100254,37.273165251290266,37.267948730039926,37.262793708478476,37.257705405230695,37.252689592541792,37.247752662598202,37.242901701705996,37.238144572930572,37.233490007673495,37.2289477064338,37.224528448629016,37.220244210780926,37.216108291533359,37.212135440780862,37.208341988554679,37.204745967142024,37.201367217132159,37.198227464669372,37.195350353242056,37.192761409131236,37.190487915752698,37.188558669508105,37.187003589796959,37.185853160268977,37.185137689006773,37.184886393363556,37.18512634045539,37.185881304284642,37.187170629759052,37.189008214783648,37.191401726136426,37.194352147750067,37.197853721746554,37.201894290286781,37.206455992086156,37.211516224090445,37.217048755224297,37.223024877719951,37.229414498459775,37.236187100480421,37.243312535242019,37.250761633290224,37.258506641181093,37.266521505219757,37.274782028610957,37.283265929740722,37.29195282729863,37.300824174312581,37.309863158979695,37.319054586112287,37.328384749431976,37.337841301977917,37.347413129553232,37.357090230354167,37.366863602619439,37.376725141206855,37.386667543364105,37.396684223537456,37.406769236796706,37.416917210301449,37.427123282158099,37.437383046993929,37.447692507584684,37.4580480319039,37.468446315005288,37.478884345198587,37.489359374029767,37.499868889626562,37.510410593017021,37.520982377073189,37.531582307771529,36.775931884778018],"text":["age: 10.36247<br />temp: 37.15376","age: 11.21623<br />temp: 37.15128","age: 12.07000<br />temp: 37.14881","age: 12.92377<br />temp: 37.14633","age: 13.77753<br />temp: 37.14386","age: 14.63130<br />temp: 37.14139","age: 15.48506<br />temp: 37.13891","age: 16.33883<br />temp: 37.13644","age: 17.19260<br />temp: 37.13396","age: 18.04636<br />temp: 37.13149","age: 18.90013<br />temp: 37.12901","age: 19.75389<br />temp: 37.12654","age: 20.60766<br />temp: 37.12406","age: 21.46143<br />temp: 37.12159","age: 22.31519<br />temp: 37.11912","age: 23.16896<br />temp: 37.11664","age: 24.02273<br />temp: 37.11417","age: 24.87649<br />temp: 37.11169","age: 25.73026<br />temp: 37.10922","age: 26.58402<br />temp: 37.10674","age: 27.43779<br />temp: 37.10427","age: 28.29156<br />temp: 37.10179","age: 29.14532<br />temp: 37.09932","age: 29.99909<br />temp: 37.09685","age: 30.85286<br />temp: 37.09437","age: 31.70662<br />temp: 37.09190","age: 32.56039<br />temp: 37.08942","age: 33.41415<br />temp: 37.08695","age: 34.26792<br />temp: 37.08447","age: 35.12169<br />temp: 37.08200","age: 35.97545<br />temp: 37.07953","age: 36.82922<br />temp: 37.07705","age: 37.68298<br />temp: 37.07458","age: 38.53675<br />temp: 37.07210","age: 39.39052<br />temp: 37.06963","age: 40.24428<br />temp: 37.06715","age: 41.09805<br />temp: 37.06468","age: 41.95182<br />temp: 37.06220","age: 42.80558<br />temp: 37.05973","age: 43.65935<br />temp: 37.05726","age: 44.51311<br />temp: 37.05478","age: 45.36688<br />temp: 37.05231","age: 46.22065<br />temp: 37.04983","age: 47.07441<br />temp: 37.04736","age: 47.92818<br />temp: 37.04488","age: 48.78194<br />temp: 37.04241","age: 49.63571<br />temp: 37.03994","age: 50.48948<br />temp: 37.03746","age: 51.34324<br />temp: 37.03499","age: 52.19701<br />temp: 37.03251","age: 53.05078<br />temp: 37.03004","age: 53.90454<br />temp: 37.02756","age: 54.75831<br />temp: 37.02509","age: 55.61207<br />temp: 37.02261","age: 56.46584<br />temp: 37.02014","age: 57.31961<br />temp: 37.01767","age: 58.17337<br />temp: 37.01519","age: 59.02714<br />temp: 37.01272","age: 59.88091<br />temp: 37.01024","age: 60.73467<br />temp: 37.00777","age: 61.58844<br />temp: 37.00529","age: 62.44220<br />temp: 37.00282","age: 63.29597<br />temp: 37.00034","age: 64.14974<br />temp: 36.99787","age: 65.00350<br />temp: 36.99540","age: 65.85727<br />temp: 36.99292","age: 66.71103<br />temp: 36.99045","age: 67.56480<br />temp: 36.98797","age: 68.41857<br />temp: 36.98550","age: 69.27233<br />temp: 36.98302","age: 70.12610<br />temp: 36.98055","age: 70.97987<br />temp: 36.97808","age: 71.83363<br />temp: 36.97560","age: 72.68740<br />temp: 36.97313","age: 73.54116<br />temp: 36.97065","age: 74.39493<br />temp: 36.96818","age: 75.24870<br />temp: 36.96570","age: 76.10246<br />temp: 36.96323","age: 76.95623<br />temp: 36.96075","age: 77.80999<br />temp: 36.95828","age: 77.80999<br />temp: 36.95828","age: 76.95623<br />temp: 36.96075","age: 76.10246<br />temp: 36.96323","age: 75.24870<br />temp: 36.96570","age: 74.39493<br />temp: 36.96818","age: 73.54116<br />temp: 36.97065","age: 72.68740<br />temp: 36.97313","age: 71.83363<br />temp: 36.97560","age: 70.97987<br />temp: 36.97808","age: 70.12610<br />temp: 36.98055","age: 69.27233<br />temp: 36.98302","age: 68.41857<br />temp: 36.98550","age: 67.56480<br />temp: 36.98797","age: 66.71103<br />temp: 36.99045","age: 65.85727<br />temp: 36.99292","age: 65.00350<br />temp: 36.99540","age: 64.14974<br />temp: 36.99787","age: 63.29597<br />temp: 37.00034","age: 62.44220<br />temp: 37.00282","age: 61.58844<br />temp: 37.00529","age: 60.73467<br />temp: 37.00777","age: 59.88091<br />temp: 37.01024","age: 59.02714<br />temp: 37.01272","age: 58.17337<br />temp: 37.01519","age: 57.31961<br />temp: 37.01767","age: 56.46584<br />temp: 37.02014","age: 55.61207<br />temp: 37.02261","age: 54.75831<br />temp: 37.02509","age: 53.90454<br />temp: 37.02756","age: 53.05078<br />temp: 37.03004","age: 52.19701<br />temp: 37.03251","age: 51.34324<br />temp: 37.03499","age: 50.48948<br />temp: 37.03746","age: 49.63571<br />temp: 37.03994","age: 48.78194<br />temp: 37.04241","age: 47.92818<br />temp: 37.04488","age: 47.07441<br />temp: 37.04736","age: 46.22065<br />temp: 37.04983","age: 45.36688<br />temp: 37.05231","age: 44.51311<br />temp: 37.05478","age: 43.65935<br />temp: 37.05726","age: 42.80558<br />temp: 37.05973","age: 41.95182<br />temp: 37.06220","age: 41.09805<br />temp: 37.06468","age: 40.24428<br />temp: 37.06715","age: 39.39052<br />temp: 37.06963","age: 38.53675<br />temp: 37.07210","age: 37.68298<br />temp: 37.07458","age: 36.82922<br />temp: 37.07705","age: 35.97545<br />temp: 37.07953","age: 35.12169<br />temp: 37.08200","age: 34.26792<br />temp: 37.08447","age: 33.41415<br />temp: 37.08695","age: 32.56039<br />temp: 37.08942","age: 31.70662<br />temp: 37.09190","age: 30.85286<br />temp: 37.09437","age: 29.99909<br />temp: 37.09685","age: 29.14532<br />temp: 37.09932","age: 28.29156<br />temp: 37.10179","age: 27.43779<br />temp: 37.10427","age: 26.58402<br />temp: 37.10674","age: 25.73026<br />temp: 37.10922","age: 24.87649<br />temp: 37.11169","age: 24.02273<br />temp: 37.11417","age: 23.16896<br />temp: 37.11664","age: 22.31519<br />temp: 37.11912","age: 21.46143<br />temp: 37.12159","age: 20.60766<br />temp: 37.12406","age: 19.75389<br />temp: 37.12654","age: 18.90013<br />temp: 37.12901","age: 18.04636<br />temp: 37.13149","age: 17.19260<br />temp: 37.13396","age: 16.33883<br />temp: 37.13644","age: 15.48506<br />temp: 37.13891","age: 14.63130<br />temp: 37.14139","age: 13.77753<br />temp: 37.14386","age: 12.92377<br />temp: 37.14633","age: 12.07000<br />temp: 37.14881","age: 11.21623<br />temp: 37.15128","age: 10.36247<br />temp: 37.15376","age: 10.36247<br />temp: 37.15376"],"type":"scatter","mode":"lines","line":{"width":3.7795275590551185,"color":"transparent","dash":"solid"},"fill":"toself","fillcolor":"rgba(153,153,153,0.4)","hoveron":"points","hoverinfo":"x+y","name":"阳性","legendgroup":"阳性","showlegend":false,"xaxis":"x","yaxis":"y","frame":null},{"x":[15.500742650555427,16.489538300853916,17.478333951152404,18.467129601450893,19.455925251749385,20.444720902047873,21.433516552346362,22.42231220264485,23.411107852943339,24.399903503241831,25.388699153540315,26.377494803838808,27.366290454137296,28.355086104435784,29.343881754734273,30.332677405032761,31.321473055331253,32.310268705629738,33.29906435592823,34.287860006226722,35.276655656525207,36.265451306823692,37.254246957122184,38.243042607420676,39.231838257719161,40.220633908017653,41.209429558316145,42.19822520861463,43.187020858913115,44.175816509211614,45.164612159510099,46.153407809808584,47.142203460107076,48.130999110405568,49.119794760704053,50.108590411002538,51.097386061301037,52.086181711599522,53.074977361898007,54.063773012196506,55.052568662494991,56.041364312793476,57.030159963091961,58.01895561339046,59.007751263688945,59.99654691398743,60.985342564285929,61.974138214584414,62.962933864882899,63.951729515181384,64.940525165479883,65.929320815778368,66.918116466076853,67.906912116375352,68.895707766673837,69.884503416972322,70.873299067270807,71.862094717569306,72.850890367867791,73.839686018166276,74.828481668464775,75.81727731876326,76.806072969061745,77.79486861936023,78.783664269658729,79.772459919957214,80.761255570255699,81.750051220554184,82.738846870852683,83.727642521151168,84.716438171449653,85.705233821748152,86.694029472046637,87.682825122345122,88.671620772643607,89.660416422942106,90.649212073240591,91.638007723539076,92.626803373837575,93.61559902413606,93.61559902413606,93.61559902413606,92.626803373837575,91.638007723539076,90.649212073240591,89.660416422942106,88.671620772643607,87.682825122345122,86.694029472046637,85.705233821748152,84.716438171449653,83.727642521151168,82.738846870852683,81.750051220554184,80.761255570255699,79.772459919957214,78.783664269658729,77.79486861936023,76.806072969061745,75.81727731876326,74.828481668464775,73.839686018166276,72.850890367867791,71.862094717569306,70.873299067270807,69.884503416972322,68.895707766673837,67.906912116375352,66.918116466076853,65.929320815778368,64.940525165479883,63.951729515181384,62.962933864882899,61.974138214584414,60.985342564285929,59.99654691398743,59.007751263688945,58.01895561339046,57.030159963091961,56.041364312793476,55.052568662494991,54.063773012196506,53.074977361898007,52.086181711599522,51.097386061301037,50.108590411002538,49.119794760704053,48.130999110405568,47.142203460107076,46.153407809808584,45.164612159510099,44.175816509211614,43.187020858913115,42.19822520861463,41.209429558316145,40.220633908017653,39.231838257719161,38.243042607420676,37.254246957122184,36.265451306823692,35.276655656525207,34.287860006226722,33.29906435592823,32.310268705629738,31.321473055331253,30.332677405032761,29.343881754734273,28.355086104435784,27.366290454137296,26.377494803838808,25.388699153540315,24.399903503241831,23.411107852943339,22.42231220264485,21.433516552346362,20.444720902047873,19.455925251749385,18.467129601450893,17.478333951152404,16.489538300853916,15.500742650555427,15.500742650555427],"y":[36.916764982437925,36.918418697647482,36.920035936059591,36.921613501940691,36.923147844575993,36.924635012687247,36.926070602743607,36.927449700483329,36.928766814978502,36.930015804643439,36.931189794742508,36.932281086234511,36.933281056256668,36.934180051275412,36.934967275007232,36.935630674752474,36.936156831906537,36.936530865222437,36.936736358944337,36.936755332136244,36.936568270080109,36.936154242830682,36.935491138701963,36.934556039861278,36.933325761126049,36.931777559356462,36.929889998385896,36.927643924429461,36.925023474050469,36.922017009353205,36.918617863210251,36.914824789088279,36.910642047017291,36.906079112223544,36.901150051599657,36.895872659684628,36.890267469262078,36.884356749759355,36.878163584989387,36.871711090168347,36.865021796039258,36.858117201742232,36.851017480460683,36.843741312590531,36.836305818396063,36.828726563572914,36.821017614846212,36.813191627242027,36.805259949088068,36.797232734662593,36.789119057551574,36.780927020194468,36.772663856886062,36.764336028772355,36.755949310248447,36.747508866738023,36.739019324190799,36.730484830840034,36.721909111865756,36.713295517644475,36.704647066259305,36.695966480911174,36.687256222824452,36.678518520187041,36.669755393609677,36.66096867853566,36.652160044981891,36.643331014946092,36.634482977773317,36.625617203737725,36.616734856062806,36.607837001574509,36.598924620156211,36.589998613152794,36.581059810851791,36.5721089791531,36.563146825524313,36.554174004326157,36.545191121582128,36.53619873925652,36.53619873925652,37.126491873530512,37.124475428743956,37.122468483538995,37.120471599879906,37.118485383790173,37.116510489630549,37.114547624868614,37.11259755540425,37.110661111525019,37.10873919457579,37.106832784439938,37.1049429479434,37.103070848309692,37.101217755812961,37.099385059798244,37.097574282263295,37.095787093224999,37.094025328126655,37.092291007578986,37.090586359769922,37.08891384592382,37.087276189241592,37.085676407806382,37.084117851994684,37.082604246986513,37.081139741015157,37.079728960030316,37.078377069455676,37.077089843686323,37.075873743868286,37.074736004296334,37.073684727409912,37.07272898679502,37.071878936729902,37.071145925542268,37.070542608258172,37.070083051602772,37.069782821271687,37.069659037529192,37.069730380771233,37.070017024181212,37.070540466899224,37.071323239668324,37.072388457704669,37.073759204821187,37.07545775044521,37.077504627360391,37.079917630105712,37.082710825573777,37.085893688990872,37.089470480386986,37.093439953228788,37.09779544038885,37.102525303971483,37.107613680539984,37.11304141630945,37.118787075113289,37.124827913811671,37.13114074722202,37.137702657511646,37.144491532994579,37.151486443725553,37.158667874986506,37.166017845841473,37.173519940534604,37.1811592778189,37.188922439089787,37.196797371647598,37.204773279208823,37.212840508239879,37.220990435878015,37.22921536308202,37.237508415116245,37.245863450395035,37.254274977990463,37.262738083640784,37.27124836381514,37.279801867235307,37.288395043186483,37.297024695935093,36.916764982437925],"text":["age: 15.50074<br />temp: 37.10689","age: 16.48954<br />temp: 37.10341","age: 17.47833<br />temp: 37.09992","age: 18.46713<br />temp: 37.09643","age: 19.45593<br />temp: 37.09294","age: 20.44472<br />temp: 37.08945","age: 21.43352<br />temp: 37.08597","age: 22.42231<br />temp: 37.08248","age: 23.41111<br />temp: 37.07899","age: 24.39990<br />temp: 37.07550","age: 25.38870<br />temp: 37.07202","age: 26.37749<br />temp: 37.06853","age: 27.36629<br />temp: 37.06504","age: 28.35509<br />temp: 37.06155","age: 29.34388<br />temp: 37.05806","age: 30.33268<br />temp: 37.05458","age: 31.32147<br />temp: 37.05109","age: 32.31027<br />temp: 37.04760","age: 33.29906<br />temp: 37.04411","age: 34.28786<br />temp: 37.04062","age: 35.27666<br />temp: 37.03714","age: 36.26545<br />temp: 37.03365","age: 37.25425<br />temp: 37.03016","age: 38.24304<br />temp: 37.02667","age: 39.23184<br />temp: 37.02318","age: 40.22063<br />temp: 37.01970","age: 41.20943<br />temp: 37.01621","age: 42.19823<br />temp: 37.01272","age: 43.18702<br />temp: 37.00923","age: 44.17582<br />temp: 37.00574","age: 45.16461<br />temp: 37.00226","age: 46.15341<br />temp: 36.99877","age: 47.14220<br />temp: 36.99528","age: 48.13100<br />temp: 36.99179","age: 49.11979<br />temp: 36.98830","age: 50.10859<br />temp: 36.98482","age: 51.09739<br />temp: 36.98133","age: 52.08618<br />temp: 36.97784","age: 53.07498<br />temp: 36.97435","age: 54.06377<br />temp: 36.97086","age: 55.05257<br />temp: 36.96738","age: 56.04136<br />temp: 36.96389","age: 57.03016<br />temp: 36.96040","age: 58.01896<br />temp: 36.95691","age: 59.00775<br />temp: 36.95342","age: 59.99655<br />temp: 36.94994","age: 60.98534<br />temp: 36.94645","age: 61.97414<br />temp: 36.94296","age: 62.96293<br />temp: 36.93947","age: 63.95173<br />temp: 36.93598","age: 64.94053<br />temp: 36.93250","age: 65.92932<br />temp: 36.92901","age: 66.91812<br />temp: 36.92552","age: 67.90691<br />temp: 36.92203","age: 68.89571<br />temp: 36.91854","age: 69.88450<br />temp: 36.91506","age: 70.87330<br />temp: 36.91157","age: 71.86209<br />temp: 36.90808","age: 72.85089<br />temp: 36.90459","age: 73.83969<br />temp: 36.90110","age: 74.82848<br />temp: 36.89762","age: 75.81728<br />temp: 36.89413","age: 76.80607<br />temp: 36.89064","age: 77.79487<br />temp: 36.88715","age: 78.78366<br />temp: 36.88366","age: 79.77246<br />temp: 36.88018","age: 80.76126<br />temp: 36.87669","age: 81.75005<br />temp: 36.87320","age: 82.73885<br />temp: 36.86971","age: 83.72764<br />temp: 36.86622","age: 84.71644<br />temp: 36.86274","age: 85.70523<br />temp: 36.85925","age: 86.69403<br />temp: 36.85576","age: 87.68283<br />temp: 36.85227","age: 88.67162<br />temp: 36.84879","age: 89.66042<br />temp: 36.84530","age: 90.64921<br />temp: 36.84181","age: 91.63801<br />temp: 36.83832","age: 92.62680<br />temp: 36.83483","age: 93.61560<br />temp: 36.83135","age: 93.61560<br />temp: 36.83135","age: 93.61560<br />temp: 36.83135","age: 92.62680<br />temp: 36.83483","age: 91.63801<br />temp: 36.83832","age: 90.64921<br />temp: 36.84181","age: 89.66042<br />temp: 36.84530","age: 88.67162<br />temp: 36.84879","age: 87.68283<br />temp: 36.85227","age: 86.69403<br />temp: 36.85576","age: 85.70523<br />temp: 36.85925","age: 84.71644<br />temp: 36.86274","age: 83.72764<br />temp: 36.86622","age: 82.73885<br />temp: 36.86971","age: 81.75005<br />temp: 36.87320","age: 80.76126<br />temp: 36.87669","age: 79.77246<br />temp: 36.88018","age: 78.78366<br />temp: 36.88366","age: 77.79487<br />temp: 36.88715","age: 76.80607<br />temp: 36.89064","age: 75.81728<br />temp: 36.89413","age: 74.82848<br />temp: 36.89762","age: 73.83969<br />temp: 36.90110","age: 72.85089<br />temp: 36.90459","age: 71.86209<br />temp: 36.90808","age: 70.87330<br />temp: 36.91157","age: 69.88450<br />temp: 36.91506","age: 68.89571<br />temp: 36.91854","age: 67.90691<br />temp: 36.92203","age: 66.91812<br />temp: 36.92552","age: 65.92932<br />temp: 36.92901","age: 64.94053<br />temp: 36.93250","age: 63.95173<br />temp: 36.93598","age: 62.96293<br />temp: 36.93947","age: 61.97414<br />temp: 36.94296","age: 60.98534<br />temp: 36.94645","age: 59.99655<br />temp: 36.94994","age: 59.00775<br />temp: 36.95342","age: 58.01896<br />temp: 36.95691","age: 57.03016<br />temp: 36.96040","age: 56.04136<br />temp: 36.96389","age: 55.05257<br />temp: 36.96738","age: 54.06377<br />temp: 36.97086","age: 53.07498<br />temp: 36.97435","age: 52.08618<br />temp: 36.97784","age: 51.09739<br />temp: 36.98133","age: 50.10859<br />temp: 36.98482","age: 49.11979<br />temp: 36.98830","age: 48.13100<br />temp: 36.99179","age: 47.14220<br />temp: 36.99528","age: 46.15341<br />temp: 36.99877","age: 45.16461<br />temp: 37.00226","age: 44.17582<br />temp: 37.00574","age: 43.18702<br />temp: 37.00923","age: 42.19823<br />temp: 37.01272","age: 41.20943<br />temp: 37.01621","age: 40.22063<br />temp: 37.01970","age: 39.23184<br />temp: 37.02318","age: 38.24304<br />temp: 37.02667","age: 37.25425<br />temp: 37.03016","age: 36.26545<br />temp: 37.03365","age: 35.27666<br />temp: 37.03714","age: 34.28786<br />temp: 37.04062","age: 33.29906<br />temp: 37.04411","age: 32.31027<br />temp: 37.04760","age: 31.32147<br />temp: 37.05109","age: 30.33268<br />temp: 37.05458","age: 29.34388<br />temp: 37.05806","age: 28.35509<br />temp: 37.06155","age: 27.36629<br />temp: 37.06504","age: 26.37749<br />temp: 37.06853","age: 25.38870<br />temp: 37.07202","age: 24.39990<br />temp: 37.07550","age: 23.41111<br />temp: 37.07899","age: 22.42231<br />temp: 37.08248","age: 21.43352<br />temp: 37.08597","age: 20.44472<br />temp: 37.08945","age: 19.45593<br />temp: 37.09294","age: 18.46713<br />temp: 37.09643","age: 17.47833<br />temp: 37.09992","age: 16.48954<br />temp: 37.10341","age: 15.50074<br />temp: 37.10689","age: 15.50074<br />temp: 37.10689"],"type":"scatter","mode":"lines","line":{"width":3.7795275590551185,"color":"transparent","dash":"solid"},"fill":"toself","fillcolor":"rgba(153,153,153,0.4)","hoveron":"points","hoverinfo":"x+y","name":"阴性","legendgroup":"阴性","showlegend":false,"xaxis":"x","yaxis":"y","frame":null}],"layout":{"margin":{"t":43.275494672754945,"r":7.3059360730593621,"b":39.69558599695587,"l":48.949771689497723},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"年龄与体温的关系","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[6.1998102574504035,97.778255632073467],"tickmode":"array","ticktext":["25","50","75"],"tickvals":[25,50,75],"categoryorder":"array","categoryarray":["25","50","75"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"年龄 (岁)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[35.538729077158855,38.416538596541628],"tickmode":"array","ticktext":["36.0","36.5","37.0","37.5","38.0"],"tickvals":[36,36.5,37,37.5,38],"categoryorder":"array","categoryarray":["36.0","36.5","37.0","37.5","38.0"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"体温 (°C)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"title":{"text":"group","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"66fce69404e":{"x":{},"y":{},"colour":{},"type":"scatter"},"66fc3db72d9e":{"x":{},"y":{},"colour":{}}},"cur_data":"66fce69404e","visdat":{"66fce69404e":["function (y) ","x"],"66fc3db72d9e":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dt</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-f16bf7d6859f66bc4f59" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-f16bf7d6859f66bc4f59">{"x":{"filter":"none","vertical":false,"caption":"<caption>患者详细数据<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127","128","129","130","131","132","133","134","135","136","137","138","139","140","141","142","143","144","145","146","147","148","149","150","151","152","153","154","155","156","157","158","159","160","161","162","163","164","165","166","167","168","169","170","171","172","173","174","175","176","177","178","179","180","181","182","183","184","185","186","187","188","189","190","191","192","193","194","195","196","197","198","199","200"],[36.59286530171681,41.5473376577508,68.38062471223685,46.05762587136864,46.93931602741419,70.72597480324922,51.91374308983804,26.02408148090199,34.69720722159711,38.31507044850063,63.36122696159192,50.39720740586046,51.01157175891078,46.66024073917679,36.66238297868887,71.80369705204618,52.46775717343859,15.50074265055543,55.52033852345528,37.90812888408099,28.98264441019732,41.73037628012558,29.60993327539141,34.0666315606329,35.62441098226115,19.6996003388638,57.56680566741787,47.30059676754773,27.92794594482078,63.8072238160489,51.3969633221522,40.57392775511593,58.42688491567533,58.17200231299563,57.3237162245623,55.32960381150136,53.30876480306383,44.07132434134918,40.41056004390125,39.29293498481426,34.57939531619231,41.88124082970602,26.01905472647603,77.53433948007769,63.11942997457486,28.15337125194976,38.95672747051386,38.00016969565172,56.69947677504477,43.74946400292256,48.79977770992132,44.57179866976946,44.35694314063026,65.52903426021686,41.61343521511098,67.7470590664431,21.76870793654668,53.76920624454104,46.8578136576692,48.23912353115959,50.69459224139823,37.46514820336046,40.0018892449587,29.72136925339367,28.92313160286633,49.55292962106387,51.72314667944139,45.79506340095756,58.83401201819606,75.75127028440717,37.63453250915197,10.36246686538782,60.08607786693385,34.36198856126411,34.67987075298963,60.38357054545048,40.72840489423487,26.68923431618197,47.71955219623725,42.91662956341433,45.0864627884983,50.77920601689496,39.44009952311386,54.6656482277825,41.69270157271874,49.97672945873546,61.45258519724021,51.52772236250704,40.1110262170316,62.23211427676641,59.90255783943179,53.22595439262105,48.58097602667162,35.58140885940943,65.40978672795012,35.99610619279309,77.80999489524865,67.98915939277784,41.46449461349285,29.60368649539829,34.34390154451049,48.85325563734794,41.2996218230644,39.786861009034,30.72572149102476,44.3245841278662,33.22643295814386,19.98087095117795,39.29660219568356,58.78494913591149,36.36979556087412,54.1194648333755,20.73175937566254,44.16657051713191,52.79110805915194,49.51730043250072,46.58514291223415,35.38940987541935,32.25443480949627,29.6380681409263,46.76469895650189,30.78788078722797,37.64163834448998,41.15861711702629,72.6579300784831,35.22075147456812,48.53079858427285,46.16941274345566,30.57215048804807,43.93037870814602,66.66826287635024,51.77256079618822,45.6184938298941,38.66254751490563,14.20129167689227,61.97005820121263,23.09039893612767,56.09921266316002,73.63655353826225,23.34160258542301,55.52676503062067,41.06703765896298,21.41783761281769,22.27998519327373,20.9769573963811,37.03640216744546,23.0736662250615,55.31875159463741,76.50163410788508,25.69454285947231,56.81608271212767,56.53563361501365,49.98303868425177,29.87435087584488,43.20821090054012,40.7940699724463,53.44484299830719,39.41341865844257,59.65460080028431,39.38128713349479,60.79067198368998,29.26234490000901,26.09767132862832,93.61559902413606,38.74713617759353,49.47341387311073,54.54854511050773,37.74329061436885,52.75293066470414,50.53446791077629,41.7692923853746,45.97939550287973,44.48899119392304,76.92677848524272,33.87995855590758,28.56005599388004,45.56682598756618,49.65721124164705,51.54785218365274,38.12452000933342,29.05010799043214,63.94777764134236,39.75524418069668,32.01730706019939,41.45580646588355,42.04236158477172,61.6488043457046,46.27105938295794,56.31080677776782,37.51061974241609,48.21667964372402,40.12971132763748,46.41875292260357,31.56954963033688,25.33797700008042,74.9582007712195,54.01063235508627,26.23092957562584,35.83251124979368,27.21779873104034],["男","男","男","男","男","男","女","男","女","男","女","女","女","女","女","男","女","男","男","男","男","男","男","男","男","男","女","女","男","男","男","女","女","男","女","男","女","男","女","男","男","男","女","女","男","女","女","女","女","女","女","男","女","女","女","男","女","女","男","女","女","男","女","男","男","女","女","男","女","男","男","男","女","女","男","男","男","男","女","男","女","女","女","女","男","女","女","男","女","女","男","女","男","女","女","女","女","男","男","男","女","女","女","女","男","男","男","男","女","男","女","男","女","男","女","女","女","男","女","女","女","女","男","女","男","女","男","男","男","男","女","女","女","男","男","女","女","女","女","男","男","男","女","女","女","男","男","女","女","男","女","男","女","女","女","男","女","女","女","女","男","女","女","男","女","女","女","女","女","男","女","男","女","男","男","女","男","女","女","男","男","女","男","男","女","男","男","女","女","男","男","女","男","女","男","女","男","男","女","女"],[36.6423789063886,36.62365551589113,36.53073064819655,36.47374336033063,36.7814202334098,37.16558958647949,35.99289475103964,37.10599021668614,37.61833752320828,38.01878700912022,37.65058799610029,37.37838738189798,36.13663480044283,36.69924664599661,36.82397677170869,37.35176195137845,36.94716433299811,36.37067568596991,37.84221785404706,37.45569564589798,37.11871513624551,37.60905430516291,36.33061285638252,37.3304101488949,36.73854381184329,37.34187276092536,36.96958902266996,37.31648035651573,37.66775880752969,37.00364504515845,37.50877931847604,36.40578298242601,36.63919777978199,37.75960885569409,37.18869398651196,35.97388858978314,36.31798127395881,36.89960949220544,37.43288970216724,36.94905837214239,37.31209373601033,37.47950268889392,37.83552741443147,37.02800836663748,36.97400904690955,36.12338132042886,37.04966379704391,36.71407497105222,36.51299520859796,36.91004688447623,37.50747158637183,36.00362575565571,36.78636035639729,37.05831864179135,36.55339621497252,37.16695147124961,37.20571496030787,36.983481920362,35.76705090311999,38.28572907293332,36.8973503712659,37.32559664079383,37.13688324551828,37.51233661740918,37.40882972318705,36.89510341438574,37.18908388610426,36.52729558443805,37.42846150544966,36.76948083055782,38.20838667689411,36.1744755521559,36.76800637851699,37.41268993137962,37.25506627343933,36.7052594807425,36.50160962889624,37.07223785235535,36.99284629341654,36.10485938136797,37.01727553356692,37.09511515784623,37.08736319849092,36.47249147869866,37.23806663915131,37.68928506847962,37.22811820158991,36.43220576481283,36.78217726515405,37.1730518097768,36.67647718434087,35.92117683249236,37.44212541001411,36.58526119418774,36.71321986461586,37.75195030450227,36.6129275351973,37.42286577009465,36.36965856059062,36.82272879846301,36.96322199043176,36.41567428778782,36.68262586754555,36.98557922353584,37.33534798436696,36.17472672828745,36.82512288039437,37.37820321927274,36.73059542001121,37.11364596083647,37.24611428503221,37.13391750766584,37.32662883973569,36.93864566951131,36.79316174320394,35.67842552398551,36.95352949076026,37.21514234818,37.26769942043408,36.72236082434338,37.88975145488757,37.14321220981441,37.06315792922944,37.63613338973426,36.64076688934037,36.77483068803765,38.19872624002488,37.00556459361044,37.81678421070416,36.28074667754274,36.90474159897855,37.18921195181841,37.1500192726029,36.49718187024458,37.00962963731268,36.46128967344401,37.35635166262214,37.54238754493032,35.88750615175629,37.61784673115007,36.37947775159576,37.22738463449132,37.32995131907131,36.90005508594928,36.67744302157011,37.08266051062103,37.21940935035722,37.44165140997436,35.97383150804902,36.18181036597048,37.71520117059409,37.52331442355577,37.21764447445384,37.35758920355553,37.4585874588205,35.66953860076716,37.55513854831941,36.75750620171884,37.1153084153156,36.85242109955821,37.43598247703937,36.8257637755222,37.25925188294412,36.80465751068051,36.45360639544925,37.60500525522014,37.37045000563714,37.86213111957823,37.03257696628965,37.56250137291408,37.98770952700954,36.85925894248052,36.33852444362239,36.88032421643094,36.89297938000731,37.07584025225466,37.85615248865964,36.83692805374733,37.18650232790246,36.88615796755224,37.01022535426252,37.15702883175313,37.66410734801849,37.06065918874539,37.35642116001556,37.38943001489177,37.45738663542782,36.71280272390781,37.81344060709734,36.809521630353,36.94710791617512,37.70202513385708,37.64704195307279,36.45500406379438,36.56346449979127,36.3209604703147,37.09092359630991,37.08242043395924,37.18205734367753,37.27607885710928],["阴性","阴性","阴性","阳性","阳性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阳性","阳性","阳性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阳性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阳性","阴性","阳性","阳性","阳性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阴性","阳性","阴性","阳性","阴性","阴性","阴性","阳性","阳性","阳性","阴性","阴性","阴性","阳性","阳性","阴性","阳性","阳性","阴性","阴性","阳性","阳性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阳性","阳性","阴性","阳性","阳性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阴性","阳性","阳性","阴性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阴性","阳性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阴性","阳性","阳性","阴性","阴性","阳性","阴性","阴性","阴性","阴性","阴性","阳性","阴性","阴性","阳性","阴性","阳性","阴性"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>age<\/th>\n      <th>gender<\/th>\n      <th>temp<\/th>\n      <th>group<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":10,"searchHighlight":true,"columnDefs":[{"className":"dt-right","targets":[1,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"age","targets":1},{"name":"gender","targets":2},{"name":"temp","targets":3},{"name":"group","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="sec-multiple-formats" class="level3" data-number="9.1.2">
+<h3 data-number="9.1.2" class="anchored" data-anchor-id="sec-multiple-formats"><span class="header-section-number">9.1.2</span> 多格式输出（Word/PDF/HTML）</h3>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Word格式输出设置</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>word_output <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  ft <span class="ot">&lt;-</span> <span class="fu">flextable</span>(data)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  ft <span class="ot">&lt;-</span> <span class="fu">autofit</span>(ft)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  ft <span class="ot">&lt;-</span> <span class="fu">theme_booktabs</span>(ft)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ft)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># PDF格式输出设置</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>pdf_output <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(data, <span class="at">format =</span> <span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># HTML格式输出设置</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>html_output <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(data) <span class="sc">%&gt;%</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">"研究结果"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_options</span>(<span class="at">table.width =</span> <span class="fu">pct</span>(<span class="dv">100</span>))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="sec-reproducibility" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="sec-reproducibility"><span class="header-section-number">9.2</span> 论文可重复性实践</h2>
+<section id="sec-version-control" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="sec-version-control"><span class="header-section-number">9.2.1</span> 代码版本控制</h3>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 项目初始化</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 记录包依赖</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Git版本控制</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># git init</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># git add .</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># git commit -m "Initial analysis setup"</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="sec-data-anonymization" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="sec-data-anonymization"><span class="header-section-number">9.2.2</span> 数据脱敏处理</h3>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建数据脱敏函数</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>anonymize_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">id =</span> <span class="fu">paste0</span>(<span class="st">"P"</span>, <span class="fu">sprintf</span>(<span class="st">"%04d"</span>, <span class="fu">row_number</span>())),</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">age_group =</span> <span class="fu">cut</span>(age, </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="cn">Inf</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"青年"</span>, <span class="st">"中年"</span>, <span class="st">"老年"</span>)),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">gender =</span> <span class="fu">factor</span>(gender)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"name|address|phone|email"</span>))</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：处理敏感数据</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>secure_data <span class="ot">&lt;-</span> <span class="fu">anonymize_data</span>(patient_data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+研究报告最佳实践
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>使用标准化的报告模板</li>
+<li>确保结果可重复性</li>
+<li>妥善处理敏感数据</li>
+<li>使用版本控制管理代码</li>
+<li>保持分析流程的透明性</li>
+</ol>
+</div>
+</div>
+</section>
+</section>
+<section id="本章小结" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="本章小结"><span class="header-section-number">9.3</span> 本章小结</h2>
+<p>在本章中，我们学习了：</p>
+<ol type="1">
+<li>如何使用Quarto创建专业的医学研究报告</li>
+<li>自动化报告生成和结果更新机制</li>
+<li>交互式可视化技术</li>
+<li>确保研究可重复性的方法</li>
+</ol>
+<p>下一章，我们将学习生物信息学分析的基础知识。</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "已复制");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "已复制");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./chapter7.html" class="pagination-link" aria-label="高级医学统计分析">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">高级医学统计分析</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./chapter9.html" class="pagination-link" aria-label="生物信息学入门">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">生物信息学入门</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">源代码</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 医学研究报告生成 {#sec-research-reports}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: check-packages</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置CRAN镜像为中国合肥镜像</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">c</span>(<span class="at">CRAN =</span> <span class="st">"https://mirrors.ustc.edu.cn/CRAN/"</span>))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查并安装所需的R包</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>required_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">"tidyverse"</span>,     <span class="co"># 数据处理和可视化</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">"rmarkdown"</span>,     <span class="co"># 报告生成</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"knitr"</span>,         <span class="co"># 文档编织</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gt"</span>,            <span class="co"># 表格生成</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">"gtsummary"</span>,     <span class="co"># 统计表格</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">"medicaldata"</span>,   <span class="co"># 医学数据集</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="st">"flextable"</span>,     <span class="co"># 表格格式化</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="st">"plotly"</span>,        <span class="co"># 交互式图形</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"DT"</span>             <span class="co"># 交互式表格</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查并安装缺失的包</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(pkg <span class="cf">in</span> required_packages) {</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(pkg)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">library</span>(pkg, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="fu">### 结果自动更新机制 {#sec-auto-update}</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: dynamic-tables</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建模拟患者数据</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">200</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>patient_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">age =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">45</span>, <span class="at">sd =</span> <span class="dv">15</span>),</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">gender =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"男"</span>, <span class="st">"女"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">37</span>, <span class="at">sd =</span> <span class="fl">0.5</span>),</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="fu">factor</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"阳性"</span>, <span class="st">"阴性"</span>), n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>)))</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建基线特征表</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>baseline_table <span class="ot">&lt;-</span> patient_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, gender, temp, group) <span class="sc">%&gt;%</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tbl_summary</span>(</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">by =</span> group,</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">missing =</span> <span class="st">"no"</span>,</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">label =</span> <span class="fu">list</span>(</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>      age <span class="sc">~</span> <span class="st">"年龄(岁)"</span>,</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>      gender <span class="sc">~</span> <span class="st">"性别"</span>,</span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>      temp <span class="sc">~</span> <span class="st">"体温(℃)"</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>      <span class="fu">all_continuous</span>() <span class="sc">~</span> <span class="st">"{mean} ({sd})"</span>,</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>      <span class="fu">all_categorical</span>() <span class="sc">~</span> <span class="st">"{n} ({p}%)"</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_p</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_n</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_header</span>(<span class="at">label =</span> <span class="st">"**特征**"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">modify_spanning_header</span>(<span class="fu">c</span>(<span class="st">"stat_1"</span>, <span class="st">"stat_2"</span>) <span class="sc">~</span> <span class="st">"新冠检测结果"</span>)</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a><span class="co"># 展示表格</span></span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>baseline_table</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quarto高级功能 {#sec-quarto-advanced}</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a><span class="fu">### 交互式可视化报告 {#sec-interactive-viz}</span></span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: interactive-plots</span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建交互式散点图</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(patient_data, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> temp, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"年龄与体温的关系"</span>,</span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"年龄 (岁)"</span>,</span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"体温 (°C)"</span>)</span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>interactive_plot <span class="ot">&lt;-</span> <span class="fu">ggplotly</span>(p)</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建交互式表格</span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">datatable</span>(</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>  patient_data <span class="sc">%&gt;%</span></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(age, gender, temp, group),</span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>  <span class="at">options =</span> <span class="fu">list</span>(</span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>    <span class="at">pageLength =</span> <span class="dv">10</span>,</span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>    <span class="at">searchHighlight =</span> <span class="cn">TRUE</span></span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">"患者详细数据"</span></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="co"># 展示交互式内容</span></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a>interactive_plot</span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a>dt</span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### 多格式输出（Word/PDF/HTML） {#sec-multiple-formats}</span></span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: output-formats</span></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="co"># Word格式输出设置</span></span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a>word_output <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a>  ft <span class="ot">&lt;-</span> <span class="fu">flextable</span>(data)</span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a>  ft <span class="ot">&lt;-</span> <span class="fu">autofit</span>(ft)</span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>  ft <span class="ot">&lt;-</span> <span class="fu">theme_booktabs</span>(ft)</span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ft)</span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a><span class="co"># PDF格式输出设置</span></span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a>pdf_output <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(data, <span class="at">format =</span> <span class="st">"latex"</span>, <span class="at">booktabs =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="co"># HTML格式输出设置</span></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a>html_output <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>(data) <span class="sc">%&gt;%</span></span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_header</span>(<span class="at">title =</span> <span class="st">"研究结果"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-138"><a href="#cb8-138" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_options</span>(<span class="at">table.width =</span> <span class="fu">pct</span>(<span class="dv">100</span>))</span>
+<span id="cb8-139"><a href="#cb8-139" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a><span class="fu">## 论文可重复性实践 {#sec-reproducibility}</span></span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a><span class="fu">### 代码版本控制 {#sec-version-control}</span></span>
+<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: version-control</span></span>
+<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a><span class="co"># 项目初始化</span></span>
+<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span>
+<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a><span class="co"># 记录包依赖</span></span>
+<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span>
+<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a><span class="co"># Git版本控制</span></span>
+<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a><span class="co"># git init</span></span>
+<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a><span class="co"># git add .</span></span>
+<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a><span class="co"># git commit -m "Initial analysis setup"</span></span>
+<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a><span class="fu">### 数据脱敏处理 {#sec-data-anonymization}</span></span>
+<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: data-security</span></span>
+<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建数据脱敏函数</span></span>
+<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a>anonymize_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">%&gt;%</span></span>
+<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a>      <span class="at">id =</span> <span class="fu">paste0</span>(<span class="st">"P"</span>, <span class="fu">sprintf</span>(<span class="st">"%04d"</span>, <span class="fu">row_number</span>())),</span>
+<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a>      <span class="at">age_group =</span> <span class="fu">cut</span>(age, </span>
+<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>, <span class="dv">60</span>, <span class="cn">Inf</span>),</span>
+<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a>                     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"青年"</span>, <span class="st">"中年"</span>, <span class="st">"老年"</span>)),</span>
+<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a>      <span class="at">gender =</span> <span class="fu">factor</span>(gender)</span>
+<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span><span class="fu">matches</span>(<span class="st">"name|address|phone|email"</span>))</span>
+<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：处理敏感数据</span></span>
+<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a>secure_data <span class="ot">&lt;-</span> <span class="fu">anonymize_data</span>(patient_data)</span>
+<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a>::: callout-tip</span>
+<span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a><span class="fu">## 研究报告最佳实践</span></span>
+<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>使用标准化的报告模板</span>
+<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>确保结果可重复性</span>
+<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>妥善处理敏感数据</span>
+<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>使用版本控制管理代码</span>
+<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>保持分析流程的透明性</span>
+<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-198"><a href="#cb8-198" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本章小结</span></span>
+<span id="cb8-199"><a href="#cb8-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a>在本章中，我们学习了：</span>
+<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>如何使用Quarto创建专业的医学研究报告</span>
+<span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>自动化报告生成和结果更新机制</span>
+<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>交互式可视化技术</span>
+<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>确保研究可重复性的方法</span>
+<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a>下一章，我们将学习生物信息学分析的基础知识。</span>
+</code><button title="复制到剪贴板" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/shalom-lab/r4medical/edit/main/chapter8.qmd" class="toc-action"><i class="bi bi-github"></i>编辑该页面</a></li><li><a href="https://github.com/shalom-lab/r4medical/issues/new" class="toc-action"><i class="bi empty"></i>反馈问题</a></li></ul></div></div></div></footer></body></html>

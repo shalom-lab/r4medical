@@ -1,0 +1,208 @@
+# 医学数据可视化 {#sec-visualization}
+
+```{r}
+#| label: check-packages
+#| message: false
+
+# 检查并安装所需的R包
+required_packages <- c(
+  "tidyverse",    # ggplot2, dplyr等
+  "ggthemes",     # 主题
+  "survival",     # 生存分析
+  "survminer",    # 生存曲线可视化
+  "meta",         # Meta分析
+  "metafor",      # Meta分析森林图
+  "corrplot"      # 相关系数矩阵可视化
+)
+
+# 检查并安装缺失的包
+new_packages <- required_packages[!(required_packages %in% installed.packages()[,"Package"])]
+if(length(new_packages)) install.packages(new_packages)
+
+# 加载所有包
+invisible(lapply(required_packages, library, character.only = TRUE))
+```
+
+## ggplot2核心语法 {#sec-ggplot2-basics}
+
+### 临床指标分布直方图 {#sec-histograms}
+
+```{r}
+#| label: setup
+#| message: false
+library(tidyverse)
+library(ggthemes)
+
+# 创建示例数据
+set.seed(123)
+clinical_data <- data.frame(
+  BMI = rnorm(200, 24, 3),
+  年龄 = rnorm(200, 45, 15),
+  性别 = factor(sample(c("男", "女"), 200, replace = TRUE)),
+  血糖 = rnorm(200, 5.5, 1)
+)
+
+# 绘制BMI分布直方图
+ggplot(clinical_data, aes(x = BMI)) +
+  geom_histogram(aes(y = ..density..), bins = 30, fill = "lightblue") +
+  geom_density(color = "red") +
+  labs(title = "患者BMI分布",
+       x = "BMI (kg/m²)",
+       y = "密度") +
+  theme_minimal()
+```
+
+### 药物效果折线图 {#sec-line-plots}
+
+```{r}
+#| label: drug-effect
+
+# 创建药物效果随访数据
+drug_data <- data.frame(
+  时间点 = rep(c(0, 4, 8, 12, 16), each = 30),
+  治疗组 = rep(rep(c("药物A", "药物B", "安慰剂"), each = 10), 5),
+  血压 = rnorm(150, mean = 140, sd = 10) - 
+        rep(c(0, 4, 8, 12, 16), each = 30) * 
+        rep(c(2, 1.5, 0.5), each = 10)
+)
+
+# 绘制药物效果折线图
+ggplot(drug_data, aes(x = 时间点, y = 血压, color = 治疗组)) +
+  stat_summary(fun = mean, geom = "line") +
+  stat_summary(fun.data = mean_se, geom = "errorbar", width = 0.5) +
+  labs(title = "不同治疗方案的降压效果",
+       x = "随访时间 (周)",
+       y = "收缩压 (mmHg)") +
+  theme_minimal()
+```
+
+## 医学专用图形 {#sec-medical-plots}
+
+### 生存曲线（Kaplan-Meier） {#sec-survival-curves}
+
+```{r}
+#| label: survival-curve
+library(survival)
+library(survminer)
+
+# 创建生存数据
+set.seed(123)
+survival_data <- data.frame(
+  time = rexp(200, 1/50),
+  status = sample(0:1, 200, replace = TRUE),
+  group = factor(sample(c("高危", "低危"), 200, replace = TRUE))
+)
+
+# 创建生存对象
+surv_obj <- Surv(survival_data$time, survival_data$status)
+fit <- survfit(surv_obj ~ group, data = survival_data)
+
+# 绘制生存曲线
+ggsurvplot(fit,
+           data = survival_data,
+           pval = TRUE,
+           conf.int = TRUE,
+           risk.table = TRUE,
+           title = "不同风险组患者生存曲线",
+           xlab = "时间 (月)",
+           ylab = "生存概率",
+           legend.title = "风险分组",
+           ggtheme = theme_minimal())
+```
+
+### 森林图（Meta分析） {#sec-forest-plots}
+
+```{r}
+#| label: forest-plot
+library(meta)
+library(metafor)
+
+# 创建Meta分析数据
+studies <- data.frame(
+  author = paste("研究", 1:8),
+  year = 2015:2022,
+  te = rnorm(8, 0.5, 0.2),   # 处理效应
+  se = runif(8, 0.1, 0.3)    # 标准误
+)
+
+# 进行Meta分析
+meta_analysis <- metagen(TE = te,
+                        seTE = se,
+                        studlab = author,
+                        data = studies,
+                        sm = "RR",
+                        fixed = TRUE,
+                        random = TRUE)
+
+# 绘制森林图
+forest(meta_analysis,
+       leftlabs = c("研究", "年份"),
+       xlab = "风险比(RR)",
+       text.random = "随机效应模型",
+       text.fixed = "固定效应模型")
+```
+
+## 图形美化与输出 {#sec-plot-formatting}
+
+### 期刊论文格式调整 {#sec-journal-formatting}
+
+```{r}
+#| label: journal-plot
+
+# 创建期刊风格主题
+journal_theme <- theme_minimal() +
+  theme(
+    text = element_text(family = "Times New Roman", size = 12),
+    axis.title = element_text(size = 14),
+    plot.title = element_text(size = 16, face = "bold"),
+    legend.position = "bottom",
+    panel.grid.minor = element_blank()
+  )
+
+# 应用到图形
+ggplot(clinical_data, aes(x = 年龄, y = 血糖, color = 性别)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm") +
+  labs(title = "年龄与血糖水平的关系",
+       x = "年龄 (岁)",
+       y = "空腹血糖 (mmol/L)") +
+  journal_theme
+```
+
+### 导出高分辨率TIFF/PDF {#sec-export-plots}
+
+```{r}
+#| label: export-plots
+#| eval: false
+
+# 导出TIFF格式
+ggsave("figure1.tiff",
+       width = 8, height = 6,
+       dpi = 300,
+       compression = "lzw")
+
+# 导出PDF格式
+ggsave("figure1.pdf",
+       width = 8, height = 6,
+       device = cairo_pdf)
+```
+
+::: callout-tip
+## 练习
+
+1.  使用自己的数据创建分布图
+2.  绘制治疗效果的时间序列图
+3.  制作一个符合期刊要求的图形
+4.  尝试不同的配色方案
+:::
+
+## 本章小结
+
+在本章中，我们学习了：
+
+1.  ggplot2的基本语法和应用
+2.  医学研究中常用的图形类型
+3.  如何美化图形以符合出版要求
+4.  高质量图形的导出方法
+
+下一章，我们将学习基础统计分析方法。

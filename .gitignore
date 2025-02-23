@@ -1,0 +1,34 @@
+# Quarto and R specific
+.quarto/
+/_site/
+/_book/
+/_freeze/
+/.quarto/
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+/*_cache/
+/*_files/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# R project files
+*.Rproj
+
+# Temp files
+*.log
+*.tmp
+*~
+
+# Dependencies
+renv/
+.Rprofile

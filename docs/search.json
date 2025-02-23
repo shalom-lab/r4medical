@@ -1,0 +1,631 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "医学生R语言入门指南",
+    "section": "",
+    "text": "前言\n欢迎来到《医学生R语言入门指南》。本书旨在帮助医学生掌握R语言的基础知识，并将其应用于医学研究和数据分析中。",
+    "crumbs": [
+      "前言"
+    ]
+  },
+  {
+    "objectID": "index.html#本书特点",
+    "href": "index.html#本书特点",
+    "title": "医学生R语言入门指南",
+    "section": "本书特点",
+    "text": "本书特点\n\n针对医学生的特定需\n实用的医学数据分析案例\n循序渐进的学习路径\n丰富的实践练习",
+    "crumbs": [
+      "前言"
+    ]
+  },
+  {
+    "objectID": "index.html#如何使用本书",
+    "href": "index.html#如何使用本书",
+    "title": "医学生R语言入门指南",
+    "section": "如何使用本书",
+    "text": "如何使用本书\n本书分为三个主要部分： 1. 基础知识 2. 数据处理 3. 医学统计\n建议初学者按照章节顺序学习，每章都包含理论讲解和实践练习。\n\n\n代码\nplot(1:10)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n获取更多资源\n\n\n\n欢迎关注微信公众号【R语言与可视化】，获取更多R语言学习资源和医学统计分析案例。",
+    "crumbs": [
+      "前言"
+    ]
+  },
+  {
+    "objectID": "intro.html",
+    "href": "intro.html",
+    "title": "1  导论",
+    "section": "",
+    "text": "1.1 为什么医学生需要学习R语言？\n在现代医学研究中，数据分析能力已经成为一项不可或缺的技能。R语言作为一个强大的统计分析工具，具有以下优势：",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>导论</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#为什么医学生需要学习r语言",
+    "href": "intro.html#为什么医学生需要学习r语言",
+    "title": "1  导论",
+    "section": "",
+    "text": "开源免费，无需支付许可费用\n丰富的统计分析和可视化功能\n活跃的医学研究社区\n强大的可重复性研究支持\n大量专业的医学统计包",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>导论</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#本书使用的r包",
+    "href": "intro.html#本书使用的r包",
+    "title": "1  导论",
+    "section": "1.2 本书使用的R包",
+    "text": "1.2 本书使用的R包\n本书使用了多个专业的R包来支持医学数据分析。以下是主要R包及其用途：\n\n1.2.1 核心包\n\n\n代码\n# 核心数据处理和可视化包\ncore_packages &lt;- c(\n  \"tidyverse\",     # 数据处理和可视化核心包集\n  \"rmarkdown\",     # 报告生成\n  \"knitr\",         # 文档编织\n  \"ggplot2\",       # 数据可视化\n  \"dplyr\",         # 数据处理\n  \"tidyr\"          # 数据整理\n)\n\n\n\n\n1.2.2 医学统计包\n\n\n代码\n# 医学统计分析包\nmedical_stats_packages &lt;- c(\n  \"survival\",      # 生存分析\n  \"survminer\",     # 生存曲线可视化\n  \"gtsummary\",     # 医学统计表格\n  \"medicaldata\",   # 医学数据集\n  \"pROC\",          # ROC曲线分析\n  \"car\",           # 回归诊断\n  \"rms\",           # 回归建模\n  \"MatchIt\",       # 倾向评分匹配\n  \"lme4\",          # 混合效应模型\n  \"vcd\"            # 分类数据可视化\n)\n\n\n\n\n1.2.3 生物信息学包\n\n\n代码\n# 生物信息学分析包\nbioinformatics_packages &lt;- c(\n  \"GEOquery\",            # GEO数据获取\n  \"limma\",               # 差异表达分析\n  \"clusterProfiler\",     # 通路富集分析\n  \"org.Hs.eg.db\",        # 人类基因注释\n  \"enrichplot\",          # 富集分析可视化\n  \"pheatmap\"             # 热图绘制\n)\n\n\n\n\n1.2.4 可视化增强包\n\n\n代码\n# 可视化增强包\nviz_packages &lt;- c(\n  \"ggthemes\",      # ggplot2主题\n  \"plotly\",        # 交互式图形\n  \"DT\",            # 交互式表格\n  \"gt\",            # 静态表格\n  \"flextable\",     # Word表格\n  \"corrplot\",      # 相关矩阵可视化\n  \"tmap\"           # 专题地图\n)",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>导论</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#包的安装",
+    "href": "intro.html#包的安装",
+    "title": "1  导论",
+    "section": "1.3 包的安装",
+    "text": "1.3 包的安装\n以下代码可以帮助您安装所有必需的包：\n\n\n代码\n# 安装CRAN包\ninstall.packages(c(\n  \"tidyverse\", \"rmarkdown\", \"knitr\", \"survival\", \"survminer\",\n  \"gtsummary\", \"medicaldata\", \"pROC\", \"car\", \"rms\", \"MatchIt\",\n  \"lme4\", \"vcd\", \"ggthemes\", \"plotly\", \"DT\", \"gt\", \"flextable\",\n  \"corrplot\", \"tmap\"\n))\n\n# 安装Bioconductor包\nif (!requireNamespace(\"BiocManager\", quietly = TRUE))\n  install.packages(\"BiocManager\")\n\nBiocManager::install(c(\n  \"GEOquery\", \"limma\", \"clusterProfiler\", \n  \"org.Hs.eg.db\", \"enrichplot\"\n))",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>导论</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#学习路径建议",
+    "href": "intro.html#学习路径建议",
+    "title": "1  导论",
+    "section": "1.4 学习路径建议",
+    "text": "1.4 学习路径建议\n本书的内容安排遵循循序渐进的原则：\n\n基础知识 (第1-2章)\n\nR语言基础\n数据结构和操作\n\n数据处理与可视化 (第3-5章)\n\n数据可视化\n数据清洗和转换\n临床数据处理\n\n统计分析 (第6-7章)\n\n基础统计方法\n高级统计分析\n\n专业应用 (第8-10章)\n\n研究报告生成\n生物信息学分析\n综合项目实践\n\n\n建议读者：\n\n按章节顺序学习\n完成每章的练习\n尝试用自己的数据实践\n参考扩展阅读深入学习",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>导论</span>"
+    ]
+  },
+  {
+    "objectID": "intro.html#运行环境要求",
+    "href": "intro.html#运行环境要求",
+    "title": "1  导论",
+    "section": "1.5 运行环境要求",
+    "text": "1.5 运行环境要求\n\nR版本 &gt;= 4.1.0\nRStudio &gt;= 2022.02\n足够的系统内存（建议8GB以上）\n稳定的网络连接（用于包的安装）\n\n\n\nR version 4.4.2 (2024-10-31 ucrt)\nPlatform: x86_64-w64-mingw32/x64\nRunning under: Windows 11 x64 (build 26100)\n\nMatrix products: default\n\n\nlocale:\n[1] LC_COLLATE=Chinese (Simplified)_China.utf8 \n[2] LC_CTYPE=Chinese (Simplified)_China.utf8   \n[3] LC_MONETARY=Chinese (Simplified)_China.utf8\n[4] LC_NUMERIC=C                               \n[5] LC_TIME=Chinese (Simplified)_China.utf8    \n\ntime zone: Etc/GMT-8\ntzcode source: internal\n\nattached base packages:\n[1] stats     graphics  grDevices utils     datasets  methods   base     \n\nloaded via a namespace (and not attached):\n [1] htmlwidgets_1.6.4 compiler_4.4.2    fastmap_1.2.0     cli_3.6.3        \n [5] tools_4.4.2       htmltools_0.5.8.1 yaml_2.3.10       rmarkdown_2.29   \n [9] knitr_1.49        jsonlite_1.8.9    xfun_0.49         digest_0.6.37    \n[13] rlang_1.1.4       evaluate_1.0.1   \n\n\n下一章，我们将开始学习R语言与医学研究的基础知识。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>导论</span>"
+    ]
+  },
+  {
+    "objectID": "chapter1.html",
+    "href": "chapter1.html",
+    "title": "2  R语言与医学研究基础",
+    "section": "",
+    "text": "2.1 为什么医学生需要学习R语言",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R语言与医学研究基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter1.html#sec-why-r",
+    "href": "chapter1.html#sec-why-r",
+    "title": "2  R语言与医学研究基础",
+    "section": "",
+    "text": "2.1.1 医学研究中的数据分析需求\n在现代医学研究中，数据分析已经成为一项不可或缺的技能。无论是临床试验、流行病学研究，还是基础医学实验，都需要处理和分析大量的数据。以下几个方面特别重要：\n\n临床研究数据的统计分析\n医学图像处理\n基因组学数据分析\n医学文献的元分析\n临床预测模型的构建\n\n\n\n2.1.2 与其他统计软件对比\n\n\n\n常用统计软件比较\n\n\n软件\n价格\n学习曲线\n灵活性\n可重复性\n\n\n\n\nR\n免费\n较陡\n极高\n很好\n\n\nSPSS\n昂贵\n平缓\n中等\n一般\n\n\nGraphPad\n适中\n平缓\n较低\n一般",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R语言与医学研究基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter1.html#sec-environment",
+    "href": "chapter1.html#sec-environment",
+    "title": "2  R语言与医学研究基础",
+    "section": "2.2 R与RStudio环境搭建",
+    "text": "2.2 R与RStudio环境搭建\n\n2.2.1 软件安装与配置\n\n安装R\n\n访问 CRAN\n选择对应操作系统的版本\n下载并安装\n\n安装RStudio\n\n访问 Posit\n下载免费版本\n安装RStudio\n\n\n\n# 检查R版本\nR.version.string\n\n[1] \"R version 4.4.2 (2024-10-31 ucrt)\"\n\n# 检查已安装的包\ninstalled.packages()[1:5, c(\"Package\", \"Version\")]\n\n              Package         Version   \nabind         \"abind\"         \"1.4-8\"   \nalabama       \"alabama\"       \"2023.1.0\"\nambient       \"ambient\"       \"1.0.2\"   \nAnnotationDbi \"AnnotationDbi\" \"1.68.0\"  \nape           \"ape\"           \"5.8-1\"   \n\n\n\n\n2.2.2 RStudio界面详解\nRStudio的界面分为四个主要区域：\n\n源代码编辑器（左上）\n\n编写R代码\n创建R Markdown文档\n\n控制台（左下）\n\n直接执行R命令\n查看输出结果\n\n环境/历史记录（右上）\n\n查看当前变量\n浏览命令历史\n\n文件/图形/包/帮助（右下）\n\n管理文件\n查看图形输出\n安装和加载包\n访问帮助文档",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R语言与医学研究基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter1.html#sec-first-analysis",
+    "href": "chapter1.html#sec-first-analysis",
+    "title": "2  R语言与医学研究基础",
+    "section": "2.3 第一个医学分析案例",
+    "text": "2.3 第一个医学分析案例\n\n2.3.1 血压数据分析脚本编写\n让我们通过一个简单的血压数据分析来开始我们的R语言学习之旅：\n\n\n代码\n# 载入需要的包\nlibrary(tidyverse)\n\n# 创建示例数据\nset.seed(123)\nbp_data &lt;- data.frame(\n  患者ID = 1:30,\n  收缩压 = rnorm(30, mean = 120, sd = 10),\n  舒张压 = rnorm(30, mean = 80, sd = 8),\n  年龄 = sample(30:70, 30, replace = TRUE),\n  性别 = factor(sample(c(\"男\", \"女\"), 30, replace = TRUE))\n)\n\n# 基本统计描述\nsummary(bp_data[, c(\"收缩压\", \"舒张压\")])\n\n\n     收缩压          舒张压     \n Min.   :100.3   Min.   :67.61  \n 1st Qu.:113.3   1st Qu.:77.57  \n Median :119.3   Median :80.38  \n Mean   :119.5   Mean   :81.43  \n 3rd Qu.:124.9   3rd Qu.:86.06  \n Max.   :137.9   Max.   :97.35  \n\n\n\n\n2.3.2 结果解读与可视化\n让我们创建一个简单的血压数据可视化：\n\n\n代码\nggplot(bp_data, aes(x = 性别)) +\n  geom_boxplot(aes(y = 收缩压, fill = \"收缩压\")) +\n  geom_boxplot(aes(y = 舒张压, fill = \"舒张压\")) +\n  labs(\n    title = \"不同性别的血压分布\",\n    y = \"血压 (mmHg)\",\n    fill = \"血压类型\"\n  ) +\n  theme_minimal() +\n  theme(text = element_text(family = \"STKaiti\"))\n\n\n\n\n\n收缩压和舒张压的箱线图\n\n\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n尝试修改上述代码，添加年龄组的分析\n计算收缩压和舒张压的相关系数\n创建一个散点图来展示年龄与血压的关系",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R语言与医学研究基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter1.html#本章小结",
+    "href": "chapter1.html#本章小结",
+    "title": "2  R语言与医学研究基础",
+    "section": "2.4 本章小结",
+    "text": "2.4 本章小结\n在本章中，我们：\n\n了解了为什么要学习R语言\n完成了R和RStudio的安装配置\n熟悉了RStudio的基本界面\n完成了第一个医学数据分析案例\n\n下一章，我们将深入学习R语言的基础数据类型和数据结构。",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>R语言与医学研究基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter2.html",
+    "href": "chapter2.html",
+    "title": "3  医学数据基础操作",
+    "section": "",
+    "text": "3.1 数据结构与类型",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>医学数据基础操作</span>"
+    ]
+  },
+  {
+    "objectID": "chapter2.html#sec-data-structures",
+    "href": "chapter2.html#sec-data-structures",
+    "title": "3  医学数据基础操作",
+    "section": "",
+    "text": "3.1.1 向量（临床指标存储）\n向量是R中最基本的数据结构，适合存储临床指标：\n\n\n代码\n# 创建数值型向量存储血压数据\nsbp &lt;- c(120, 135, 142, 128, 115)\ndbp &lt;- c(80, 85, 90, 82, 75)\n\n# 创建字符型向量存储诊断结果\ndiagnosis &lt;- c(\"高血压\", \"糖尿病\", \"冠心病\", \"高血压\", \"正常\")\n\n# 创建逻辑型向量标记是否需要治疗\nneeds_treatment &lt;- c(TRUE, TRUE, TRUE, FALSE, FALSE)\n\n# 向量的基本运算\nmean(sbp)  # 平均收缩压\n\n\n[1] 128\n\n\n代码\nsd(dbp)    # 舒张压标准差\n\n\n[1] 5.59464\n\n\n代码\ntable(diagnosis)  # 诊断结果频数统计\n\n\ndiagnosis\n高血压 冠心病 糖尿病   正常 \n     2      1      1      1 \n\n\n\n\n3.1.2 数据框（患者信息表构建）\n数据框是最常用的数据结构，适合存储患者信息表：\n\n\n代码\n# 创建患者信息数据框\npatients &lt;- data.frame(\n  ID = 1:5,\n  姓名 = c(\"张三\", \"李四\", \"王五\", \"赵六\", \"钱七\"),\n  年龄 = c(45, 52, 38, 61, 42),\n  性别 = factor(c(\"男\", \"女\", \"男\", \"女\", \"男\")),\n  收缩压 = sbp,\n  舒张压 = dbp,\n  诊断 = diagnosis,\n  stringsAsFactors = FALSE\n)\n\n# 查看数据结构\nstr(patients)\n\n\n'data.frame':   5 obs. of  7 variables:\n $ ID    : int  1 2 3 4 5\n $ 姓名  : chr  \"张三\" \"李四\" \"王五\" \"赵六\" ...\n $ 年龄  : num  45 52 38 61 42\n $ 性别  : Factor w/ 2 levels \"男\",\"女\": 1 2 1 2 1\n $ 收缩压: num  120 135 142 128 115\n $ 舒张压: num  80 85 90 82 75\n $ 诊断  : chr  \"高血压\" \"糖尿病\" \"冠心病\" \"高血压\" ...\n\n\n代码\nsummary(patients)\n\n\n       ID        姓名                年龄      性别       收缩压   \n Min.   :1   Length:5           Min.   :38.0   男:3   Min.   :115  \n 1st Qu.:2   Class :character   1st Qu.:42.0   女:2   1st Qu.:120  \n Median :3   Mode  :character   Median :45.0          Median :128  \n Mean   :3                      Mean   :47.6          Mean   :128  \n 3rd Qu.:4                      3rd Qu.:52.0          3rd Qu.:135  \n Max.   :5                      Max.   :61.0          Max.   :142  \n     舒张压         诊断          \n Min.   :75.0   Length:5          \n 1st Qu.:80.0   Class :character  \n Median :82.0   Mode  :character  \n Mean   :82.4                     \n 3rd Qu.:85.0                     \n Max.   :90.0",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>医学数据基础操作</span>"
+    ]
+  },
+  {
+    "objectID": "chapter2.html#sec-data-io",
+    "href": "chapter2.html#sec-data-io",
+    "title": "3  医学数据基础操作",
+    "section": "3.2 数据导入与导出",
+    "text": "3.2 数据导入与导出\n\n3.2.1 读取Excel/CSV病历数据\n\n\n代码\n# 读取CSV文件\nlibrary(readr)\ndata_csv &lt;- read_csv(\"patient_data.csv\")\n\n# 读取Excel文件\nlibrary(readxl)\ndata_excel &lt;- read_excel(\"clinical_records.xlsx\", \n                        sheet = \"Sheet1\")\n\n# 读取SPSS文件\nlibrary(haven)\ndata_spss &lt;- read_sav(\"hospital_data.sav\")\n\n\n\n\n3.2.2 导出统计分析结果\n\n\n代码\n# 导出为CSV\nwrite_csv(patients, \"processed_data.csv\")\n\n# 导出为Excel\nlibrary(writexl)\nwrite_xlsx(patients, \"analysis_results.xlsx\")\n\n# 导出为SPSS格式\nwrite_sav(patients, \"final_data.sav\")",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>医学数据基础操作</span>"
+    ]
+  },
+  {
+    "objectID": "chapter2.html#sec-data-cleaning",
+    "href": "chapter2.html#sec-data-cleaning",
+    "title": "3  医学数据基础操作",
+    "section": "3.3 医学数据清洗实战",
+    "text": "3.3 医学数据清洗实战\n\n3.3.1 处理缺失值（实验室数据）\n\n\n代码\n# 创建带有缺失值的实验室数据\nlab_data &lt;- data.frame(\n  ID = 1:6,\n  血红蛋白 = c(13.5, NA, 12.8, 14.2, NA, 11.9),\n  白细胞 = c(6.5, 7.2, NA, 5.8, 8.1, NA),\n  血小板 = c(NA, 235, 180, NA, 205, 195)\n)\n\n# 检查缺失值\ncolSums(is.na(lab_data))\n\n\n      ID 血红蛋白   白细胞   血小板 \n       0        2        2        2 \n\n\n代码\n# 处理缺失值\nlibrary(tidyverse)\nlab_data_clean &lt;- lab_data %&gt;%\n  mutate(across(where(is.numeric) & !ID, \n                ~ifelse(is.na(.), mean(., na.rm = TRUE), .)))\n\n# 展示处理结果\nprint(\"处理前：\")\n\n\n[1] \"处理前：\"\n\n\n代码\nprint(lab_data)\n\n\n  ID 血红蛋白 白细胞 血小板\n1  1     13.5    6.5     NA\n2  2       NA    7.2    235\n3  3     12.8     NA    180\n4  4     14.2    5.8     NA\n5  5       NA    8.1    205\n6  6     11.9     NA    195\n\n\n代码\nprint(\"处理后：\")\n\n\n[1] \"处理后：\"\n\n\n代码\nprint(lab_data_clean)\n\n\n  ID 血红蛋白 白细胞 血小板\n1  1     13.5    6.5 203.75\n2  2     13.1    7.2 235.00\n3  3     12.8    6.9 180.00\n4  4     14.2    5.8 203.75\n5  5     13.1    8.1 205.00\n6  6     11.9    6.9 195.00\n\n\n\n\n3.3.2 异常值检测（生命体征数据）\n\n\n代码\n# 创建生命体征数据\nvitals &lt;- data.frame(\n  ID = 1:100,\n  体温 = rnorm(100, 36.8, 0.5),\n  心率 = rnorm(100, 75, 10),\n  呼吸 = rnorm(100, 16, 2)\n)\n\n# 箱线图检测异常值\nlibrary(ggplot2)\nggplot(vitals, aes(y = 心率)) +\n  geom_boxplot() +\n  labs(title = \"心率异常值检测\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n代码\n# 使用IQR方法识别异常值\nidentify_outliers &lt;- function(x) {\n  q1 &lt;- quantile(x, 0.25)\n  q3 &lt;- quantile(x, 0.75)\n  iqr &lt;- q3 - q1\n  lower_bound &lt;- q1 - 1.5 * iqr\n  upper_bound &lt;- q3 + 1.5 * iqr\n  x &lt; lower_bound | x &gt; upper_bound\n}\n\n# 标记异常值\nvitals$心率_异常 &lt;- identify_outliers(vitals$心率)\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n尝试导入一个真实的医学数据集\n对数据进行基本的清洗和预处理\n处理数据中的缺失值和异常值\n将处理后的数据导出为不同格式",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>医学数据基础操作</span>"
+    ]
+  },
+  {
+    "objectID": "chapter2.html#本章小结",
+    "href": "chapter2.html#本章小结",
+    "title": "3  医学数据基础操作",
+    "section": "3.4 本章小结",
+    "text": "3.4 本章小结\n在本章中，我们学习了：\n\nR语言中的基本数据结构\n如何导入和导出医学数据\n处理缺失值的方法\n异常值的检测和处理\n\n下一章，我们将学习如何使用ggplot2进行医学数据可视化。",
+    "crumbs": [
+      "基础知识",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>医学数据基础操作</span>"
+    ]
+  },
+  {
+    "objectID": "chapter3.html",
+    "href": "chapter3.html",
+    "title": "4  医学数据可视化",
+    "section": "",
+    "text": "4.1 ggplot2核心语法",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>医学数据可视化</span>"
+    ]
+  },
+  {
+    "objectID": "chapter3.html#sec-ggplot2-basics",
+    "href": "chapter3.html#sec-ggplot2-basics",
+    "title": "4  医学数据可视化",
+    "section": "",
+    "text": "4.1.1 临床指标分布直方图\n\n\n代码\nlibrary(tidyverse)\nlibrary(ggthemes)\n\n# 创建示例数据\nset.seed(123)\nclinical_data &lt;- data.frame(\n  BMI = rnorm(200, 24, 3),\n  年龄 = rnorm(200, 45, 15),\n  性别 = factor(sample(c(\"男\", \"女\"), 200, replace = TRUE)),\n  血糖 = rnorm(200, 5.5, 1)\n)\n\n# 绘制BMI分布直方图\nggplot(clinical_data, aes(x = BMI)) +\n  geom_histogram(aes(y = ..density..), bins = 30, fill = \"lightblue\") +\n  geom_density(color = \"red\") +\n  labs(title = \"患者BMI分布\",\n       x = \"BMI (kg/m²)\",\n       y = \"密度\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n4.1.2 药物效果折线图\n\n\n代码\n# 创建药物效果随访数据\ndrug_data &lt;- data.frame(\n  时间点 = rep(c(0, 4, 8, 12, 16), each = 30),\n  治疗组 = rep(rep(c(\"药物A\", \"药物B\", \"安慰剂\"), each = 10), 5),\n  血压 = rnorm(150, mean = 140, sd = 10) - \n        rep(c(0, 4, 8, 12, 16), each = 30) * \n        rep(c(2, 1.5, 0.5), each = 10)\n)\n\n# 绘制药物效果折线图\nggplot(drug_data, aes(x = 时间点, y = 血压, color = 治疗组)) +\n  stat_summary(fun = mean, geom = \"line\") +\n  stat_summary(fun.data = mean_se, geom = \"errorbar\", width = 0.5) +\n  labs(title = \"不同治疗方案的降压效果\",\n       x = \"随访时间 (周)\",\n       y = \"收缩压 (mmHg)\") +\n  theme_minimal()",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>医学数据可视化</span>"
+    ]
+  },
+  {
+    "objectID": "chapter3.html#sec-medical-plots",
+    "href": "chapter3.html#sec-medical-plots",
+    "title": "4  医学数据可视化",
+    "section": "4.2 医学专用图形",
+    "text": "4.2 医学专用图形\n\n4.2.1 生存曲线（Kaplan-Meier）\n\n\n代码\nlibrary(survival)\nlibrary(survminer)\n\n# 创建生存数据\nset.seed(123)\nsurvival_data &lt;- data.frame(\n  time = rexp(200, 1/50),\n  status = sample(0:1, 200, replace = TRUE),\n  group = factor(sample(c(\"高危\", \"低危\"), 200, replace = TRUE))\n)\n\n# 创建生存对象\nsurv_obj &lt;- Surv(survival_data$time, survival_data$status)\nfit &lt;- survfit(surv_obj ~ group, data = survival_data)\n\n# 绘制生存曲线\nggsurvplot(fit,\n           data = survival_data,\n           pval = TRUE,\n           conf.int = TRUE,\n           risk.table = TRUE,\n           title = \"不同风险组患者生存曲线\",\n           xlab = \"时间 (月)\",\n           ylab = \"生存概率\",\n           legend.title = \"风险分组\",\n           ggtheme = theme_minimal())\n\n\n\n\n\n\n\n\n\n\n\n4.2.2 森林图（Meta分析）\n\n\n代码\nlibrary(meta)\nlibrary(metafor)\n\n# 创建Meta分析数据\nstudies &lt;- data.frame(\n  author = paste(\"研究\", 1:8),\n  year = 2015:2022,\n  te = rnorm(8, 0.5, 0.2),   # 处理效应\n  se = runif(8, 0.1, 0.3)    # 标准误\n)\n\n# 进行Meta分析\nmeta_analysis &lt;- metagen(TE = te,\n                        seTE = se,\n                        studlab = author,\n                        data = studies,\n                        sm = \"RR\",\n                        fixed = TRUE,\n                        random = TRUE)\n\n# 绘制森林图\nforest(meta_analysis,\n       leftlabs = c(\"研究\", \"年份\"),\n       xlab = \"风险比(RR)\",\n       text.random = \"随机效应模型\",\n       text.fixed = \"固定效应模型\")",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>医学数据可视化</span>"
+    ]
+  },
+  {
+    "objectID": "chapter3.html#sec-plot-formatting",
+    "href": "chapter3.html#sec-plot-formatting",
+    "title": "4  医学数据可视化",
+    "section": "4.3 图形美化与输出",
+    "text": "4.3 图形美化与输出\n\n4.3.1 期刊论文格式调整\n\n\n代码\n# 创建期刊风格主题\njournal_theme &lt;- theme_minimal() +\n  theme(\n    text = element_text(family = \"Times New Roman\", size = 12),\n    axis.title = element_text(size = 14),\n    plot.title = element_text(size = 16, face = \"bold\"),\n    legend.position = \"bottom\",\n    panel.grid.minor = element_blank()\n  )\n\n# 应用到图形\nggplot(clinical_data, aes(x = 年龄, y = 血糖, color = 性别)) +\n  geom_point(alpha = 0.6) +\n  geom_smooth(method = \"lm\") +\n  labs(title = \"年龄与血糖水平的关系\",\n       x = \"年龄 (岁)\",\n       y = \"空腹血糖 (mmol/L)\") +\n  journal_theme\n\n\n\n\n\n\n\n\n\n\n\n4.3.2 导出高分辨率TIFF/PDF\n\n\n代码\n# 导出TIFF格式\nggsave(\"figure1.tiff\",\n       width = 8, height = 6,\n       dpi = 300,\n       compression = \"lzw\")\n\n# 导出PDF格式\nggsave(\"figure1.pdf\",\n       width = 8, height = 6,\n       device = cairo_pdf)\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n使用自己的数据创建分布图\n绘制治疗效果的时间序列图\n制作一个符合期刊要求的图形\n尝试不同的配色方案",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>医学数据可视化</span>"
+    ]
+  },
+  {
+    "objectID": "chapter3.html#本章小结",
+    "href": "chapter3.html#本章小结",
+    "title": "4  医学数据可视化",
+    "section": "4.4 本章小结",
+    "text": "4.4 本章小结\n在本章中，我们学习了：\n\nggplot2的基本语法和应用\n医学研究中常用的图形类型\n如何美化图形以符合出版要求\n高质量图形的导出方法\n\n下一章，我们将学习基础统计分析方法。",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>医学数据可视化</span>"
+    ]
+  },
+  {
+    "objectID": "chapter4.html",
+    "href": "chapter4.html",
+    "title": "5  基础统计分析",
+    "section": "",
+    "text": "5.1 描述性统计",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>基础统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter4.html#sec-descriptive",
+    "href": "chapter4.html#sec-descriptive",
+    "title": "5  基础统计分析",
+    "section": "",
+    "text": "5.1.1 连续变量（年龄、BMI）\n\n\n代码\n# 创建示例数据\nset.seed(123)\npatient_data &lt;- data.frame(\n  age = rnorm(100, mean = 45, sd = 15),\n  temp = rnorm(100, mean = 37, sd = 0.5),\n  gender = factor(sample(c(\"男\", \"女\"), 100, replace = TRUE)),\n  group = factor(sample(c(\"对照组\", \"治疗组\"), 100, replace = TRUE))\n)\n\n# 基本描述性统计\npatient_summary &lt;- patient_data %&gt;%\n  select(age, temp) %&gt;%\n  summary()\n\nprint(patient_summary)\n\n\n      age             temp      \n Min.   :10.36   Min.   :35.97  \n 1st Qu.:37.59   1st Qu.:36.60  \n Median :45.93   Median :36.89  \n Mean   :46.36   Mean   :36.95  \n 3rd Qu.:55.38   3rd Qu.:37.23  \n Max.   :77.81   Max.   :38.62  \n\n\n代码\n# 使用gtsummary创建更专业的统计表\npatient_data %&gt;%\n  select(age, temp, gender, group) %&gt;%\n  tbl_summary(\n    by = group,\n    statistic = list(\n      all_continuous() ~ \"{mean} ({sd})\",\n      all_categorical() ~ \"{n} ({p}%)\"\n    ),\n    digits = all_continuous() ~ 1\n  ) %&gt;%\n  add_p() %&gt;%\n  add_n() %&gt;%\n  modify_header(label = \"**变量**\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n变量\nN\n对照组 N = 431\n治疗组 N = 571\np-value\n\n\n\n\nage\n100\n46.8 (15.4)\n46.0 (12.4)\n\n\n\n\ntemp\n100\n36.9 (0.5)\n37.0 (0.5)\n\n\n\n\ngender\n100\n\n\n\n\n\n\n\n\n    男\n\n\n24 (56%)\n26 (46%)\n\n\n\n\n    女\n\n\n19 (44%)\n31 (54%)\n\n\n\n\n\n1 Mean (SD); n (%)\n\n\n\n\n\n\n\n\n\n\n5.1.2 分类变量（性别、疾病分期）\n\n\n代码\n# 创建分类数据\ncat_data &lt;- data.frame(\n  gender = factor(rep(c(\"男\", \"女\"), each = 100)),\n  treatment = factor(sample(c(\"治疗A\", \"治疗B\", \"治疗C\"), 200, replace = TRUE)),\n  response = factor(sample(c(\"有效\", \"无效\"), 200, replace = TRUE, prob = c(0.7, 0.3)))\n)\n\n# 创建列联表\ntreatment_response &lt;- table(cat_data$treatment, cat_data$response)\nprint(\"治疗方案与疗效的分布：\")\n\n\n[1] \"治疗方案与疗效的分布：\"\n\n\n代码\nprint(treatment_response)\n\n\n       \n        无效 有效\n  治疗A   15   53\n  治疗B   19   40\n  治疗C   21   52\n\n\n代码\n# 使用gtsummary创建分类变量摘要\ncat_data %&gt;%\n  tbl_summary(\n    by = treatment,\n    missing = \"no\"\n  ) %&gt;%\n  add_p() %&gt;%\n  modify_spanning_header(c(\"stat_1\", \"stat_2\", \"stat_3\") ~ \"治疗方案\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCharacteristic\n\n治疗方案\n\np-value\n\n\n治疗A N = 681\n治疗B N = 591\n治疗C N = 731\n\n\n\n\ngender\n\n\n\n\n\n\n\n\n\n\n    男\n34 (50%)\n33 (56%)\n33 (45%)\n\n\n\n\n    女\n34 (50%)\n26 (44%)\n40 (55%)\n\n\n\n\nresponse\n\n\n\n\n\n\n\n\n\n\n    无效\n15 (22%)\n19 (32%)\n21 (29%)\n\n\n\n\n    有效\n53 (78%)\n40 (68%)\n52 (71%)\n\n\n\n\n\n1 n (%)",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>基础统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter4.html#sec-inference",
+    "href": "chapter4.html#sec-inference",
+    "title": "5  基础统计分析",
+    "section": "5.2 统计推断方法",
+    "text": "5.2 统计推断方法\n\n5.2.1 t检验（药物组间比较）\n\n\n代码\n# 创建两组治疗数据\nset.seed(123)\ntreatment_data &lt;- data.frame(\n  group = factor(rep(c(\"对照组\", \"治疗组\"), each = 50)),\n  value = c(\n    rnorm(50, mean = 100, sd = 15),  # 对照组\n    rnorm(50, mean = 110, sd = 15)   # 治疗组\n  )\n)\n\n# 进行t检验\nt_test_result &lt;- t.test(value ~ group, data = treatment_data)\n\n# 创建可视化比较\nggplot(treatment_data, aes(x = group, y = value, fill = group)) +\n  geom_boxplot() +\n  labs(title = \"治疗效果比较\",\n       subtitle = paste(\"p值 =\", format.pval(t_test_result$p.value, digits = 3)),\n       x = \"分组\",\n       y = \"测量值\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n5.2.2 卡方检验（发病率差异）\n\n\n代码\n# 创建分类数据\ndisease_data &lt;- data.frame(\n  gender = factor(rep(c(\"男\", \"女\"), each = 100)),\n  disease = factor(c(\n    sample(c(\"是\", \"否\"), 100, replace = TRUE, prob = c(0.3, 0.7)),\n    sample(c(\"是\", \"否\"), 100, replace = TRUE, prob = c(0.2, 0.8))\n  ))\n)\n\n# 进行卡方检验\nchi_result &lt;- chisq.test(table(disease_data$gender, disease_data$disease))\n\n# 创建马赛克图\nlibrary(vcd)\nmosaic(~gender + disease, data = disease_data,\n       main = \"性别与疾病发生率关系\",\n       shade = TRUE)\n\n\n\n\n\n\n\n\n\n代码\n# 打印结果\nprint(chi_result)\n\n\n\n    Pearson's Chi-squared test with Yates' continuity correction\n\ndata:  table(disease_data$gender, disease_data$disease)\nX-squared = 2.2204, df = 1, p-value = 0.1362\n\n\n代码\n# 创建列联表可视化\ndisease_table &lt;- table(disease_data$gender, disease_data$disease)\nprint(\"性别与疾病的分布：\")\n\n\n[1] \"性别与疾病的分布：\"\n\n\n代码\nprint(disease_table)\n\n\n    \n     否 是\n  男 71 29\n  女 81 19",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>基础统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter4.html#sec-correlation",
+    "href": "chapter4.html#sec-correlation",
+    "title": "5  基础统计分析",
+    "section": "5.3 相关性分析",
+    "text": "5.3 相关性分析\n\n5.3.1 Pearson/Spearman相关\n\n\n代码\n# 创建示例数据进行相关性分析\nset.seed(123)\ncor_data &lt;- data.frame(\n  age = rnorm(100, mean = 45, sd = 15),\n  sbp = rnorm(100, mean = 120, sd = 15),\n  dbp = rnorm(100, mean = 80, sd = 10),\n  bmi = rnorm(100, mean = 24, sd = 3)\n)\n\n# 计算相关系数\ncor_test &lt;- cor.test(cor_data$age, cor_data$sbp,\n                     method = \"spearman\")\n\n# 创建散点图\nggplot(cor_data, aes(x = age, y = sbp)) +\n  geom_point(alpha = 0.5) +\n  geom_smooth(method = \"lm\", color = \"red\") +\n  labs(title = \"年龄与收缩压的相关性分析\",\n       subtitle = paste(\"Spearman相关系数 =\", \n                       round(cor_test$estimate, 3),\n                       \"\\np值 =\", format.pval(cor_test$p.value, digits = 3)),\n       x = \"年龄 (岁)\",\n       y = \"收缩压 (mmHg)\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n5.3.2 相关系数矩阵可视化\n\n\n代码\nlibrary(corrplot)\n\n# 计算相关系数矩阵\ncor_matrix &lt;- cor(cor_data, method = \"spearman\")\n\n# 创建相关系数矩阵图\ncorrplot(cor_matrix,\n         method = \"color\",\n         type = \"upper\",\n         addCoef.col = \"black\",\n         tl.col = \"black\",\n         tl.srt = 45,\n         diag = FALSE)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n使用自己的数据集进行描述性统计分析\n比较两组患者的实验室指标差异\n分析疾病发生率在不同人群中的差异\n探索多个临床指标之间的相关性",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>基础统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter4.html#本章小结",
+    "href": "chapter4.html#本章小结",
+    "title": "5  基础统计分析",
+    "section": "5.4 本章小结",
+    "text": "5.4 本章小结\n在本章中，我们学习了：\n\n如何进行基本的描述性统计分析\nt检验和卡方检验的应用\n相关性分析方法\n使用专业的统计表格和图形展示结果\n\n下一章，我们将学习临床研究数据处理的高级技巧。",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>基础统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter5.html",
+    "href": "chapter5.html",
+    "title": "6  临床研究数据处理",
+    "section": "",
+    "text": "6.1 dplyr数据操作",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>临床研究数据处理</span>"
+    ]
+  },
+  {
+    "objectID": "chapter5.html#sec-dplyr",
+    "href": "chapter5.html#sec-dplyr",
+    "title": "6  临床研究数据处理",
+    "section": "",
+    "text": "6.1.1 患者数据筛选(filter)\n我们将使用survival包中的lung数据集（肺癌患者数据）进行演示：\n\n\n代码\nlibrary(tidyverse)\nlibrary(survival)\nlibrary(medicaldata)\n\n# 加载肺癌数据集\ndata(lung)\nglimpse(lung)\n\n\nRows: 228\nColumns: 10\n$ inst      &lt;dbl&gt; 3, 3, 3, 5, 1, 12, 7, 11, 1, 7, 6, 16, 11, 21, 12, 1, 22, 16…\n$ time      &lt;dbl&gt; 306, 455, 1010, 210, 883, 1022, 310, 361, 218, 166, 170, 654…\n$ status    &lt;dbl&gt; 2, 2, 1, 2, 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, …\n$ age       &lt;dbl&gt; 74, 68, 56, 57, 60, 74, 68, 71, 53, 61, 57, 68, 68, 60, 57, …\n$ sex       &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 2, 2, 1, 1, 1, 2, 2, 1, 1, 1, 1, 1, 2, 1, …\n$ ph.ecog   &lt;dbl&gt; 1, 0, 0, 1, 0, 1, 2, 2, 1, 2, 1, 2, 1, NA, 1, 1, 1, 2, 2, 1,…\n$ ph.karno  &lt;dbl&gt; 90, 90, 90, 90, 100, 50, 70, 60, 70, 70, 80, 70, 90, 60, 80,…\n$ pat.karno &lt;dbl&gt; 100, 90, 90, 60, 90, 80, 60, 80, 80, 70, 80, 70, 90, 70, 70,…\n$ meal.cal  &lt;dbl&gt; 1175, 1225, NA, 1150, NA, 513, 384, 538, 825, 271, 1025, NA,…\n$ wt.loss   &lt;dbl&gt; NA, 15, 15, 11, 0, 0, 10, 1, 16, 34, 27, 23, 5, 32, 60, 15, …\n\n\n代码\n# 基本筛选操作\nadvanced_cases &lt;- lung %&gt;%\n  filter(status == 2) %&gt;%  # 筛选死亡病例\n  filter(age &gt; 60) %&gt;%     # 筛选老年患者\n  arrange(desc(time))      # 按生存时间降序排列\n\n# 多条件筛选\nhigh_risk_patients &lt;- lung %&gt;%\n  filter(sex == 1,         # 男性\n         ph.ecog &gt;= 2,     # ECOG体能状态较差\n         wt.loss &gt; 10)     # 体重下降显著\n\n# 展示筛选结果\nprint(\"高危患者特征：\")\n\n\n[1] \"高危患者特征：\"\n\n\n代码\nsummary(high_risk_patients)\n\n\n      inst           time           status           age             sex   \n Min.   : 1.0   Min.   : 12.0   Min.   :1.000   Min.   :49.00   Min.   :1  \n 1st Qu.: 1.0   1st Qu.:111.8   1st Qu.:2.000   1st Qu.:61.75   1st Qu.:1  \n Median : 7.0   Median :194.5   Median :2.000   Median :67.00   Median :1  \n Mean   : 8.8   Mean   :262.1   Mean   :1.938   Mean   :65.94   Mean   :1  \n 3rd Qu.:14.5   3rd Qu.:301.2   3rd Qu.:2.000   3rd Qu.:70.75   3rd Qu.:1  \n Max.   :22.0   Max.   :814.0   Max.   :2.000   Max.   :76.00   Max.   :1  \n NA's   :1                                                                 \n    ph.ecog         ph.karno       pat.karno     meal.cal         wt.loss     \n Min.   :2.000   Min.   :50.00   Min.   :40   Min.   : 271.0   Min.   :18.00  \n 1st Qu.:2.000   1st Qu.:60.00   1st Qu.:60   1st Qu.: 428.5   1st Qu.:20.00  \n Median :2.000   Median :70.00   Median :70   Median : 644.0   Median :23.00  \n Mean   :2.062   Mean   :63.75   Mean   :64   Mean   : 817.2   Mean   :24.69  \n 3rd Qu.:2.000   3rd Qu.:70.00   3rd Qu.:70   3rd Qu.:1062.5   3rd Qu.:28.50  \n Max.   :3.000   Max.   :70.00   Max.   :80   Max.   :2450.0   Max.   :36.00  \n                                 NA's   :1    NA's   :2                       \n\n\n\n\n6.1.2 实验室指标计算(mutate)\n\n\n代码\n# 创建示例临床数据\nset.seed(123)\nclinical_data &lt;- data.frame(\n  patient_id = 1:200,\n  age = rnorm(200, mean = 45, sd = 15),\n  temp = rnorm(200, mean = 37, sd = 0.5),\n  gender = factor(sample(c(\"男\", \"女\"), 200, replace = TRUE)),\n  wbc = rnorm(200, mean = 6.5, sd = 2),\n  crp = rlnorm(200, log(10), 0.8)\n)\n\n# 添加新的计算指标\nclinical_analysis &lt;- clinical_data %&gt;%\n  mutate(\n    # 体温分类\n    temp_category = case_when(\n      temp &lt; 37.3 ~ \"正常\",\n      temp &lt; 38.0 ~ \"低热\",\n      temp &lt; 39.0 ~ \"中度发热\",\n      TRUE ~ \"高热\"\n    ),\n    # 年龄分组\n    age_group = case_when(\n      age &lt; 18 ~ \"未成年\",\n      age &lt; 65 ~ \"成年\",\n      TRUE ~ \"老年\"\n    ),\n    # 是否老年\n    is_elderly = age &gt;= 65,\n    # 炎症风险评分\n    risk_score = (temp - 37) * 10 + (crp/10) + (wbc - 7)^2\n  ) %&gt;%\n  select(patient_id, age, age_group, temp, temp_category, \n         is_elderly, risk_score, everything())\n\n# 查看新变量的分布\nsummary(clinical_analysis$risk_score)\n\n\n    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. \n-10.1273   0.7558   4.6151   6.0529  10.8289  44.6618 \n\n\n代码\ntable(clinical_analysis$temp_category)\n\n\n\n    低热     正常 中度发热 \n      54      140        6 \n\n\n代码\n# 可视化风险评分分布\nggplot(clinical_analysis, aes(x = risk_score)) +\n  geom_histogram(fill = \"steelblue\", bins = 30) +\n  labs(title = \"患者风险评分分布\",\n       x = \"风险评分\",\n       y = \"频数\") +\n  theme_minimal()",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>临床研究数据处理</span>"
+    ]
+  },
+  {
+    "objectID": "chapter5.html#sec-time-data",
+    "href": "chapter5.html#sec-time-data",
+    "title": "6  临床研究数据处理",
+    "section": "6.2 时间数据处理",
+    "text": "6.2 时间数据处理\n\n6.2.1 入院时间序列分析\n使用medicaldata包中的smartpill数据：\n\n\n代码\nlibrary(lubridate)\n\n# 创建示例入院数据\nset.seed(123)\nadmission_data &lt;- data.frame(\n  patient_id = 1:100,\n  admission_date = as.Date(\"2023-01-01\") + sample(0:90, 100, replace = TRUE),\n  los = sample(1:30, 100, replace = TRUE)  # 住院天数\n) %&gt;%\n  mutate(\n    discharge_date = admission_date + los,\n    admission_month = month(admission_date, label = TRUE),\n    weekday = wday(admission_date, label = TRUE)\n  )\n\n# 分析入院时间模式\nggplot(admission_data, aes(x = admission_month)) +\n  geom_bar(fill = \"steelblue\") +\n  labs(title = \"每月入院人数分布\",\n       x = \"月份\",\n       y = \"入院人数\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n6.2.2 随访间隔计算\n\n\n代码\n# 创建随访数据\nfollow_up_data &lt;- lung %&gt;%\n  mutate(\n    start_date = as.Date(\"2020-01-01\") + time,\n    last_contact = start_date + time,\n    follow_up_duration = interval(start_date, last_contact) / months(1),\n    follow_up_status = if_else(status == 2, \"死亡\", \"存活\")\n  )\n\n# 分析随访时间分布\nggplot(follow_up_data, aes(x = follow_up_duration, fill = follow_up_status)) +\n  geom_histogram(position = \"dodge\", bins = 30) +\n  labs(title = \"随访时间分布\",\n       x = \"随访月数\",\n       y = \"患者数\") +\n  theme_minimal()",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>临床研究数据处理</span>"
+    ]
+  },
+  {
+    "objectID": "chapter5.html#sec-reshape",
+    "href": "chapter5.html#sec-reshape",
+    "title": "6  临床研究数据处理",
+    "section": "6.3 数据重塑技巧",
+    "text": "6.3 数据重塑技巧\n\n6.3.1 宽格式/长格式转换\n使用medicaldata包中的cytomegalovirus数据：\n\n\n代码\nlibrary(tidyr)\n\n# 创建示例实验室检查数据\nlab_data &lt;- data.frame(\n  patient_id = 1:5,\n  wbc_1 = rnorm(5, 6.5, 1),\n  wbc_2 = rnorm(5, 6.8, 1),\n  wbc_3 = rnorm(5, 7.0, 1),\n  hb_1 = rnorm(5, 130, 10),\n  hb_2 = rnorm(5, 128, 10),\n  hb_3 = rnorm(5, 125, 10)\n)\n\n# 转换为长格式\nlab_long &lt;- lab_data %&gt;%\n  pivot_longer(\n    cols = -patient_id,\n    names_to = c(\"test\", \"visit\"),\n    names_pattern = \"(.+)_(.+)\",\n    values_to = \"value\"\n  )\n\n# 可视化检验结果趋势\nggplot(lab_long, aes(x = visit, y = value, group = patient_id, color = factor(patient_id))) +\n  geom_line() +\n  facet_wrap(~test, scales = \"free_y\") +\n  labs(title = \"实验室检查结果追踪\",\n       x = \"访视次数\",\n       y = \"检查值\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n6.3.2 合并多中心研究数据\n\n\n代码\n# 模拟多中心数据\ncenter_1 &lt;- data.frame(\n  patient_id = paste0(\"A\", 1:50),\n  age = rnorm(50, 65, 10),\n  center = \"中心1\"\n)\n\ncenter_2 &lt;- data.frame(\n  patient_id = paste0(\"B\", 1:30),\n  age = rnorm(30, 62, 8),\n  center = \"中心2\"\n)\n\n# 合并数据集\ncombined_data &lt;- bind_rows(center_1, center_2) %&gt;%\n  mutate(age_group = cut(age, \n                        breaks = c(0, 50, 65, 100),\n                        labels = c(\"青年\", \"中年\", \"老年\")))\n\n# 分析各中心年龄分布\nggplot(combined_data, aes(x = center, y = age, fill = center)) +\n  geom_boxplot() +\n  labs(title = \"各中心患者年龄分布\",\n       x = \"研究中心\",\n       y = \"年龄\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n使用自己的数据集进行数据清洗和转换\n计算新的临床指标\n处理和分析时间序列数据\n合并来自不同来源的数据集",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>临床研究数据处理</span>"
+    ]
+  },
+  {
+    "objectID": "chapter5.html#本章小结",
+    "href": "chapter5.html#本章小结",
+    "title": "6  临床研究数据处理",
+    "section": "6.4 本章小结",
+    "text": "6.4 本章小结\n在本章中，我们学习了：\n\n使用dplyr进行数据筛选和计算\n处理临床研究中的时间数据\n数据格式的转换技巧\n多中心数据的合并方法\n\n下一章，我们将学习统计建模的基础知识。",
+    "crumbs": [
+      "数据处理与可视化",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>临床研究数据处理</span>"
+    ]
+  },
+  {
+    "objectID": "chapter6.html",
+    "href": "chapter6.html",
+    "title": "7  统计建模基础",
+    "section": "",
+    "text": "7.1 线性回归模型",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>统计建模基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter6.html#sec-linear-regression",
+    "href": "chapter6.html#sec-linear-regression",
+    "title": "7  统计建模基础",
+    "section": "",
+    "text": "7.1.1 血压影响因素建模\n\n\n代码\nlibrary(tidyverse)\nlibrary(broom)\nlibrary(car)\n\n# 创建模拟数据\nset.seed(123)\nn &lt;- 500\n\n# 先创建基础变量\nclinical_data &lt;- data.frame(\n  age = rnorm(n, mean = 50, sd = 15),\n  bmi = rnorm(n, mean = 25, sd = 4),\n  heartrate = rnorm(n, mean = 75, sd = 12),\n  glucose = rnorm(n, mean = 100, sd = 20)\n)\n\n# 然后添加依赖变量\nclinical_data$sbp &lt;- with(clinical_data, \n  rnorm(n, mean = 130, sd = 20) + \n  0.3 * age + 0.5 * bmi + 0.2 * heartrate + 0.1 * glucose\n)\n\n# 构建多元线性回归模型\nbp_model &lt;- lm(sbp ~ age + bmi + heartrate + glucose, \n               data = clinical_data)\n\n# 查看模型摘要\nsummary(bp_model)\n\n\n\nCall:\nlm(formula = sbp ~ age + bmi + heartrate + glucose, data = clinical_data)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-55.840 -11.563  -0.507  12.989  59.652 \n\nCoefficients:\n             Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept) 135.98134    9.11313  14.921  &lt; 2e-16 ***\nage           0.27047    0.05793   4.669  3.9e-06 ***\nbmi           0.24109    0.21022   1.147  0.25200    \nheartrate     0.21393    0.07181   2.979  0.00303 ** \nglucose       0.09654    0.04186   2.306  0.02150 *  \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 18.8 on 495 degrees of freedom\nMultiple R-squared:  0.06864,   Adjusted R-squared:  0.06112 \nF-statistic: 9.121 on 4 and 495 DF,  p-value: 4.086e-07\n\n\n代码\n# 使用broom整理结果\ntidy_results &lt;- tidy(bp_model, conf.int = TRUE) %&gt;%\n  mutate(across(where(is.numeric), round, 3))\n\n# 可视化系数估计\nggplot(tidy_results, aes(x = reorder(term, estimate), y = estimate)) +\n  geom_point() +\n  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) +\n  coord_flip() +\n  labs(title = \"收缩压影响因素分析\",\n       x = \"预测变量\",\n       y = \"回归系数估计值\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n7.1.2 模型诊断与验证\n\n\n代码\n# 模型诊断图\npar(mfrow = c(2, 2))\nplot(bp_model)\n\n\n\n\n\n\n\n\n\n代码\n# 多重共线性检验\nvif(bp_model)\n\n\n      age       bmi heartrate   glucose \n 1.008900  1.020360  1.033525  1.043751 \n\n\n代码\n# 预测值与实际值比较\npredictions &lt;- augment(bp_model)\nggplot(predictions, aes(x = .fitted, y = sbp)) +\n  geom_point(alpha = 0.5) +\n  geom_abline(intercept = 0, slope = 1, color = \"red\") +\n  labs(title = \"预测值与实际值比较\",\n       x = \"预测收缩压\",\n       y = \"实际收缩压\") +\n  theme_minimal()",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>统计建模基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter6.html#sec-logistic-regression",
+    "href": "chapter6.html#sec-logistic-regression",
+    "title": "7  统计建模基础",
+    "section": "7.2 逻辑回归应用",
+    "text": "7.2 逻辑回归应用\n\n7.2.1 疾病风险预测模型\n\n\n代码\n# 创建二分类结局\nclinical_data$hypertension &lt;- ifelse(clinical_data$sbp &gt;= 140, 1, 0)\n\n# 构建逻辑回归模型\nlogit_model &lt;- glm(hypertension ~ age + bmi + glucose + heartrate,\n                   family = binomial(link = \"logit\"),\n                   data = clinical_data)\n\n# 模型摘要\nsummary(logit_model)\n\n\n\nCall:\nglm(formula = hypertension ~ age + bmi + glucose + heartrate, \n    family = binomial(link = \"logit\"), data = clinical_data)\n\nCoefficients:\n             Estimate Std. Error z value Pr(&gt;|z|)\n(Intercept) -1.388612   3.587642  -0.387    0.699\nage          0.035514   0.023491   1.512    0.131\nbmi          0.079299   0.088546   0.896    0.370\nglucose     -0.002773   0.016711  -0.166    0.868\nheartrate    0.028299   0.029470   0.960    0.337\n\n(Dispersion parameter for binomial family taken to be 1)\n\n    Null deviance: 90.150  on 499  degrees of freedom\nResidual deviance: 85.879  on 495  degrees of freedom\nAIC: 95.879\n\nNumber of Fisher Scoring iterations: 7\n\n\n代码\n# 计算OR值及置信区间\nor_results &lt;- tidy(logit_model, conf.int = TRUE, exponentiate = TRUE) %&gt;%\n  mutate(across(where(is.numeric), round, 3))\n\n\n\n\n7.2.2 OR值解读与报告\n\n\n代码\n# 创建森林图展示OR值\nggplot(or_results[-1,], aes(x = reorder(term, estimate), y = estimate)) +\n  geom_point() +\n  geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = 0.2) +\n  geom_hline(yintercept = 1, linetype = \"dashed\") +\n  coord_flip() +\n  scale_y_log10() +\n  labs(title = \"高血压风险因素分析\",\n       x = \"预测因素\",\n       y = \"比值比(OR)及95%置信区间\") +\n  theme_minimal()",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>统计建模基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter6.html#sec-anova",
+    "href": "chapter6.html#sec-anova",
+    "title": "7  统计建模基础",
+    "section": "7.3 方差分析",
+    "text": "7.3 方差分析\n\n7.3.1 多组治疗方案比较\n\n\n代码\n# 创建模拟治疗数据\nset.seed(123)\nn_per_group &lt;- 30\ntreatment_data &lt;- data.frame(\n  treatment = factor(rep(c(\"治疗A\", \"治疗B\", \"治疗C\"), each = n_per_group)),\n  viral_load = c(\n    rnorm(n_per_group, mean = 100, sd = 20),  # 治疗A组\n    rnorm(n_per_group, mean = 85, sd = 20),   # 治疗B组\n    rnorm(n_per_group, mean = 70, sd = 20)    # 治疗C组\n  )\n)\n\n# 进行单因素方差分析\naov_result &lt;- aov(viral_load ~ treatment, data = treatment_data)\nsummary(aov_result)\n\n\n            Df Sum Sq Mean Sq F value   Pr(&gt;F)    \ntreatment    2  12531    6266   19.45 1.04e-07 ***\nResiduals   87  28030     322                     \n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n\n代码\n# 可视化组间差异\nggplot(treatment_data, aes(x = treatment, y = viral_load)) +\n  geom_boxplot(fill = \"lightblue\") +\n  labs(title = \"不同治疗方案的病毒载量比较\",\n       x = \"治疗方案\",\n       y = \"病毒载量\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n7.3.2 事后检验（Tukey HSD）\n\n\n代码\n# Tukey事后检验\ntukey_result &lt;- TukeyHSD(aov_result)\nprint(tukey_result)\n\n\n  Tukey multiple comparisons of means\n    95% family-wise confidence level\n\nFit: aov(formula = viral_load ~ treatment, data = treatment_data)\n\n$treatment\n                 diff       lwr         upr     p adj\n治疗B-治疗A -10.49116 -21.54217   0.5598491 0.0664473\n治疗C-治疗A -28.56952 -39.62052 -17.5185098 0.0000001\n治疗C-治疗B -18.07836 -29.12937  -7.0273517 0.0005479\n\n\n代码\n# 可视化事后检验结果\nplot(tukey_result)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n使用自己的数据构建线性回归模型\n进行完整的模型诊断\n构建疾病预测模型并评估其性能\n比较多个治疗组的效果",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>统计建模基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter6.html#本章小结",
+    "href": "chapter6.html#本章小结",
+    "title": "7  统计建模基础",
+    "section": "7.4 本章小结",
+    "text": "7.4 本章小结\n在本章中，我们学习了：\n\n线性回归模型的构建和诊断\n逻辑回归在疾病预测中的应用\n方差分析的实施和解释\n如何正确报告统计结果\n\n下一章，我们将探讨高级医学统计分析方法。",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>统计建模基础</span>"
+    ]
+  },
+  {
+    "objectID": "chapter7.html",
+    "href": "chapter7.html",
+    "title": "8  高级医学统计分析",
+    "section": "",
+    "text": "8.1 生存分析",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>高级医学统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter7.html#sec-survival-analysis",
+    "href": "chapter7.html#sec-survival-analysis",
+    "title": "8  高级医学统计分析",
+    "section": "",
+    "text": "8.1.1 Kaplan-Meier曲线绘制\n\n\n代码\nlibrary(survival)\nlibrary(survminer)\nlibrary(tidyverse)\nlibrary(MASS)\n\n# 使用肺癌数据集\ndata(cancer, package = \"survival\")\nlung$sex &lt;- factor(lung$sex, labels = c(\"男\", \"女\"))\n\n# 创建生存对象\nsurv_obj &lt;- Surv(lung$time, lung$status)\n\n# 按性别分组的KM曲线\nfit &lt;- survfit(surv_obj ~ sex, data = lung)\n\n# 绘制生存曲线\nggsurvplot(fit,\n           data = lung,\n           pval = TRUE,           # 显示log-rank检验p值\n           conf.int = TRUE,       # 显示置信区间\n           risk.table = TRUE,     # 添加风险表\n           risk.table.height = 0.25,\n           xlab = \"时间(天)\",\n           ylab = \"生存概率\",\n           title = \"不同性别肺癌患者生存曲线\",\n           legend.labs = c(\"男\", \"女\"),\n           ggtheme = theme_minimal())\n\n\n\n\n\n\n\n\n\n\n\n8.1.2 Cox比例风险模型\n\n\n代码\n# 构建Cox模型\ncox_model &lt;- coxph(Surv(time, status) ~ sex + age + ph.ecog, data = lung)\n\n# 模型摘要\nsummary(cox_model)\n\n\nCall:\ncoxph(formula = Surv(time, status) ~ sex + age + ph.ecog, data = lung)\n\n  n= 227, number of events= 164 \n   (1 observation deleted due to missingness)\n\n             coef exp(coef)  se(coef)      z Pr(&gt;|z|)    \nsex女   -0.552612  0.575445  0.167739 -3.294 0.000986 ***\nage      0.011067  1.011128  0.009267  1.194 0.232416    \nph.ecog  0.463728  1.589991  0.113577  4.083 4.45e-05 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n        exp(coef) exp(-coef) lower .95 upper .95\nsex女      0.5754     1.7378    0.4142    0.7994\nage        1.0111     0.9890    0.9929    1.0297\nph.ecog    1.5900     0.6289    1.2727    1.9864\n\nConcordance= 0.637  (se = 0.025 )\nLikelihood ratio test= 30.5  on 3 df,   p=1e-06\nWald test            = 29.93  on 3 df,   p=1e-06\nScore (logrank) test = 30.5  on 3 df,   p=1e-06\n\n\n代码\n# 森林图展示风险比\nggforest(cox_model, \n         data = lung,\n         main = \"肺癌预后因素分析\")\n\n\n\n\n\n\n\n\n\n代码\n# 检验比例风险假定\ntest.ph &lt;- cox.zph(cox_model)\nggcoxzph(test.ph)",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>高级医学统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter7.html#sec-diagnostic-tests",
+    "href": "chapter7.html#sec-diagnostic-tests",
+    "title": "8  高级医学统计分析",
+    "section": "8.2 诊断试验分析",
+    "text": "8.2 诊断试验分析\n\n8.2.1 ROC曲线分析\n\n\n代码\n# 创建模拟数据\nset.seed(123)\nn &lt;- 1000\nsim_data &lt;- data.frame(\n  age = rnorm(n, mean = 50, sd = 10),\n  bmi = rnorm(n, mean = 25, sd = 4),\n  heartrate = rnorm(n, mean = 75, sd = 12),\n  glucose = rnorm(n, mean = 100, sd = 20),\n  sbp = rnorm(n, mean = 130, sd = 20)\n)\n\n# 创建高血压变量\nsim_data$hypertension &lt;- ifelse(sim_data$sbp &gt;= 140, 1, 0)\n\n# 构建预测模型\npred_model &lt;- glm(hypertension ~ age + bmi + heartrate + glucose,\n                 family = binomial,\n                 data = sim_data)\n\n# 计算ROC曲线\npred_prob &lt;- predict(pred_model, type = \"response\")\nroc_curve &lt;- roc(sim_data$hypertension, pred_prob)\n\n# 绘制ROC曲线\nplot(roc_curve, \n     main = \"高血压预测模型ROC曲线\",\n     xlab = \"1-特异度\",\n     ylab = \"敏感度\")\ntext(0.6, 0.2, paste(\"AUC =\", round(auc(roc_curve), 3)))\n\n\n\n\n\n\n\n\n\n\n\n8.2.2 灵敏度/特异度计算\n\n\n代码\n# 计算最佳截断值\noptimal_cutoff &lt;- coords(roc_curve, \"best\")\n\n# 创建混淆矩阵\npredicted_class &lt;- ifelse(pred_prob &gt; optimal_cutoff$threshold, 1, 0)\nconf_matrix &lt;- table(Actual = sim_data$hypertension, \n                    Predicted = predicted_class)\n\n# 计算诊断指标\nsensitivity &lt;- conf_matrix[2,2] / sum(conf_matrix[2,])\nspecificity &lt;- conf_matrix[1,1] / sum(conf_matrix[1,])\nppv &lt;- conf_matrix[2,2] / sum(conf_matrix[,2])\nnpv &lt;- conf_matrix[1,1] / sum(conf_matrix[,1])\n\n# 创建诊断指标表格\nmetrics &lt;- data.frame(\n  指标 = c(\"敏感度\", \"特异度\", \"阳性预测值\", \"阴性预测值\"),\n  值 = round(c(sensitivity, specificity, ppv, npv), 3)\n)\n\nknitr::kable(metrics, caption = \"诊断性能指标\")\n\n\n\n诊断性能指标\n\n\n指标\n值\n\n\n\n\n敏感度\n0.534\n\n\n特异度\n0.578\n\n\n阳性预测值\n0.345\n\n\n阴性预测值\n0.749",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>高级医学统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter7.html#sec-repeated-measures",
+    "href": "chapter7.html#sec-repeated-measures",
+    "title": "8  高级医学统计分析",
+    "section": "8.3 重复测量分析",
+    "text": "8.3 重复测量分析\n\n8.3.1 混合效应模型\n\n\n代码\nlibrary(lme4)\nlibrary(nlme)\n\n# 创建示例纵向数据\nset.seed(123)\nn_subjects &lt;- 50\nn_timepoints &lt;- 4\n\nlongitudinal_data &lt;- data.frame(\n  subject = rep(1:n_subjects, each = n_timepoints),\n  time = rep(0:3, times = n_subjects),\n  treatment = rep(rep(c(\"A\", \"B\"), each = n_subjects/2), each = n_timepoints)\n)\n\n# 添加结局变量\nlongitudinal_data$outcome &lt;- with(longitudinal_data, {\n  baseline &lt;- rnorm(n_subjects, mean = 100, sd = 10)[subject]\n  time_effect &lt;- 5 * time\n  treatment_effect &lt;- ifelse(treatment == \"A\", 2, -2) * time\n  random_effect &lt;- rnorm(n_subjects, mean = 0, sd = 5)[subject]\n  error &lt;- rnorm(n_subjects * n_timepoints, mean = 0, sd = 3)\n  baseline + time_effect + treatment_effect + random_effect + error\n})\n\n# 拟合混合效应模型\nmixed_model &lt;- lmer(outcome ~ time * treatment + (1|subject), \n                   data = longitudinal_data)\n\n# 模型摘要\nsummary(mixed_model)\n\n\nLinear mixed model fit by REML ['lmerMod']\nFormula: outcome ~ time * treatment + (1 | subject)\n   Data: longitudinal_data\n\nREML criterion at convergence: 1186.7\n\nScaled residuals: \n     Min       1Q   Median       3Q      Max \n-2.13216 -0.53827 -0.06963  0.57655  2.94331 \n\nRandom effects:\n Groups   Name        Variance Std.Dev.\n subject  (Intercept) 97.750   9.887   \n Residual              8.929   2.988   \nNumber of obs: 200, groups:  subject, 50\n\nFixed effects:\n                Estimate Std. Error t value\n(Intercept)      99.4758     2.0396  48.772\ntime              6.9463     0.2673  25.990\ntreatmentB        3.6965     2.8844   1.282\ntime:treatmentB  -4.1974     0.3780 -11.105\n\nCorrelation of Fixed Effects:\n            (Intr) time   trtmnB\ntime        -0.197              \ntreatmentB  -0.707  0.139       \ntim:trtmntB  0.139 -0.707 -0.197\n\n\n\n\n8.3.2 用药效果纵向分析\n\n\n代码\n# 可视化纵向数据\nggplot(longitudinal_data, aes(x = time, y = outcome, color = treatment)) +\n  stat_summary(aes(group = treatment),\n              fun = mean, geom = \"line\") +\n  stat_summary(fun.data = mean_se, geom = \"errorbar\", width = 0.2) +\n  labs(title = \"不同治疗方案的纵向效果比较\",\n       x = \"随访时间点\",\n       y = \"结局指标\",\n       color = \"治疗组别\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n使用自己的数据进行生存分析\n评估诊断试验的性能\n分析纵向研究数据\n解释混合效应模型结果",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>高级医学统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter7.html#本章小结",
+    "href": "chapter7.html#本章小结",
+    "title": "8  高级医学统计分析",
+    "section": "8.4 本章小结",
+    "text": "8.4 本章小结\n在本章中，我们学习了：\n\n生存分析的实施和解释\n诊断试验性能的评估方法\n重复测量数据的处理技巧\n混合效应模型的应用\n\n下一章，我们将学习如何使用R Markdown生成医学研究报告。",
+    "crumbs": [
+      "统计分析",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>高级医学统计分析</span>"
+    ]
+  },
+  {
+    "objectID": "chapter8.html",
+    "href": "chapter8.html",
+    "title": "9  医学研究报告生成",
+    "section": "",
+    "text": "9.0.1 结果自动更新机制\n代码\n# 创建模拟患者数据\nset.seed(123)\nn &lt;- 200\npatient_data &lt;- data.frame(\n  age = rnorm(n, mean = 45, sd = 15),\n  gender = factor(sample(c(\"男\", \"女\"), n, replace = TRUE)),\n  temp = rnorm(n, mean = 37, sd = 0.5),\n  group = factor(sample(c(\"阳性\", \"阴性\"), n, replace = TRUE, prob = c(0.3, 0.7)))\n)\n\n# 创建基线特征表\nbaseline_table &lt;- patient_data %&gt;%\n  select(age, gender, temp, group) %&gt;%\n  tbl_summary(\n    by = group,\n    missing = \"no\",\n    label = list(\n      age ~ \"年龄(岁)\",\n      gender ~ \"性别\",\n      temp ~ \"体温(℃)\"\n    ),\n    statistic = list(\n      all_continuous() ~ \"{mean} ({sd})\",\n      all_categorical() ~ \"{n} ({p}%)\"\n    )\n  ) %&gt;%\n  add_p() %&gt;%\n  add_n() %&gt;%\n  modify_header(label = \"**特征**\") %&gt;%\n  modify_spanning_header(c(\"stat_1\", \"stat_2\") ~ \"新冠检测结果\")\n\n# 展示表格\nbaseline_table\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n特征\nN\n\n新冠检测结果\n\np-value\n\n\n阳性 N = 561\n阴性 N = 1441\n\n\n\n\n年龄(岁)\n200\n45 (13)\n45 (14)\n\n\n\n\n性别\n200\n\n\n\n\n\n\n\n\n    男\n\n\n25 (45%)\n68 (47%)\n\n\n\n\n    女\n\n\n31 (55%)\n76 (53%)\n\n\n\n\n体温(℃)\n200\n37.05 (0.51)\n37.00 (0.51)\n\n\n\n\n\n1 Mean (SD); n (%)",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>医学研究报告生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapter8.html#sec-quarto-advanced",
+    "href": "chapter8.html#sec-quarto-advanced",
+    "title": "9  医学研究报告生成",
+    "section": "9.1 Quarto高级功能",
+    "text": "9.1 Quarto高级功能\n\n9.1.1 交互式可视化报告\n\n\n代码\nlibrary(plotly)\nlibrary(DT)\n\n# 创建交互式散点图\np &lt;- ggplot(patient_data, aes(x = age, y = temp, color = group)) +\n  geom_point(alpha = 0.6) +\n  geom_smooth(method = \"lm\") +\n  labs(title = \"年龄与体温的关系\",\n       x = \"年龄 (岁)\",\n       y = \"体温 (°C)\")\n\ninteractive_plot &lt;- ggplotly(p)\n\n# 创建交互式表格\ndt &lt;- datatable(\n  patient_data %&gt;%\n    select(age, gender, temp, group),\n  options = list(\n    pageLength = 10,\n    searchHighlight = TRUE\n  ),\n  caption = \"患者详细数据\"\n)\n\n# 展示交互式内容\ninteractive_plot\n\n\n\n\n\n\n代码\ndt\n\n\n\n\n\n\n\n\n9.1.2 多格式输出（Word/PDF/HTML）\n\n\n代码\n# Word格式输出设置\nword_output &lt;- function(data) {\n  ft &lt;- flextable(data)\n  ft &lt;- autofit(ft)\n  ft &lt;- theme_booktabs(ft)\n  return(ft)\n}\n\n# PDF格式输出设置\npdf_output &lt;- function(data) {\n  kable(data, format = \"latex\", booktabs = TRUE)\n}\n\n# HTML格式输出设置\nhtml_output &lt;- function(data) {\n  gt(data) %&gt;%\n    tab_header(title = \"研究结果\") %&gt;%\n    tab_options(table.width = pct(100))\n}",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>医学研究报告生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapter8.html#sec-reproducibility",
+    "href": "chapter8.html#sec-reproducibility",
+    "title": "9  医学研究报告生成",
+    "section": "9.2 论文可重复性实践",
+    "text": "9.2 论文可重复性实践\n\n9.2.1 代码版本控制\n\n\n代码\n# 项目初始化\nrenv::init()\n\n# 记录包依赖\nrenv::snapshot()\n\n# Git版本控制\n# git init\n# git add .\n# git commit -m \"Initial analysis setup\"\n\n\n\n\n9.2.2 数据脱敏处理\n\n\n代码\n# 创建数据脱敏函数\nanonymize_data &lt;- function(data) {\n  data %&gt;%\n    mutate(\n      id = paste0(\"P\", sprintf(\"%04d\", row_number())),\n      age_group = cut(age, \n                     breaks = c(0, 40, 60, Inf),\n                     labels = c(\"青年\", \"中年\", \"老年\")),\n      gender = factor(gender)\n    ) %&gt;%\n    select(-matches(\"name|address|phone|email\"))\n}\n\n# 示例：处理敏感数据\nsecure_data &lt;- anonymize_data(patient_data)\n\n\n\n\n\n\n\n\n研究报告最佳实践\n\n\n\n\n使用标准化的报告模板\n确保结果可重复性\n妥善处理敏感数据\n使用版本控制管理代码\n保持分析流程的透明性",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>医学研究报告生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapter8.html#本章小结",
+    "href": "chapter8.html#本章小结",
+    "title": "9  医学研究报告生成",
+    "section": "9.3 本章小结",
+    "text": "9.3 本章小结\n在本章中，我们学习了：\n\n如何使用Quarto创建专业的医学研究报告\n自动化报告生成和结果更新机制\n交互式可视化技术\n确保研究可重复性的方法\n\n下一章，我们将学习生物信息学分析的基础知识。",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>医学研究报告生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapter9.html",
+    "href": "chapter9.html",
+    "title": "10  生物信息学入门",
+    "section": "",
+    "text": "10.1 基因表达数据分析",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>生物信息学入门</span>"
+    ]
+  },
+  {
+    "objectID": "chapter9.html#sec-gene-expression",
+    "href": "chapter9.html#sec-gene-expression",
+    "title": "10  生物信息学入门",
+    "section": "",
+    "text": "10.1.1 GEO数据库数据获取\n\n\n代码\nlibrary(limma)\nlibrary(tidyverse)\nlibrary(pheatmap)\nlibrary(enrichplot)\nlibrary(clusterProfiler)\nlibrary(org.Hs.eg.db)\n\n# 创建模拟表达数据\nset.seed(123)\nn_genes &lt;- 1000\nn_samples &lt;- 20\n\n# 生成表达矩阵\nexpr_matrix &lt;- matrix(rnorm(n_genes * n_samples), nrow = n_genes, ncol = n_samples)\nrownames(expr_matrix) &lt;- paste0(\"gene\", 1:n_genes)\ncolnames(expr_matrix) &lt;- paste0(\"sample\", 1:n_samples)\n\n# 创建分组信息\ngroups &lt;- factor(rep(c(\"Control\", \"Treatment\"), each = n_samples/2))\n\n# 展示数据维度\ndim(expr_matrix)\n\n\n[1] 1000   20\n\n\n\n\n10.1.2 差异表达基因分析\n\n\n代码\n# 构建设计矩阵\ndesign &lt;- model.matrix(~0 + groups)\ncolnames(design) &lt;- c(\"Control\", \"Treatment\")\n\n# 差异分析\nfit &lt;- lmFit(expr_matrix, design)\ncontrast.matrix &lt;- makeContrasts(Treatment - Control, levels = design)\nfit2 &lt;- contrasts.fit(fit, contrast.matrix)\nfit2 &lt;- eBayes(fit2)\n\n# 获取差异基因\ndeg_results &lt;- topTable(fit2, number = Inf, adjust.method = \"BH\")\ndeg_results$gene_id &lt;- rownames(deg_results)\n\n# 可视化火山图\nggplot(deg_results, aes(x = logFC, y = -log10(adj.P.Val))) +\n  geom_point(aes(color = abs(logFC) &gt; 1 & adj.P.Val &lt; 0.05)) +\n  geom_vline(xintercept = c(-1, 1), linetype = \"dashed\") +\n  geom_hline(yintercept = -log10(0.05), linetype = \"dashed\") +\n  scale_color_manual(values = c(\"grey\", \"red\")) +\n  labs(title = \"差异表达基因火山图\",\n       x = \"Log2 Fold Change\",\n       y = \"-log10(Adjusted P-value)\") +\n  theme_minimal()",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>生物信息学入门</span>"
+    ]
+  },
+  {
+    "objectID": "chapter9.html#sec-enrichment",
+    "href": "chapter9.html#sec-enrichment",
+    "title": "10  生物信息学入门",
+    "section": "10.2 富集分析实践",
+    "text": "10.2 富集分析实践\n\n10.2.1 GO/KEGG分析流程\n\n\n代码\n# 创建模拟基因ID（使用ENTREZ ID）\nset.seed(123)\nall_genes &lt;- sample(keys(org.Hs.eg.db, keytype = \"ENTREZID\"), n_genes)\nrownames(expr_matrix) &lt;- all_genes\n\n# 获取差异基因\ndeg_genes &lt;- deg_results %&gt;%\n  filter(abs(logFC) &gt; 1, adj.P.Val &lt; 0.05) %&gt;%\n  pull(gene_id)\n\n# GO富集分析\nego &lt;- enrichGO(gene = deg_genes,\n                universe = all_genes,\n                OrgDb = org.Hs.eg.db,\n                keyType = \"ENTREZID\",\n                ont = \"BP\",\n                pAdjustMethod = \"BH\",\n                pvalueCutoff = 0.05,\n                qvalueCutoff = 0.05)\n\n# 可视化GO富集结果\nif(!is.null(ego) && nrow(ego) &gt; 0) {\n  dotplot(ego, showCategory = 15) +\n    ggtitle(\"GO Biological Process Enrichment\")\n} else {\n  message(\"No significant GO terms found\")\n}\n\n# 创建热图\nif(length(deg_genes) &gt; 0) {\n  top_genes &lt;- head(deg_genes, 50)\n  heatmap_data &lt;- expr_matrix[top_genes, ]\n  \n  # 创建分组注释\n  annotation_col &lt;- data.frame(\n    Group = groups,\n    row.names = colnames(expr_matrix)\n  )\n  \n  # 绘制热图\n  pheatmap(heatmap_data,\n           scale = \"row\",\n           show_rownames = TRUE,\n           annotation_col = annotation_col,\n           main = \"Top 50 差异表达基因热图\")\n} else {\n  message(\"No significant genes found for heatmap\")\n}\n\n\n\n\n10.2.2 结果可视化（气泡图）\n\n\n代码\n# 如果有显著的富集结果，创建气泡图\nif(!is.null(ego) && nrow(ego) &gt; 0) {\n  # 获取前10个富集通路\n  top_pathways &lt;- as.data.frame(ego) %&gt;%\n    slice_head(n = 10)\n  \n  # 创建富集分析气泡图\n  ggplot(top_pathways, \n         aes(x = Count, y = reorder(Description, Count))) +\n    geom_point(aes(size = Count, color = p.adjust)) +\n    scale_color_gradient(low = \"red\", high = \"blue\") +\n    labs(title = \"GO富集分析结果\",\n         x = \"基因数量\",\n         y = \"GO Term\") +\n    theme_minimal() +\n    theme(axis.text.y = element_text(size = 8))\n} else {\n  message(\"No significant pathways for visualization\")\n}\n\n# 创建基因表达模式图\nif(length(deg_genes) &gt; 0) {\n  # 选择表达变化最显著的基因\n  top_varied_genes &lt;- deg_results %&gt;%\n    arrange(desc(abs(logFC))) %&gt;%\n    slice_head(n = 20) %&gt;%\n    pull(gene_id)\n  \n  # 准备数据\n  expression_data &lt;- expr_matrix[top_varied_genes, ] %&gt;%\n    scale() %&gt;%  # 对每个基因进行z-score标准化\n    t() %&gt;%      # 转置矩阵\n    as.data.frame() %&gt;%\n    mutate(Sample = rownames(.)) %&gt;%\n    gather(Gene, Expression, -Sample)\n  \n  # 创建表达模式图\n  ggplot(expression_data, aes(x = Sample, y = Gene)) +\n    geom_tile(aes(fill = Expression)) +\n    scale_fill_gradient2(low = \"blue\", mid = \"white\", high = \"red\") +\n    theme_minimal() +\n    theme(axis.text.x = element_text(angle = 45, hjust = 1),\n          axis.text.y = element_text(size = 8)) +\n    labs(title = \"Top 20 差异表达基因表达模式\",\n         x = \"样本\",\n         y = \"基因\")\n} else {\n  message(\"No significant genes for visualization\")\n}",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>生物信息学入门</span>"
+    ]
+  },
+  {
+    "objectID": "chapter9.html#sec-proteomics",
+    "href": "chapter9.html#sec-proteomics",
+    "title": "10  生物信息学入门",
+    "section": "10.3 蛋白质组学基础",
+    "text": "10.3 蛋白质组学基础\n\n10.3.1 质谱数据预处理\n\n\n代码\n# 注：以下代码仅作演示，需要实际的质谱数据才能运行\nlibrary(MSnbase)\nlibrary(MALDIquant)\n\n# 读取质谱数据\nraw_data &lt;- readMSData(\"ms_data.mzML\", mode = \"onDisk\")\n\n# 数据预处理流程\nprocessed_data &lt;- raw_data %&gt;%\n  # 降噪\n  removeBaseline() %&gt;%\n  # 峰对齐\n  alignRt() %&gt;%\n  # 峰检测\n  findPeaks() %&gt;%\n  # 定量\n  quantify()\n\n\n\n\n10.3.2 蛋白质互作网络\n\n\n代码\nlibrary(igraph)\n\n# 创建示例蛋白质互作数据\nset.seed(123)\ninteractions &lt;- data.frame(\n  protein1 = sample(LETTERS[1:10], 20, replace = TRUE),\n  protein2 = sample(LETTERS[1:10], 20, replace = TRUE)\n)\n\n# 构建网络\nnetwork &lt;- graph_from_data_frame(interactions, directed = FALSE)\n\n# 计算网络特征\ndegree &lt;- degree(network)\nbetweenness &lt;- betweenness(network)\n\n# 可视化网络\nplot(network,\n     vertex.size = degree * 5,\n     vertex.label.cex = 0.8,\n     vertex.color = \"lightblue\",\n     main = \"蛋白质互作网络\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n下载并分析一个GEO数据集\n进行差异表达分析和通路富集\n创建基因表达热图\n构建蛋白质互作网络",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>生物信息学入门</span>"
+    ]
+  },
+  {
+    "objectID": "chapter9.html#本章小结",
+    "href": "chapter9.html#本章小结",
+    "title": "10  生物信息学入门",
+    "section": "10.4 本章小结",
+    "text": "10.4 本章小结\n在本章中，我们学习了：\n\n如何获取和处理基因表达数据\n差异表达分析的基本流程\n通路富集分析方法\n蛋白质组学数据分析基础\n\n下一章，我们将通过综合案例来应用所学知识。",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>生物信息学入门</span>"
+    ]
+  },
+  {
+    "objectID": "chapter10.html",
+    "href": "chapter10.html",
+    "title": "11  综合医学分析项目",
+    "section": "",
+    "text": "11.1 临床预测模型开发",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>综合医学分析项目</span>"
+    ]
+  },
+  {
+    "objectID": "chapter10.html#sec-prediction-model",
+    "href": "chapter10.html#sec-prediction-model",
+    "title": "11  综合医学分析项目",
+    "section": "",
+    "text": "11.1.1 特征工程处理\n\n\n代码\nlibrary(tidyverse)\nlibrary(caret)\nlibrary(pROC)\nlibrary(rms)\nlibrary(tidymodels)\n\n# 创建模拟临床数据\nset.seed(123)\nn_patients &lt;- 500\n\n# 生成模拟数据\nclinical_data &lt;- tibble(\n  age = rnorm(n_patients, mean = 50, sd = 15),\n  weight = rnorm(n_patients, mean = 70, sd = 15),\n  height = rnorm(n_patients, mean = 170, sd = 10),\n  asa = sample(1:4, n_patients, replace = TRUE),\n  mallampati = sample(1:4, n_patients, replace = TRUE)\n)\n\n# 特征工程\nmodel_data &lt;- clinical_data %&gt;%\n  # 创建新特征\n  mutate(\n    bmi = weight / ((height/100)^2),\n    age_group = cut(age, breaks = c(0, 40, 60, 100), \n                   labels = c(\"青年\", \"中年\", \"老年\")),\n    risk_score = case_when(\n      asa &lt; 3 & bmi &lt; 30 ~ \"低风险\",\n      asa &gt;= 4 | bmi &gt;= 35 ~ \"高风险\",\n      TRUE ~ \"中等风险\"\n    ),\n    # 模拟困难插管的概率\n    difficult_intubation = rbinom(n_patients, 1, \n      plogis(-3 + 0.03*age + 0.1*bmi + 0.5*asa + 0.7*mallampati))\n  )\n\n# 划分训练集和测试集\nset.seed(123)\ntrain_index &lt;- createDataPartition(model_data$difficult_intubation, p = 0.7, list = FALSE)\ntrain_data &lt;- model_data[train_index, ]\ntest_data &lt;- model_data[-train_index, ]\n\n\n\n\n11.1.2 模型验证与校准\n\n\n代码\n# 构建logistic回归模型\nmodel &lt;- glm(difficult_intubation ~ age + bmi + asa + mallampati,\n            family = binomial,\n            data = train_data)\n\n# 模型性能评估\npredictions &lt;- predict(model, newdata = test_data, type = \"response\")\nroc_curve &lt;- roc(test_data$difficult_intubation, predictions)\n\n# 绘制ROC曲线\nplot(roc_curve, main = \"ROC Curve for Intubation Difficulty Prediction\")\nauc &lt;- auc(roc_curve)\ntext(0.6, 0.2, paste(\"AUC =\", round(auc, 3)))\n\n\n\n\n\n\n\n\n\n代码\n# 校准曲线\nval.prob(predictions, test_data$difficult_intubation, smooth = FALSE)\n\n\n\n\n\n\n\n\n\n         Dxy      C (ROC)           R2            D     D:Chi-sq          D:p \n 0.892617450  0.946308725 -0.370300332 -0.034771293 -4.215693964  1.000000000 \n           U     U:Chi-sq          U:p            Q        Brier    Intercept \n 0.035775060  7.366258954  0.025144163 -0.070546353  0.009179085  0.474869634 \n       Slope         Emax          E90         Eavg          S:z          S:p \n 1.697698905  0.326806852  0.078340555  0.033979172 -2.113260190  0.034578504",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>综合医学分析项目</span>"
+    ]
+  },
+  {
+    "objectID": "chapter10.html#sec-real-world",
+    "href": "chapter10.html#sec-real-world",
+    "title": "11  综合医学分析项目",
+    "section": "11.2 真实世界研究分析",
+    "text": "11.2 真实世界研究分析\n\n11.2.1 电子病历数据挖掘\n\n\n代码\n# 模拟电子病历数据\nset.seed(123)\nn_patients &lt;- 1000\n\nehr_data &lt;- tibble(\n  patient_id = 1:n_patients,\n  age = rnorm(n_patients, 55, 15),\n  gender = sample(c(\"男\", \"女\"), n_patients, replace = TRUE),\n  diagnosis = sample(c(\"高血压\", \"糖尿病\", \"冠心病\", \"正常\"), \n                    n_patients, replace = TRUE, prob = c(0.3, 0.2, 0.1, 0.4)),\n  medication = sample(c(\"药物A\", \"药物B\", \"药物C\", \"无\"), \n                     n_patients, replace = TRUE),\n  visits = rpois(n_patients, 3),\n  cost = rlnorm(n_patients, 8, 1)\n)\n\n# 描述性分析\nehr_summary &lt;- ehr_data %&gt;%\n  group_by(diagnosis) %&gt;%\n  summarise(\n    患者数 = n(),\n    平均年龄 = mean(age),\n    平均就诊次数 = mean(visits),\n    平均费用 = mean(cost)\n  )\n\n# 可视化分析\nggplot(ehr_data, aes(x = diagnosis, y = cost, fill = diagnosis)) +\n  geom_boxplot() +\n  scale_y_log10() +\n  labs(title = \"不同疾病的医疗费用分布\",\n       x = \"诊断\",\n       y = \"费用（对数刻度）\") +\n  theme_minimal() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n\n\n\n\n\n\n\n\n\n\n\n11.2.2 倾向评分匹配(PSM)\n\n\n代码\nlibrary(MatchIt)\n\n# 准备数据进行PSM\ntreatment_data &lt;- ehr_data %&gt;%\n  mutate(\n    treatment = ifelse(medication == \"药物A\", 1, 0),\n    age_std = scale(age),\n    cost_pre = rlnorm(n_patients, 7, 1)\n  ) %&gt;%\n  filter(medication %in% c(\"药物A\", \"药物B\"))\n\n# 进行PSM\nm.out &lt;- matchit(treatment ~ age_std + gender + diagnosis + cost_pre,\n                data = treatment_data,\n                method = \"nearest\",\n                ratio = 1)\n\n# 查看匹配结果\nsummary(m.out)\n\n\n\nCall:\nmatchit(formula = treatment ~ age_std + gender + diagnosis + \n    cost_pre, data = treatment_data, method = \"nearest\", ratio = 1)\n\nSummary of Balance for All Data:\n                Means Treated Means Control Std. Mean Diff. Var. Ratio\ndistance               0.4684        0.4589          0.1885     1.1523\nage_std                0.0281       -0.0029          0.0312     1.1314\ngender男               0.4833        0.5396         -0.1125          .\ngender女               0.5167        0.4604          0.1125          .\ndiagnosis高血压        0.3167        0.2950          0.0467          .\ndiagnosis冠心病        0.1042        0.0863          0.0584          .\ndiagnosis糖尿病        0.1917        0.1871          0.0117          .\ndiagnosis正常          0.3875        0.4317         -0.0906          .\ncost_pre            1869.0235     1564.9217          0.1001     2.6494\n                eCDF Mean eCDF Max\ndistance           0.0604   0.1216\nage_std            0.0249   0.0961\ngender男           0.0562   0.0562\ngender女           0.0562   0.0562\ndiagnosis高血压    0.0217   0.0217\ndiagnosis冠心病    0.0178   0.0178\ndiagnosis糖尿病    0.0046   0.0046\ndiagnosis正常      0.0442   0.0442\ncost_pre           0.0256   0.0592\n\nSummary of Balance for Matched Data:\n                Means Treated Means Control Std. Mean Diff. Var. Ratio\ndistance               0.4684        0.4636          0.0960     1.3272\nage_std                0.0281        0.0589         -0.0309     1.2464\ngender男               0.4833        0.4917         -0.0167          .\ngender女               0.5167        0.5083          0.0167          .\ndiagnosis高血压        0.3167        0.3208         -0.0090          .\ndiagnosis冠心病        0.1042        0.0917          0.0409          .\ndiagnosis糖尿病        0.1917        0.1958         -0.0106          .\ndiagnosis正常          0.3875        0.3917         -0.0086          .\ncost_pre            1869.0235     1556.4315          0.1029     2.5677\n                eCDF Mean eCDF Max Std. Pair Dist.\ndistance           0.0267   0.0833          0.0984\nage_std            0.0261   0.0792          1.0527\ngender男           0.0083   0.0083          0.5170\ngender女           0.0083   0.0083          0.5170\ndiagnosis高血压    0.0042   0.0042          0.6718\ndiagnosis冠心病    0.0125   0.0125          0.4228\ndiagnosis糖尿病    0.0042   0.0042          0.6669\ndiagnosis正常      0.0042   0.0042          0.5559\ncost_pre           0.0273   0.0667          0.4100\n\nSample Sizes:\n          Control Treated\nAll           278     240\nMatched       240     240\nUnmatched      38       0\nDiscarded       0       0\n\n\n代码\n# 提取匹配后的数据\nmatched_data &lt;- match.data(m.out)\n\n# 评估平衡性\nplot(m.out, type = \"density\", interactive = FALSE)",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>综合医学分析项目</span>"
+    ]
+  },
+  {
+    "objectID": "chapter10.html#sec-covid",
+    "href": "chapter10.html#sec-covid",
+    "title": "11  综合医学分析项目",
+    "section": "11.3 COVID-19数据分析",
+    "text": "11.3 COVID-19数据分析\n\n11.3.1 疫情时空分布分析\n\n\n代码\nlibrary(sf)\nlibrary(tmap)\n\n# 模拟COVID-19疫情数据\ndates &lt;- seq(as.Date(\"2020-01-01\"), as.Date(\"2020-12-31\"), by = \"day\")\nregions &lt;- paste0(\"区域\", 1:10)\n\ncovid_data &lt;- expand.grid(\n  date = dates,\n  region = regions\n) %&gt;%\n  mutate(\n    cases = rpois(n(), lambda = 10),\n    cumulative_cases = ave(cases, region, FUN = cumsum)\n  )\n\n# 时间趋势分析\nggplot(covid_data, aes(x = date, y = cases, color = region)) +\n  geom_line(alpha = 0.5) +\n  facet_wrap(~region, scales = \"free_y\") +\n  labs(title = \"各区域COVID-19每日新增病例\",\n       x = \"日期\",\n       y = \"新增病例数\") +\n  theme_minimal() +\n  theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\n\n\n11.3.2 疫苗效果评估模型\n\n\n代码\n# 模拟疫苗接种数据\nn_subjects &lt;- 1000\nvaccine_data &lt;- tibble(\n  subject_id = 1:n_subjects,\n  age = rnorm(n_subjects, 45, 15),\n  vaccinated = rbinom(n_subjects, 1, 0.7),\n  risk_factor = rbinom(n_subjects, 1, 0.3),\n  infected = rbinom(n_subjects, 1, \n                   ifelse(vaccinated == 1, 0.05, 0.15))\n)\n\n# 分析疫苗效果\nvaccine_model &lt;- glm(infected ~ vaccinated + age + risk_factor,\n                    family = binomial,\n                    data = vaccine_data)\n\n# 计算疫苗效果\nve &lt;- (1 - exp(coef(vaccine_model)[\"vaccinated\"])) * 100\n\n# 可视化结果\nggplot(vaccine_data, aes(x = factor(vaccinated), fill = factor(infected))) +\n  geom_bar(position = \"fill\") +\n  labs(title = \"疫苗接种状态与感染风险\",\n       subtitle = paste(\"疫苗效力估计：\", round(ve, 1), \"%\"),\n       x = \"是否接种疫苗\",\n       y = \"比例\",\n       fill = \"是否感染\") +\n  scale_fill_brewer(palette = \"Set2\") +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n练习\n\n\n\n\n使用自己的数据开发预测模型\n进行真实世界研究数据分析\n评估医疗干预的效果\n进行时空数据可视化",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>综合医学分析项目</span>"
+    ]
+  },
+  {
+    "objectID": "chapter10.html#本章小结",
+    "href": "chapter10.html#本章小结",
+    "title": "11  综合医学分析项目",
+    "section": "11.4 本章小结",
+    "text": "11.4 本章小结\n在本章中，我们学习了：\n\n如何开发和验证临床预测模型\n真实世界研究数据的分析方法\n倾向评分匹配的应用\n疫情数据的时空分析技术\n\n\n\n\n\n\n\n持续学习\n\n\n\n感谢您阅读本书！如需获取更多医学统计分析资源、代码更新和案例分享，欢迎关注微信公众号【R语言与可视化】。\n您还可以： - 在公众号后台留言交流学习心得 - 获取本书示例代码的完整版本 - 了解最新的R语言医学应用动态",
+    "crumbs": [
+      "专业应用",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>综合医学分析项目</span>"
+    ]
+  }
+]

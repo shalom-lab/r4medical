@@ -1,0 +1,195 @@
+# 医学研究报告生成 {#sec-research-reports}
+
+```{r}
+#| label: check-packages
+#| message: false
+
+# 设置CRAN镜像为中国合肥镜像
+options(repos = c(CRAN = "https://mirrors.ustc.edu.cn/CRAN/"))
+
+# 检查并安装所需的R包
+required_packages <- c(
+  "tidyverse",     # 数据处理和可视化
+  "rmarkdown",     # 报告生成
+  "knitr",         # 文档编织
+  "gt",            # 表格生成
+  "gtsummary",     # 统计表格
+  "medicaldata",   # 医学数据集
+  "flextable",     # 表格格式化
+  "plotly",        # 交互式图形
+  "DT"             # 交互式表格
+)
+
+# 检查并安装缺失的包
+for(pkg in required_packages) {
+  if(!require(pkg, character.only = TRUE)) {
+    install.packages(pkg)
+    library(pkg, character.only = TRUE)
+  }
+}
+```
+
+### 结果自动更新机制 {#sec-auto-update}
+
+```{r}
+#| label: dynamic-tables
+
+# 创建模拟患者数据
+set.seed(123)
+n <- 200
+patient_data <- data.frame(
+  age = rnorm(n, mean = 45, sd = 15),
+  gender = factor(sample(c("男", "女"), n, replace = TRUE)),
+  temp = rnorm(n, mean = 37, sd = 0.5),
+  group = factor(sample(c("阳性", "阴性"), n, replace = TRUE, prob = c(0.3, 0.7)))
+)
+
+# 创建基线特征表
+baseline_table <- patient_data %>%
+  select(age, gender, temp, group) %>%
+  tbl_summary(
+    by = group,
+    missing = "no",
+    label = list(
+      age ~ "年龄(岁)",
+      gender ~ "性别",
+      temp ~ "体温(℃)"
+    ),
+    statistic = list(
+      all_continuous() ~ "{mean} ({sd})",
+      all_categorical() ~ "{n} ({p}%)"
+    )
+  ) %>%
+  add_p() %>%
+  add_n() %>%
+  modify_header(label = "**特征**") %>%
+  modify_spanning_header(c("stat_1", "stat_2") ~ "新冠检测结果")
+
+# 展示表格
+baseline_table
+```
+
+## Quarto高级功能 {#sec-quarto-advanced}
+
+### 交互式可视化报告 {#sec-interactive-viz}
+
+```{r}
+#| label: interactive-plots
+library(plotly)
+library(DT)
+
+# 创建交互式散点图
+p <- ggplot(patient_data, aes(x = age, y = temp, color = group)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm") +
+  labs(title = "年龄与体温的关系",
+       x = "年龄 (岁)",
+       y = "体温 (°C)")
+
+interactive_plot <- ggplotly(p)
+
+# 创建交互式表格
+dt <- datatable(
+  patient_data %>%
+    select(age, gender, temp, group),
+  options = list(
+    pageLength = 10,
+    searchHighlight = TRUE
+  ),
+  caption = "患者详细数据"
+)
+
+# 展示交互式内容
+interactive_plot
+dt
+```
+
+### 多格式输出（Word/PDF/HTML） {#sec-multiple-formats}
+
+```{r}
+#| label: output-formats
+#| eval: false
+
+# Word格式输出设置
+word_output <- function(data) {
+  ft <- flextable(data)
+  ft <- autofit(ft)
+  ft <- theme_booktabs(ft)
+  return(ft)
+}
+
+# PDF格式输出设置
+pdf_output <- function(data) {
+  kable(data, format = "latex", booktabs = TRUE)
+}
+
+# HTML格式输出设置
+html_output <- function(data) {
+  gt(data) %>%
+    tab_header(title = "研究结果") %>%
+    tab_options(table.width = pct(100))
+}
+```
+
+## 论文可重复性实践 {#sec-reproducibility}
+
+### 代码版本控制 {#sec-version-control}
+
+```{r}
+#| label: version-control
+#| eval: false
+
+# 项目初始化
+renv::init()
+
+# 记录包依赖
+renv::snapshot()
+
+# Git版本控制
+# git init
+# git add .
+# git commit -m "Initial analysis setup"
+```
+
+### 数据脱敏处理 {#sec-data-anonymization}
+
+```{r}
+#| label: data-security
+
+# 创建数据脱敏函数
+anonymize_data <- function(data) {
+  data %>%
+    mutate(
+      id = paste0("P", sprintf("%04d", row_number())),
+      age_group = cut(age, 
+                     breaks = c(0, 40, 60, Inf),
+                     labels = c("青年", "中年", "老年")),
+      gender = factor(gender)
+    ) %>%
+    select(-matches("name|address|phone|email"))
+}
+
+# 示例：处理敏感数据
+secure_data <- anonymize_data(patient_data)
+```
+
+::: callout-tip
+## 研究报告最佳实践
+
+1.  使用标准化的报告模板
+2.  确保结果可重复性
+3.  妥善处理敏感数据
+4.  使用版本控制管理代码
+5.  保持分析流程的透明性
+:::
+
+## 本章小结
+
+在本章中，我们学习了：
+
+1.  如何使用Quarto创建专业的医学研究报告
+2.  自动化报告生成和结果更新机制
+3.  交互式可视化技术
+4.  确保研究可重复性的方法
+
+下一章，我们将学习生物信息学分析的基础知识。

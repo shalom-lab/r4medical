@@ -1,0 +1,107 @@
+/*-- scss:defaults --*/
+// 主题颜色
+$primary: #1976D2;         // 主色调改为蓝色
+$secondary: #64B5F6;       // 次要颜色
+$link-color: #2196F3;      // 链接颜色
+$body-color: #37474F;      // 正文颜色
+$navbar-bg: #1976D2;       // 导航栏背景色
+$navbar-fg: #fff;          // 导航栏文字颜色
+
+// 字体设置
+$font-family-sans-serif: "Noto Sans SC", -apple-system, system-ui, BlinkMacSystemFont, sans-serif;
+$font-family-monospace: "JetBrains Mono", SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+// 代码块样式
+$code-block-bg: #f5f7f9;
+$code-block-border-color: #e3e8ee;
+
+/*-- scss:rules --*/
+// 标题样式
+h1, h2, h3, h4, h5, h6 {
+  color: $primary;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+// 侧边栏样式
+.sidebar-navigation {
+  background-color: #fafbfc;
+  border-right: 1px solid #e3e8ee;
+}
+
+.sidebar-title {
+  color: $primary;
+}
+
+// 代码块样式美化
+pre {
+  border-radius: 6px;
+  border: 1px solid $code-block-border-color;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+// 链接悬停效果
+a:hover {
+  text-decoration: none;
+  color: darken($link-color, 10%);
+  transition: color 0.2s ease;
+}
+
+// 公众号样式优化
+.sidebar section:last-child {
+  background-color: #ffffff;
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  margin: 1.2rem;
+  border: 1px solid #e3e8ee;
+}
+
+// 正文阅读优化
+.content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  max-width: 800px;
+  margin: 0 auto;
+  color: $body-color;
+}
+
+// 表格样式
+table {
+  width: 100%;
+  margin-bottom: 1.2rem;
+  border-collapse: collapse;
+  
+  th {
+    background-color: #f5f7f9;
+    border-bottom: 2px solid #e3e8ee;
+    color: $primary;
+  }
+  
+  td, th {
+    padding: 0.8rem;
+    border: 1px solid #e3e8ee;
+  }
+
+  tr:hover {
+    background-color: #f8fafc;
+  }
+}
+
+// 按钮样式
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+  &:hover {
+    background-color: darken($primary, 5%);
+    border-color: darken($primary, 5%);
+  }
+}
+
+// 引用块样式
+blockquote {
+  border-left: 4px solid $primary;
+  background-color: #f5f7f9;
+  padding: 1rem;
+  margin: 1rem 0;
+} 

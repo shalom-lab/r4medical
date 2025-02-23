@@ -1,0 +1,176 @@
+# 医学数据基础操作 {#sec-data-basics}
+
+## 数据结构与类型 {#sec-data-structures}
+
+### 向量（临床指标存储） {#sec-vectors}
+
+向量是R中最基本的数据结构，适合存储临床指标：
+
+```{r}
+#| label: vector-demo
+#| echo: true
+
+# 创建数值型向量存储血压数据
+sbp <- c(120, 135, 142, 128, 115)
+dbp <- c(80, 85, 90, 82, 75)
+
+# 创建字符型向量存储诊断结果
+diagnosis <- c("高血压", "糖尿病", "冠心病", "高血压", "正常")
+
+# 创建逻辑型向量标记是否需要治疗
+needs_treatment <- c(TRUE, TRUE, TRUE, FALSE, FALSE)
+
+# 向量的基本运算
+mean(sbp)  # 平均收缩压
+sd(dbp)    # 舒张压标准差
+table(diagnosis)  # 诊断结果频数统计
+```
+
+### 数据框（患者信息表构建） {#sec-dataframes}
+
+数据框是最常用的数据结构，适合存储患者信息表：
+
+```{r}
+#| label: dataframe-demo
+
+# 创建患者信息数据框
+patients <- data.frame(
+  ID = 1:5,
+  姓名 = c("张三", "李四", "王五", "赵六", "钱七"),
+  年龄 = c(45, 52, 38, 61, 42),
+  性别 = factor(c("男", "女", "男", "女", "男")),
+  收缩压 = sbp,
+  舒张压 = dbp,
+  诊断 = diagnosis,
+  stringsAsFactors = FALSE
+)
+
+# 查看数据结构
+str(patients)
+summary(patients)
+```
+
+## 数据导入与导出 {#sec-data-io}
+
+### 读取Excel/CSV病历数据 {#sec-data-import}
+
+```{r}
+#| label: data-import
+#| eval: false
+
+# 读取CSV文件
+library(readr)
+data_csv <- read_csv("patient_data.csv")
+
+# 读取Excel文件
+library(readxl)
+data_excel <- read_excel("clinical_records.xlsx", 
+                        sheet = "Sheet1")
+
+# 读取SPSS文件
+library(haven)
+data_spss <- read_sav("hospital_data.sav")
+```
+
+### 导出统计分析结果 {#sec-data-export}
+
+```{r}
+#| label: data-export
+#| eval: false
+
+# 导出为CSV
+write_csv(patients, "processed_data.csv")
+
+# 导出为Excel
+library(writexl)
+write_xlsx(patients, "analysis_results.xlsx")
+
+# 导出为SPSS格式
+write_sav(patients, "final_data.sav")
+```
+
+## 医学数据清洗实战 {#sec-data-cleaning}
+
+### 处理缺失值（实验室数据） {#sec-missing-values}
+
+```{r}
+#| label: missing-values
+#| message: false
+
+# 创建带有缺失值的实验室数据
+lab_data <- data.frame(
+  ID = 1:6,
+  血红蛋白 = c(13.5, NA, 12.8, 14.2, NA, 11.9),
+  白细胞 = c(6.5, 7.2, NA, 5.8, 8.1, NA),
+  血小板 = c(NA, 235, 180, NA, 205, 195)
+)
+
+# 检查缺失值
+colSums(is.na(lab_data))
+
+# 处理缺失值
+library(tidyverse)
+lab_data_clean <- lab_data %>%
+  mutate(across(where(is.numeric) & !ID, 
+                ~ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+
+# 展示处理结果
+print("处理前：")
+print(lab_data)
+print("处理后：")
+print(lab_data_clean)
+```
+
+### 异常值检测（生命体征数据） {#sec-outliers}
+
+```{r}
+#| label: outliers
+
+# 创建生命体征数据
+vitals <- data.frame(
+  ID = 1:100,
+  体温 = rnorm(100, 36.8, 0.5),
+  心率 = rnorm(100, 75, 10),
+  呼吸 = rnorm(100, 16, 2)
+)
+
+# 箱线图检测异常值
+library(ggplot2)
+ggplot(vitals, aes(y = 心率)) +
+  geom_boxplot() +
+  labs(title = "心率异常值检测") +
+  theme_minimal()
+
+# 使用IQR方法识别异常值
+identify_outliers <- function(x) {
+  q1 <- quantile(x, 0.25)
+  q3 <- quantile(x, 0.75)
+  iqr <- q3 - q1
+  lower_bound <- q1 - 1.5 * iqr
+  upper_bound <- q3 + 1.5 * iqr
+  x < lower_bound | x > upper_bound
+}
+
+# 标记异常值
+vitals$心率_异常 <- identify_outliers(vitals$心率)
+```
+
+::: callout-tip
+## 练习
+
+1.  尝试导入一个真实的医学数据集
+2.  对数据进行基本的清洗和预处理
+3.  处理数据中的缺失值和异常值
+4.  将处理后的数据导出为不同格式
+:::
+
+## 本章小结
+
+在本章中，我们学习了：
+
+1.  R语言中的基本数据结构
+2.  如何导入和导出医学数据
+3.  处理缺失值的方法
+4.  异常值的检测和处理
+
+下一章，我们将学习如何使用ggplot2进行医学数据可视化。

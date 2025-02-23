@@ -1,0 +1,76 @@
+# 项目基本配置
+project:
+  type: book            # 项目类型：书籍
+  output-dir: docs      # 输出目录
+
+# 书籍结构和元数据
+book:
+  title: "医学生R语言入门指南"  # 书名
+  author: "shalom with AI"                    # 作者
+  date: last-modified               # 最后修改日期
+  language: zh                      # 语言：中文
+  page-navigation: true
+  #reader-mode: true
+  repo-url: https://github.com/shalom-lab/r4medical
+  repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - part: "基础知识"
+      chapters:
+        - chapter1.qmd
+        - chapter2.qmd
+    - part: "数据处理与可视化"
+      chapters:
+        - chapter3.qmd
+        - chapter4.qmd
+        - chapter5.qmd
+    - part: "统计分析"
+      chapters:
+        - chapter6.qmd
+        - chapter7.qmd
+    - part: "专业应用"
+      chapters:
+        - chapter8.qmd
+        - chapter9.qmd
+        - chapter10.qmd
+  sidebar:
+    style: docked
+    background: light
+    search: true
+
+# 参考文献设置
+# bibliography: references.bib        # 参考文献文件
+# csl: chinese-medical-association.csl  # 引用样式
+
+# 输出格式设置
+format:
+  # HTML输出设置
+  html:
+    theme:
+      light: [cosmo, custom.scss]
+    css: styles.css
+    toc-title: 目录
+    code-fold: show        # 默认展开但保留折叠功能
+    code-tools: true       # 显示代码工具栏
+    code-copy: true        # 显示复制按钮
+    toc: true
+    number-sections: true
+    fig-width: 8
+    fig-height: 6
+    fig-dpi: 300
+    df-print: paged
+    highlight-style: github
+
+# 代码执行设置
+execute:
+  echo: true                     # 显示代码
+  warning: false                 # 不显示警告
+  message: false                 # 不显示消息
+  cache: true                    # 启用缓存
+  freeze: true                   # 冻结计算
+  error: false                   # 出错时停止
+
+# 编辑器设置
+# editor: visual                   # 使用可视化编辑器
+lang: zh
